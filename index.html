@@ -191,11 +191,17 @@
     }
 
     document.addEventListener("DOMContentLoaded", () => {
+      // 🔄 Lista principal (por defecto)
       cargarSeccion("update.m3u", "📦 Lista Principal");
-      cargarSeccion("colombia.m3u", "🇨🇴 Colombia");
-      cargarSeccion("usa.m3u", "🇺🇸 USA");
-      cargarSeccion("deportes.m3u", "⚽ Deportes");
+
+      // 🇨🇴 Lista de Colombia
+      cargarSeccion("Country Colombia.m3u", "🇨🇴 Country Colombia");
+
+      // 📝 Puedes agregar más aquí
+      // cargarSeccion("Country USA.m3u", "🇺🇸 Country USA");
+      // cargarSeccion("Deportes.m3u", "⚽ Deportes");
     });
   </script>
 </body>
 </html>
+
