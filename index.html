@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mi TV - Multisecciones</title>
+  <title>Mi TV Station - Con HLS.js</title>
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
   <style>
     body {
       margin: 0;
@@ -22,14 +23,6 @@
       text-shadow: 0 0 10px #00ffd5;
     }
 
-    h2 {
-      font-size: 24px;
-      margin-bottom: 10px;
-      text-align: center;
-      color: #00ffd5;
-      text-shadow: 0 0 8px #00ffd5;
-    }
-
     .secciones {
       display: flex;
       flex-direction: column;
@@ -44,7 +37,6 @@
       padding: 10px;
       background: #1a1a1a;
       border-radius: 12px;
-      scroll-behavior: smooth;
     }
 
     .canal-card {
@@ -53,7 +45,6 @@
       border-radius: 10px;
       padding: 10px;
       text-align: center;
-      box-shadow: 0 0 10px rgba(0, 255, 213, 0.1);
     }
 
     .canal-card img {
@@ -78,11 +69,6 @@
       font-weight: bold;
       border-radius: 6px;
       cursor: pointer;
-      transition: 0.2s ease-in-out;
-    }
-
-    .canal-card button:hover {
-      background: #00e5c0;
     }
 
     video {
@@ -97,18 +83,34 @@
   </style>
 </head>
 <body>
-  <h1>🎬 Mi TV Station - Modo MultiSección</h1>
+  <h1>📺 Mi TV Station con Reproductor HLS.js</h1>
 
   <div class="secciones" id="secciones-multiples"></div>
 
-  <video id="videoPlayer" controls autoplay muted></video>
+  <video id="videoPlayer" controls></video>
 
   <script>
-    const videoPlayer = document.getElementById('videoPlayer');
+    const video = document.getElementById('videoPlayer');
+    let hls;
 
     function playChannel(url) {
-      videoPlayer.src = url;
-      videoPlayer.play();
+      if (hls) {
+        hls.destroy();
+      }
+
+      if (Hls.isSupported()) {
+        hls = new Hls();
+        hls.loadSource(url);
+        hls.attachMedia(video);
+        hls.on(Hls.Events.MANIFEST_PARSED, function () {
+          video.play();
+        });
+      } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+        video.src = url;
+        video.play();
+      } else {
+        alert("Este navegador no soporta HLS.");
+      }
     }
 
     function parseM3U(content) {
@@ -157,12 +159,11 @@
 
     function mostrarCarrusel(titulo, canales) {
       const container = document.getElementById('secciones-multiples');
-
       const bloque = document.createElement('div');
       const carrusel = document.createElement('div');
       carrusel.className = 'carrusel';
 
-      bloque.innerHTML = `<h2>${titulo}</h2>`;
+      bloque.innerHTML = `<h2 style="text-align:center; color:#00ffd5;">${titulo}</h2>`;
       bloque.appendChild(carrusel);
 
       canales.forEach(channel => {
@@ -191,17 +192,11 @@
     }
 
     document.addEventListener("DOMContentLoaded", () => {
-      // 🔄 Lista principal (por defecto)
       cargarSeccion("update.m3u", "📦 Lista Principal");
-
-      // 🇨🇴 Lista de Colombia
       cargarSeccion("Country Colombia.m3u", "🇨🇴 Country Colombia");
-
-      // 📝 Puedes agregar más aquí
-      // cargarSeccion("Country USA.m3u", "🇺🇸 Country USA");
-      // cargarSeccion("Deportes.m3u", "⚽ Deportes");
     });
   </script>
 </body>
 </html>
+
 
