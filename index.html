@@ -1,123 +1,75 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mi TV Station - Con HLS.js</title>
-  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi TV Station - Múltiples Listados</title>
   <style>
     body {
-      margin: 0;
-      background: #111;
-      color: #fff;
-      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background: linear-gradient(135deg, #0f0f0f, #1a1a1a);
+      color: #e0e0e0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      padding: 20px;
     }
-
     h1 {
       text-align: center;
-      font-size: 2em;
-      padding: 20px;
-      background: linear-gradient(90deg, #00ffd5, #0f0f0f);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      color: #00ffd5;
       text-shadow: 0 0 10px #00ffd5;
     }
-
-    .secciones {
+    .controls {
       display: flex;
-      flex-direction: column;
-      gap: 40px;
-      padding: 20px;
-    }
-
-    .carrusel {
-      display: flex;
-      overflow-x: auto;
       gap: 10px;
-      padding: 10px;
-      background: #1a1a1a;
-      border-radius: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
     }
-
-    .canal-card {
-      min-width: 200px;
-      background: #2a2a2a;
-      border-radius: 10px;
-      padding: 10px;
-      text-align: center;
-    }
-
-    .canal-card img {
-      width: 100%;
-      height: 120px;
-      object-fit: contain;
-      background: #000;
-      border-radius: 8px;
-      margin-bottom: 8px;
-    }
-
-    .canal-card .titulo {
-      font-size: 14px;
-      margin-bottom: 6px;
-    }
-
-    .canal-card button {
-      padding: 6px 12px;
-      border: none;
+    .controls button {
       background: #00ffd5;
+      border: none;
       color: #000;
       font-weight: bold;
-      border-radius: 6px;
+      padding: 10px 15px;
+      border-radius: 8px;
       cursor: pointer;
     }
-
+    #channel-select {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      background: #222;
+      color: #00ffd5;
+      border: 1px solid #00ffd5;
+      margin-bottom: 15px;
+    }
     video {
       width: 100%;
-      max-width: 640px;
-      margin: 30px auto;
+      max-width: 720px;
+      margin: 0 auto;
       display: block;
       border: 2px solid #00ffd5;
       border-radius: 12px;
-      background: #000;
+      background-color: #000;
     }
   </style>
 </head>
 <body>
-  <h1>📺 Mi TV Station con Reproductor HLS.js</h1>
+  <h1>📺 Mi TV Station - Varios Listados</h1>
+  <div class="controls">
+    <button onclick="cargarM3U('update.m3u', '📦 Principal')">📦 Principal</button>
+    <button onclick="cargarM3U('Country%20Colombia.m3u', '🇨🇴 Colombia')">🇨🇴 Colombia</button>
+    <button onclick="cargarM3U('Country%20USA.m3u', '🇺🇸 USA')">🇺🇸 USA</button>
+  </div>
 
-  <div class="secciones" id="secciones-multiples"></div>
-
-  <video id="videoPlayer" controls></video>
+  <select id="channel-select" onchange="playSelectedChannel()"></select>
+  <video id="videoPlayer" controls autoplay></video>
 
   <script>
-    const video = document.getElementById('videoPlayer');
-    let hls;
-
-    function playChannel(url) {
-      if (hls) {
-        hls.destroy();
-      }
-
-      if (Hls.isSupported()) {
-        hls = new Hls();
-        hls.loadSource(url);
-        hls.attachMedia(video);
-        hls.on(Hls.Events.MANIFEST_PARSED, function () {
-          video.play();
-        });
-      } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-        video.src = url;
-        video.play();
-      } else {
-        alert("Este navegador no soporta HLS.");
-      }
-    }
+    let canalesData = [];
 
     function parseM3U(content) {
       const lines = content.split('\n');
       const channels = [];
-      let currentTitle = '';
-      let currentLogo = '';
+      let currentTitle = '', currentLogo = '';
 
       lines.forEach((line, i) => {
         line = line.trim();
@@ -140,60 +92,45 @@
       return channels;
     }
 
-    function cargarSeccion(nombreArchivo, nombreVisible) {
+    function cargarM3U(nombreArchivo, nombreVisible) {
       fetch(nombreArchivo)
         .then(res => res.text())
         .then(data => {
-          const canales = parseM3U(data);
-          canales.forEach(channel => {
-            if (!channel.thumbnail) {
-              channel.thumbnail = `https://via.placeholder.com/320x180?text=${encodeURIComponent(channel.title)}`;
-            }
-          });
-          mostrarCarrusel(nombreVisible, canales);
+          canalesData = parseM3U(data);
+          llenarSelect(nombreVisible);
         })
-        .catch(err => {
-          console.error(`❌ Error al cargar ${nombreArchivo}:`, err);
-        });
+        .catch(err => console.error(`❌ Error al cargar ${nombreArchivo}:`, err));
     }
 
-    function mostrarCarrusel(titulo, canales) {
-      const container = document.getElementById('secciones-multiples');
-      const bloque = document.createElement('div');
-      const carrusel = document.createElement('div');
-      carrusel.className = 'carrusel';
+    function llenarSelect(titulo) {
+      const select = document.getElementById('channel-select');
+      select.innerHTML = '';
 
-      bloque.innerHTML = `<h2 style="text-align:center; color:#00ffd5;">${titulo}</h2>`;
-      bloque.appendChild(carrusel);
-
-      canales.forEach(channel => {
-        const card = document.createElement('div');
-        card.className = 'canal-card';
-
-        const img = document.createElement('img');
-        img.src = channel.thumbnail;
-        img.alt = channel.title;
-
-        const nombre = document.createElement('div');
-        nombre.className = 'titulo';
-        nombre.textContent = channel.title;
-
-        const btn = document.createElement('button');
-        btn.textContent = '▶ Ver';
-        btn.onclick = () => playChannel(channel.url);
-
-        card.appendChild(img);
-        card.appendChild(nombre);
-        card.appendChild(btn);
-        carrusel.appendChild(card);
+      canalesData.forEach((canal, i) => {
+        const option = document.createElement('option');
+        option.value = i;
+        option.textContent = `${canal.title}`;
+        select.appendChild(option);
       });
-
-      container.appendChild(bloque);
     }
 
-    document.addEventListener("DOMContentLoaded", () => {
-  cargarSeccion("test.m3u", "📡 Lista de Prueba Funcional");
-      cargarSeccion("Country Colombia.m3u", "🇨🇴 Country Colombia");
+    function playChannel(url) {
+      const video = document.getElementById('videoPlayer');
+      video.src = url;
+      video.play();
+    }
+
+    function playSelectedChannel() {
+      const select = document.getElementById('channel-select');
+      const selectedIndex = select.value;
+      if (selectedIndex !== '') {
+        playChannel(canalesData[selectedIndex].url);
+      }
+    }
+
+    // Carga inicial
+    document.addEventListener('DOMContentLoaded', () => {
+      cargarM3U('update.m3u', '📦 Principal');
     });
   </script>
 </body>
