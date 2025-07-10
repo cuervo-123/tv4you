@@ -722,22 +722,21 @@ function filtrarCanales() {
 
 // Carga automática del archivo 'update.m3u' al iniciar
 window.addEventListener('DOMContentLoaded', () => {
-  fetch('update%20.m3u') // nota el %20
+  fetch('update.m3u')
     .then(res => res.text())
     .then(text => {
       if (text.includes("#EXTM3U")) {
         channelsData = parseM3U(text);
-        console.log("✅ update .m3u cargado correctamente");
+        console.log("✅ update.m3u cargado correctamente");
         loadChannels();
       } else {
         console.warn("⚠ El archivo no parece ser un M3U válido");
       }
     })
     .catch(err => {
-      console.warn("❌ No se pudo cargar update .m3u:", err);
+      console.warn("❌ No se pudo cargar update.m3u:", err);
     });
 });
-
 
              
     </script>
