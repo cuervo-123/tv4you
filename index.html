@@ -784,6 +784,7 @@ window.addEventListener('DOMContentLoaded', () => {
     .then(text => {
       if (text.includes("#EXTM3U")) {
         channelsData = parseM3U(text);
+        console.log("🔍 Canales detectados:", channelsData);
         console.log("✅ update2.m3u cargado correctamente");
         loadChannels();
         renderAutoCargados(); // 👉 Esto muestra los canales en el contenedor visual
