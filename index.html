@@ -710,19 +710,22 @@ if (!channel.thumbnail) {
  
 
 function filtrarCanales() {
-      const texto = document.getElementById("buscador").value.toLowerCase();
-      const filtrados = listaOriginalCanales.filter(canal =>
-        canal.nombre.toLowerCase().includes(texto)
-      );
-      mostrarCanales(filtrados);
-    }
+  const input = document.getElementById('buscador').value.toLowerCase();
+  const channelSelect = document.getElementById('channel-select');
+  channelSelect.innerHTML = '';
 
-    document.addEventListener("DOMContentLoaded", () => {
-      const buscador = document.getElementById("buscador");
-      if (buscador) {
-        buscador.addEventListener("input", filtrarCanales);
-      }
-    });
+  channelsData.forEach((channel, index) => {
+    if (channel.title.toLowerCase().includes(input)) {
+      const option = document.createElement('option');
+      option.value = index;
+      option.innerText = channel.title;
+      channelSelect.appendChild(option);
+    }
+  });
+}
+
+
+    
 
     fetch("update2.m3u")
       .then(res => res.text())
@@ -789,7 +792,7 @@ window.addEventListener('DOMContentLoaded', () => {
       }
     })
     .catch(err => {
-      console.warn("❌ No se pudo cargar update.m3u:", err);
+      console.warn("❌ No se pudo cargar update2.m3u:", err);
     });
 });
     </script>
