@@ -720,9 +720,9 @@ function filtrarCanales() {
   });
 }
 
-// Carga automática del archivo 'update.m3u' al iniciar
+// Carga automática del archivo 'update2.m3u' al iniciar
 window.addEventListener('DOMContentLoaded', () => {
-  fetch('update.m3u')
+  fetch('update2.m3u')
     .then(res => res.text())
     .then(text => {
       if (text.includes("#EXTM3U")) {
