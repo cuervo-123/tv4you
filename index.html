@@ -719,9 +719,10 @@ function filtrarCanales() {
     }
   });
 }
+
 // Carga automática del archivo 'update.m3u' al iniciar
 window.addEventListener('DOMContentLoaded', () => {
-  fetch('update.m3u')
+  fetch('update .m3u')
     .then(res => res.text())
     .then(data => {
       channelsData = parseM3U(data);
@@ -732,6 +733,8 @@ window.addEventListener('DOMContentLoaded', () => {
       console.warn("⚠ No se pudo cargar update.m3u automáticamente:", err);
     });
 });
+
+             
     </script>
 
 </body>
