@@ -706,37 +706,28 @@ if (!channel.thumbnail) {
  
 
 function filtrarCanales() {
-  const input = document.getElementById('buscador').value.toLowerCase();
-  const channelSelect = document.getElementById('channel-select');
-  channelSelect.innerHTML = '';
-
-  channelsData.forEach((channel, index) => {
-    if (channel.title.toLowerCase().includes(input)) {
-      const option = document.createElement('option');
-      option.value = index;
-      option.innerText = channel.title;
-      channelSelect.appendChild(option);
+      const texto = document.getElementById("buscador").value.toLowerCase();
+      const filtrados = listaOriginalCanales.filter(canal =>
+        canal.nombre.toLowerCase().includes(texto)
+      );
+      mostrarCanales(filtrados);
     }
-  });
-}
 
-// Carga automática del archivo 'update2.m3u' al iniciar
-window.addEventListener('DOMContentLoaded', () => {
-  fetch('update2.m3u')
-    .then(res => res.text())
-    .then(text => {
-      if (text.includes("#EXTM3U")) {
-        channelsData = parseM3U(text);
-        console.log("✅ update.m3u cargado correctamente");
-        loadChannels();
-      } else {
-        console.warn("⚠ El archivo no parece ser un M3U válido");
+    document.addEventListener("DOMContentLoaded", () => {
+      const buscador = document.getElementById("buscador");
+      if (buscador) {
+        buscador.addEventListener("input", filtrarCanales);
       }
-    })
-    .catch(err => {
-      console.warn("❌ No se pudo cargar update.m3u:", err);
     });
-});
+
+    fetch("update2.m3u")
+      .then(res => res.text())
+      .then(data => {
+        const canales = parseM3U(data);
+        mostrarCanales(canales, true);
+        console.log("✅ Lista M3U cargada automáticamente");
+      })
+      .catch(err => console.error("❌ Error al cargar la lista M3U:", err));
 
              
     </script>
