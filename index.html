@@ -10,6 +10,18 @@
       color: #e0e0e0;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       margin: 0;
+      display: flex;
+    }
+    aside {
+      width: 250px;
+      background-color: #1c1c1c;
+      padding: 20px;
+      border-right: 2px solid #00ffd5;
+      height: 100vh;
+      box-sizing: border-box;
+    }
+    main {
+      flex: 1;
       padding: 20px;
       display: flex;
       flex-direction: column;
@@ -20,13 +32,15 @@
       margin-bottom: 20px;
       text-shadow: 0 0 10px #00ffd5;
     }
-    #channel-select {
+    #channel-select, #buscador {
       padding: 10px;
       border-radius: 8px;
       border: 1px solid #00ffd5;
       background: #222;
       color: #00ffd5;
       margin-bottom: 20px;
+      width: 100%;
+      max-width: 700px;
     }
     button {
       padding: 10px 20px;
@@ -40,29 +54,73 @@
     button:hover {
       background: #00c4a7;
     }
+    .menu-item {
+      margin: 10px 0;
+      color: #00ffd5;
+      cursor: pointer;
+    }
+    .menu-item:hover {
+      text-decoration: underline;
+    }
+    #favoritos-list {
+      display: none;
+      background: #2a2a2a;
+      padding: 15px;
+      border-radius: 12px;
+      margin-top: 20px;
+      width: 100%;
+      max-width: 700px;
+    }
+    .favorito-item {
+      padding: 5px;
+      margin-bottom: 5px;
+      background: #3a3a3a;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .favorito-item:hover {
+      background: #505050;
+    }
   </style>
 </head>
 <body>
-  <h1>Mi TV Station</h1>
+  <aside>
+    <h2>📁 Menú</h2>
+    <div class="menu-item" onclick="mostrarSeccion('canales')">Canales</div>
+    <div class="menu-item" onclick="mostrarSeccion('favoritos')">Favoritos</div>
+    <div class="menu-item">Categorías</div>
+    <div class="menu-item">Internos</div>
+  </aside>
+  <main>
+    <h1>Mi TV Station</h1>
 
-  <select id="channel-select" onchange="playSelectedChannel()">
-    <option value="https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8">Canal de prueba 1</option>
-    <option value="https://moiptvhls-i.akamaihd.net/hls/live/652398/secure1/playlist.m3u8">Canal de prueba 2</option>
-  </select>
+    <input type="text" id="buscador" placeholder="🔍 Buscar canal..." oninput="filtrarCanales()" />
 
-  <!-- Player de video corregido para Smart TV -->
-  <video id="videoPlayer"
-         controls
-         autoplay
-         muted
-         playsinline
-         style="width:100%; max-width:700px; background:#000; border-radius:12px; border:2px solid #00ffd5;"
-         poster="https://via.placeholder.com/640x360?text=Cargando+video">
-    Tu navegador no soporta la reproducción de video en vivo.
-  </video>
+    <select id="channel-select" onchange="playSelectedChannel()">
+      <option value="">Cargando canales...</option>
+    </select>
+
+    <button onclick="agregarAFavoritos()">⭐ Agregar a Favoritos</button>
+
+    <div id="favoritos-list"></div>
+
+    <!-- Player de video corregido para Smart TV -->
+    <video id="videoPlayer"
+           controls
+           autoplay
+           muted
+           playsinline
+           style="width:100%; max-width:700px; background:#000; border-radius:12px; border:2px solid #00ffd5;"
+           poster="https://via.placeholder.com/640x360?text=Cargando+video">
+      Tu navegador no soporta la reproducción de video en vivo.
+    </video>
+  </main>
 
   <!-- Scripts -->
   <script>
+    let channelsData = [];
+    let favoritos = JSON.parse(localStorage.getItem('favoritos') || '[]');
+
     function playChannel(url) {
       const video = document.getElementById('videoPlayer');
 
@@ -71,7 +129,6 @@
         window.hls = null;
       }
 
-      // Reproducción básica directa para Smart TV
       video.src = url;
       video.load();
       video.play();
@@ -80,12 +137,106 @@
     function playSelectedChannel() {
       const select = document.getElementById('channel-select');
       const url = select.value;
-      playChannel(url);
+      if (url) playChannel(url);
     }
 
-    // Autoplay canal por defecto al cargar
+    function parseM3U(content) {
+      const lines = content.split('\n');
+      const channels = [];
+      let currentTitle = '';
+
+      lines.forEach((line, index) => {
+        line = line.trim();
+        if (line.startsWith('#EXTINF')) {
+          const titleMatch = line.match(/,(.*)$/);
+          currentTitle = titleMatch ? titleMatch[1].trim() : `Canal ${index}`;
+        } else if (line && !line.startsWith('#')) {
+          channels.push({ title: currentTitle, url: line });
+          currentTitle = '';
+        }
+      });
+
+      return channels;
+    }
+
+    function cargarCanales(channels) {
+      const select = document.getElementById('channel-select');
+      select.innerHTML = '';
+      channels.forEach((channel, index) => {
+        const option = document.createElement('option');
+        option.value = channel.url;
+        option.textContent = channel.title;
+        select.appendChild(option);
+      });
+
+      if (channels.length > 0) {
+        select.selectedIndex = 0;
+        playChannel(channels[0].url);
+      }
+    }
+
+    function filtrarCanales() {
+      const input = document.getElementById('buscador').value.toLowerCase();
+      const select = document.getElementById('channel-select');
+      select.innerHTML = '';
+
+      channelsData.forEach(channel => {
+        if (channel.title.toLowerCase().includes(input)) {
+          const option = document.createElement('option');
+          option.value = channel.url;
+          option.textContent = channel.title;
+          select.appendChild(option);
+        }
+      });
+    }
+
+    function agregarAFavoritos() {
+      const select = document.getElementById('channel-select');
+      const index = select.selectedIndex;
+      if (index >= 0) {
+        const canal = channelsData[index];
+        if (!favoritos.find(f => f.url === canal.url)) {
+          favoritos.push(canal);
+          localStorage.setItem('favoritos', JSON.stringify(favoritos));
+          alert('✅ Canal agregado a favoritos');
+        } else {
+          alert('⚠️ Ya está en favoritos');
+        }
+      }
+    }
+
+    function mostrarFavoritos() {
+      const contenedor = document.getElementById('favoritos-list');
+      contenedor.innerHTML = '<h3>⭐ Favoritos:</h3>';
+      favoritos.forEach(fav => {
+        const div = document.createElement('div');
+        div.className = 'favorito-item';
+        div.textContent = fav.title;
+        div.onclick = () => playChannel(fav.url);
+        contenedor.appendChild(div);
+      });
+      contenedor.style.display = 'block';
+    }
+
+    function mostrarSeccion(seccion) {
+      const favoritosList = document.getElementById('favoritos-list');
+      if (seccion === 'favoritos') {
+        mostrarFavoritos();
+      } else {
+        favoritosList.style.display = 'none';
+      }
+    }
+
     window.addEventListener('DOMContentLoaded', () => {
-      playSelectedChannel();
+      fetch("https://cuervo-123.github.io/mi-tv-station/update3.m3u")
+        .then(res => res.text())
+        .then(data => {
+          channelsData = parseM3U(data);
+          cargarCanales(channelsData);
+        })
+        .catch(err => {
+          console.error("❌ Error al cargar update3.m3u:", err);
+        });
     });
   </script>
 </body>
