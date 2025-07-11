@@ -260,6 +260,9 @@
       width: auto;
     }
   </style>
+
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+
 </head>
   <body>
     <h1 class="titulo-app">Mi TV Station
@@ -603,11 +606,28 @@ fallback.appendChild(img);
   });
 }
     
-    function playChannel(url) {
-    const video = document.getElementById('videoPlayer');
-    video.src = url;
-    video.play();
+   function playChannel(url) {
+  const video = document.getElementById('videoPlayer');
+  if (Hls.isSupported()) {
+    if (window.hls) {
+      window.hls.destroy();
     }
+    window.hls = new Hls();
+    window.hls.loadSource(url);
+    window.hls.attachMedia(video);
+    window.hls.on(Hls.Events.MANIFEST_PARSED, function () {
+      video.play();
+    });
+  } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+    video.src = url;
+    video.addEventListener('loadedmetadata', function () {
+      video.play();
+    });
+  } else {
+    alert("Tu dispositivo no soporta HLS");
+  }
+}
+
     
     function playSelectedChannel() {
   const selectedIndex = document.getElementById('channel-select').value;
