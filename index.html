@@ -721,7 +721,7 @@ function filtrarCanales() {
 
     
 
-    fetch("update2.m3u,update3.m3u")
+    fetch("update3.m3u")
       .then(res => res.text())
       .then(data => {
         const canales = parseM3U(data);
@@ -773,7 +773,7 @@ function renderAutoCargados() {
 }
 // ✅ Cargar automáticamente el archivo update.m3u al abrir la app
 window.addEventListener('DOMContentLoaded', () => {
-  fetch('update2.m3u') // O usa 'update%20.m3u' si tu archivo tiene espacio
+  fetch('update3.m3u') // O usa 'update%20.m3u' si tu archivo tiene espacio
     .then(res => res.text())
     .then(text => {
       if (text.includes("#EXTM3U")) {
