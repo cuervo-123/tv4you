@@ -721,7 +721,7 @@ function filtrarCanales() {
 
     
 
-    fetch("update2.m3u")
+    fetch("update2.m3u,update3.m3u")
       .then(res => res.text())
       .then(data => {
         const canales = parseM3U(data);
