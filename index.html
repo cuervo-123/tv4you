@@ -32,7 +32,7 @@
       margin-bottom: 20px;
       text-shadow: 0 0 10px #00ffd5;
     }
-    #channel-select, #buscador {
+    #channel-select, #buscador, #fileInput {
       padding: 10px;
       border-radius: 8px;
       border: 1px solid #00ffd5;
@@ -94,6 +94,7 @@
   <main>
     <h1>Mi TV Station</h1>
 
+    <input type="file" id="fileInput" accept=".m3u,.json" onchange="handleFileUpload(event)" />
     <input type="text" id="buscador" placeholder="🔍 Buscar canal..." oninput="filtrarCanales()" />
 
     <select id="channel-select" onchange="playSelectedChannel()">
@@ -104,7 +105,6 @@
 
     <div id="favoritos-list"></div>
 
-    <!-- Player de video corregido para Smart TV -->
     <video id="videoPlayer"
            controls
            autoplay
@@ -116,19 +116,16 @@
     </video>
   </main>
 
-  <!-- Scripts -->
   <script>
     let channelsData = [];
     let favoritos = JSON.parse(localStorage.getItem('favoritos') || '[]');
 
     function playChannel(url) {
       const video = document.getElementById('videoPlayer');
-
       if (window.hls) {
         window.hls.destroy();
         window.hls = null;
       }
-
       video.src = url;
       video.load();
       video.play();
@@ -144,7 +141,6 @@
       const lines = content.split('\n');
       const channels = [];
       let currentTitle = '';
-
       lines.forEach((line, index) => {
         line = line.trim();
         if (line.startsWith('#EXTINF')) {
@@ -155,8 +151,17 @@
           currentTitle = '';
         }
       });
-
       return channels;
+    }
+
+    function parseJSON(content) {
+      try {
+        const data = JSON.parse(content);
+        return Array.isArray(data) ? data : [];
+      } catch (e) {
+        alert('❌ Archivo JSON inválido');
+        return [];
+      }
     }
 
     function cargarCanales(channels) {
@@ -168,7 +173,6 @@
         option.textContent = channel.title;
         select.appendChild(option);
       });
-
       if (channels.length > 0) {
         select.selectedIndex = 0;
         playChannel(channels[0].url);
@@ -179,7 +183,6 @@
       const input = document.getElementById('buscador').value.toLowerCase();
       const select = document.getElementById('channel-select');
       select.innerHTML = '';
-
       channelsData.forEach(channel => {
         if (channel.title.toLowerCase().includes(input)) {
           const option = document.createElement('option');
@@ -225,6 +228,22 @@
       } else {
         favoritosList.style.display = 'none';
       }
+    }
+
+    function handleFileUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = e => {
+        const content = e.target.result;
+        if (file.name.endsWith('.m3u')) {
+          channelsData = parseM3U(content);
+        } else if (file.name.endsWith('.json')) {
+          channelsData = parseJSON(content);
+        }
+        cargarCanales(channelsData);
+      };
+      reader.readAsText(file);
     }
 
     window.addEventListener('DOMContentLoaded', () => {
