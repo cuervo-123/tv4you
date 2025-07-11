@@ -1,819 +1,92 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-         <meta charset="UTF-8" />
-         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-                   <title>Mi TV Station - Listados y Favoritos</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mi TV Station - Listados y Favoritos</title>
   <style>
-    @keyframes pulse {
-  0% { transform: scale(1); opacity: 0.9; }
-  50% { transform: scale(1.05); opacity: 1; }
-  100% { transform: scale(1); opacity: 0.9; }
-}
-     body {
+    body {
       background: linear-gradient(135deg, #0f0f0f, #1a1a1a);
       color: #e0e0e0;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       margin: 0;
-      display: flex;
-      justify-content: center;
-      padding-top: 60px;
-    }
-
-    .container {
-      max-width: 1200px;
-      width: 100%;
       padding: 20px;
-      box-sizing: border-box;
-    }
-
-    .titulo-app {
       display: flex;
-      justify-content: center;
+      flex-direction: column;
       align-items: center;
-      font-size: 2.5rem;
+    }
+    h1 {
       color: #00ffd5;
-      font-weight: bold;
+      margin-bottom: 20px;
       text-shadow: 0 0 10px #00ffd5;
-      margin-bottom: 40px;
     }
-
-    .mano-animada {
-      width: 45px;
-      height: 45px;
-      margin-right: 15px;
-      animation: moverManoIzq 1s infinite alternate;
-      transform: scaleX(-1);
-    }
-
-    @keyframes moverManoIzq {
-      0% { transform: scaleX(-1) translateX(0); }
-      100% { transform: scaleX(-1) translateX(8px); }
-    }
-
-    #menuSlider {
-      position: fixed;
-      top: 0;
-      left: -250px;
-      width: 250px;
-      height: 100%;
-      background: #191919;
-      transition: left 0.3s ease-in-out;
-      z-index: 1000;
-      padding: 20px 15px;
-      border-right: 2px solid #00ffd5;
-      box-shadow: 4px 0 15px rgba(0, 255, 213, 0.2);
-      overflow-y: auto;
-    }
-
-    #menuSlider.open {
-      left: 0;
-    }
-
-    .menu-item {
-      display: inline-flex;
-      color: #206d60;
-      padding: 12px 15px;
-      font-size: 18px;
+    #channel-select {
+      padding: 10px;
       border-radius: 8px;
-      margin-bottom: 10px;
-      background: #2a2a2a;
-      border: none;
-      cursor: pointer;
-      transition: background 0.3s;
+      border: 1px solid #00ffd5;
+      background: #222;
+      color: #00ffd5;
+      margin-bottom: 20px;
     }
-
-    .menu-item:hover {
+    button {
+      padding: 10px 20px;
       background: #00ffd5;
       color: #000;
-    }
-
-    .submenu {
-      display: none;
-      padding-left: 15px;
-      background: #1a1a1a;
-      margin-bottom: 15px;
-      border-left: 3px solid #00ffd5;
-      border-radius: 4px;
-    }
-
-    .submenu-button {
-      font-size: 15px;
-      margin: 8px 0;
-      background: none;
       border: none;
-      color: #aaa;
+      border-radius: 8px;
       cursor: pointer;
+      margin: 10px;
     }
-
-    .submenu-button:hover {
-      color: #00ffd5;
-    }
-
-    #openMenuBtn {
-      position: relative;
-      top: 20px;
-      left: 20px;
-      font-size: 28px;
-      cursor: pointer;
-      z-index: 1100;
-      color: #00ffd5;
-    }
-
-    #favorites-slider {
-      display: flex;
-      overflow-x: auto;
-      gap: 15px;
-      padding: 10px;
-      background: #1f1f1f;
-      border-radius: 12px;
-      max-width: 100%;
-      box-shadow: inset 0 0 20px rgba(0, 255, 213, 0.05);
-      justify-content: center;
-    }
-
-    .favorite-item {
-      position: relative;
-      min-width: 180px;
-      background: #2a2a2a;
-      padding: 10px;
-      border-radius: 12px;
-      text-align: center;
-      transition: transform 0.3s ease-in-out;
-      box-shadow: 0 4px 10px rgba(0, 255, 213, 0.2);
-    }
-
-    .favorite-item img {
-      width: 100%;
-      height: auto;
-      border-radius: 10px;
-      margin-bottom: 5px;
-      transition: opacity 0.3s;
-    }
-
-    .favorite-item:hover {
-      transform: scale(1.1);
-    }
-
-    .favorite-item:hover img {
-      opacity: 0.8;
-    }
-
-    .favorite-item .channel-name {
-      font-size: 16px;
-      font-weight: bold;
-      color: #fff;
-      margin-top: 10px;
-    }
-
-    .favorite-item .hover-content {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 255, 213, 0.08);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      opacity: 0;
-      transition: opacity 0.3s ease-in-out;
-      border-radius: 12px;
-    }
-
-    .favorite-item:hover .hover-content {
-      opacity: 1;
-    }
-
-    .hover-content h4 {
-      color: #00ffd5;
-      margin-bottom: 10px;
-      font-size: 16px;
-    }
-
-    .hover-content button {
-      padding: 8px 12px;
-      background: #00ffd5;
-      border: none;
-      color: #000;
-      font-weight: bold;
-      cursor: pointer;
-      border-radius: 6px;
-    }
-
-    #videoPlayer {
-      width: 100%;
-      max-width: 700px;
-      height: auto;
-      border-radius: 12px;
-      border: 2px solid #00ffd5;
-      background-color: #000;
-      box-shadow: 0 0 15px rgba(0, 255, 213, 0.3);
-      margin-top: 20px;
-      display: flex;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    .favorite-star {
-      font-size: 30px;
-      color: gold;
-      cursor: pointer;
-      margin-top: 15px;
-      text-align: center;
-      display: block;
-      text-shadow: 0 0 10px gold;
-    }
-
-    input[type="file"], select, button {
-      display: flex;
-      margin: 10px 5px;
-      padding: 10px;
-      border-radius: 6px;
-      border: none;
-      background: #333;
-      color: #fff;
-    }
-
     button:hover {
-      background: #00ffd5;
-      color: #000;
-    }
-
-    h3 {
-      text-align: center;
-      margin-top: 30px;
-      color: #00ffd5;
-    }
-
-    #category-list {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 10px;
-    }
-
-    .category-item {
-      background: #2a2a2a;
-      padding: 10px;
-      border-radius: 8px;
-      width: auto;
+      background: #00c4a7;
     }
   </style>
-
-<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
-
 </head>
-  <body>
-    <h1 class="titulo-app">Mi TV Station
-  <div id="openMenuBtn" onclick="toggleMenu()">&#9776;</div>
-  <div class="container">
-    
-      
-      <svg class="mano-animada" xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24">
-        <path d="M13.172 11H4a1 1 0 000 2h9.172l-3.586 3.586a1 1 0 101.414 1.414l5.293-5.293a1 1 0 000-1.414l-5.293-5.293a1 1 0 00-1.414 1.414L13.172 11z"/>
-      </svg>
-      
-   </h1>
-  </div>
+<body>
+  <h1>Mi TV Station</h1>
 
-<!-- Botón para abrir el menú -->
-       <div id="openMenuBtn" onclick="toggleMenu()">&#9776;</div>
-        <div class="container">
-          
-            
-            
+  <select id="channel-select" onchange="playSelectedChannel()">
+    <option value="https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8">Canal de prueba 1</option>
+    <option value="https://moiptvhls-i.akamaihd.net/hls/live/652398/secure1/playlist.m3u8">Canal de prueba 2</option>
+  </select>
 
-<!-- TODO: CONTENIDO DE TU HTML AQUÍ SIN CAMBIOS -->
+  <!-- Player de video corregido para Smart TV -->
+  <video id="videoPlayer"
+         controls
+         autoplay
+         muted
+         playsinline
+         style="width:100%; max-width:700px; background:#000; border-radius:12px; border:2px solid #00ffd5;"
+         poster="https://via.placeholder.com/640x360?text=Cargando+video">
+    Tu navegador no soporta la reproducción de video en vivo.
+  </video>
 
-<!-- Aquí va TODO EL CONTENIDO EXACTO QUE YA TENÍAS, desde el <div id="menuSlider"> hasta tu script -->
-<!-- Te lo mantuve intacto como me pediste. Solo tienes que pegar esa parte debajo de este comentario -->
+  <!-- Scripts -->
+  <script>
+    function playChannel(url) {
+      const video = document.getElementById('videoPlayer');
 
-
-
-
-
-
-<div id="menuSlider">
-
-  <h3>MENU</h3>
-  
-  
-
-    <button class="menu-item" onclick="toggleSubMenu('favorites')">        Favoritos</button>
-    <div id="submenu-favorites" class="submenu">
-    <!-- Aquí se pueden agregar más opciones del submenú de Favoritos -->
-    <button class="submenu-button" onclick="showFavorites()">Ver Favoritos</button>
-    </div>
-    
-    <button class="menu-item" onclick="toggleSubMenu('channels')">Canales</button>
-    <div id="submenu-channels" class="submenu">
-    <!-- Aquí se agregan las categorías dinámicas -->
-    <div id="category-list"></div>
-    </div>
-    
-    <button class="menu-item" onclick="toggleSubMenu('settings')">Configuraciones</button>
-    <div id="submenu-settings" class="submenu">
-    <!-- Aquí se pueden agregar más opciones del submenú de Configuraciones -->
-    <button class="submenu-button" onclick="regenerarCanalesInternos()">Regenerar Canales VOD Internos</button>
-    <button class="submenu-button" onclick="verCanalesInternos()">Ver Canales Internos</button>
-    </div>
-    </div>
-    
-    <!-- Contenido principal -->
-    <div>
-        <input type="file" id="fileInput" accept=".json,.m3u,.mp3,.mpeg">
-        <input type="text" id="buscador" placeholder="🔍 Buscar canal..." oninput="filtrarCanales()" style="width:100%;padding:10px;margin-bottom:10px;border-radius:8px;background:#222;color:#00ffd5;border:1px solid #00ffd5;">
-
-    <div>
-    <label for="channel-select">Canales:</label>
-    <select id="channel-select" onchange="playSelectedChannel()"></select>
-    <img id="channel-logo" style="width: 100px; height: auto; margin-top: 10px; border-radius: 8px; display: none;" />
-
-    <button onclick="addToFavorites()">Agregar a Favoritos</button>
-    <button onclick="showFavorites()">Ver Favoritos</button>
-    </div>
-    
-    <div>
-    <h3>Categorías Detectadas:</h3>
-    <div id="category-list"></div>
-    </div>
-    
-
-    
-    
-    <div>
-    <video id="videoPlayer"
-       controls
-       autoplay
-       muted
-       playsinline
-       style="width:100%; max-width:700px; background:#000; border-radius:12px; border:2px solid #00ffd5;"
-       poster="https://via.placeholder.com/640x360?text=Cargando+video">
-       Tu navegador no soporta la reproducción de video en vivo.
-</video>
-
-    <h3>📡 Canales precargados desde update.m3u:</h3>
-<div id="contenedor-autocanales" style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;"></div>
-<div id="favorites-slider"></div>
-    <div class="favorite-star" onclick="addToFavorites()">★</div> <!-- Estrella para agregar a favoritos -->
-    </div>
-    </div>
-    
-    <script>
-
-function verCanalesInternos() {
-  if (!internalDatabase || internalDatabase.length === 0) {
-    alert("⚠ No hay canales internos cargados. Primero regénéralos.");
-    return;
-  }
-
-  channelsData = [...internalDatabase];
-  loadChannels();
-  alert("✅ Mostrando canales internos VOD.");
-}
-
-
-
- // Paso 1: Leer la base de datos interna desde localStorage (si existe)
-
-
-    let favorites = [];
-    let categories = {};
-    
-   
-    
-    function normalizeCategory(title) {
-    if (!title) return "sin_categoria";
-    return title.trim().toLowerCase().split(" ")[0];
-    }
-    function parseM3U(content) {
-  const lines = content.split('\n');
-  const channels = [];
-
-  let currentTitle = '';
-  let currentLogo = '';
-
-  lines.forEach((line, i) => {
-    line = line.trim();
-
-    if (line.startsWith('#EXTINF')) {
-      const titleMatch = line.match(/,(.*)$/);
-      currentTitle = titleMatch ? titleMatch[1].trim() : `Canal ${i}`;
-
-      const logoMatch = line.match(/tvg-logo="(.*?)"/i);
-      currentLogo = logoMatch ? logoMatch[1] : '';
-    } else if (line && !line.startsWith('#')) {
-      channels.push({
-        title: currentTitle || `Canal ${channels.length + 1}`,
-        url: line,
-        thumbnail: currentLogo
-      });
-      currentTitle = '';
-      currentLogo = '';
-    }
-  });
-
-  return channels;
-}
-
-    function loadChannels() {
-    categories = {};
-    
-    channelsData.forEach((channel, index) => {
-    const title = channel.title || channel.name || channel.nombre || `Canal ${index + 1}`;
-    channel.title = title.trim();
-      // Generar thumbnail si no tiene
-  if (!channel.thumbnail) {
-    channel.thumbnail = `https://via.placeholder.com/320x180?text=${encodeURIComponent(channel.title)}`;
-  }
-
-    
-    const category = normalizeCategory(channel.title);
-    channel.category = category;
-    
-    if (!categories[category]) categories[category] = [];
-    categories[category].push(channel);
-    });
-    
-    renderCategories();
-    loadChannelDropdown();
-    }
-    
-    function loadChannelDropdown() {
-  const channelSelect = document.getElementById('channel-select');
-  const channelLogo = document.getElementById('channel-logo');
-  channelSelect.innerHTML = '';
-
-  channelsData.forEach((channel, index) => {
-    const option = document.createElement('option');
-    option.value = index;
-    option.innerText = channel.title;
-    channelSelect.appendChild(option);
-  });
-
-  // Mostrar logo del primer canal al cargar
-  if (channelsData[0]?.thumbnail) {
-    channelLogo.src = channelsData[0].thumbnail;
-    channelLogo.style.display = 'block';
-  } else {
-    channelLogo.style.display = 'none';
-  }
-}
-
-    
-    function renderCategories() {
-    const categoryList = document.getElementById('category-list');
-    categoryList.innerHTML = '';
-    
-    for (const category in categories) {
-    if (categories[category].length > 0) { // Solo mostrar categorías con más de dos canales
-    const categoryItem = document.createElement('div');
-    categoryItem.className = 'category-item';
-    categoryItem.innerHTML = `
-    <button class="submenu-button" onclick="toggleSubMenu('${category}')">${category} (${categories[category].length} canal(es))</button>
-    <div id="submenu-${category}" class="submenu">
-${categories[category].map(channel => {
-  const thumbnail = channel.thumbnail || `https://via.placeholder.com/100x60?text=${encodeURIComponent(channel.title)}`;
-  return `
-    <div style="display: flex; align-items: center; margin-bottom: 10px;">
-      <img src="${thumbnail}" alt="${channel.title}" style="width: 60px; height: 40px; object-fit: contain; margin-right: 8px; border-radius: 4px;">
-
-      <div style="flex-grow: 1;">
-        <button onclick="playChannel('${channel.url}')" style="margin-bottom: 5px; font-size: 14px;">▶ ${channel.title}</button><br/>
-        <button onclick="addToFavoritesFromSubMenu('${channel.title}', '${channel.url}')" style="font-size: 12px;">+ Favorito</button>
-      </div>
-    </div>
-  `;
-}).join('')}
-
-
-    </div>
-    `;
-    categoryList.appendChild(categoryItem);
-    }
-    }
-    }
-    
-    function toggleSubMenu(menuId) {
-    const submenu = document.getElementById(`submenu-${menuId}`);
-    submenu.style.display = submenu.style.display === 'block' ? 'none' : 'block';
-    }
-    function addToFavorites() {
-  const selectedIndex = document.getElementById('channel-select').value;
-  if (selectedIndex !== "") {
-    const selectedChannel = channelsData[selectedIndex];
-
-    // Generar thumbnail si no existe
-    if (!selectedChannel.thumbnail) {
-      selectedChannel.thumbnail = `https://via.placeholder.com/320x180?text=${encodeURIComponent(selectedChannel.title)}`;
-    }
-
-    favorites.push(selectedChannel);
-    alert(`Agregado a favoritos: ${selectedChannel.title}`);
-  }
-}
-
-    
-function addToFavoritesFromSubMenu(title, url) {
-  const selectedChannel = channelsData.find(channel => channel.title === title && channel.url === url);
-  if (selectedChannel) {
-    if (!selectedChannel.thumbnail) {
-      selectedChannel.thumbnail = `https://via.placeholder.com/320x180?text=${encodeURIComponent(selectedChannel.title)}`;
-    }
-
-    favorites.push(selectedChannel);
-    alert(`Agregado a favoritos: ${selectedChannel.title}`);
-  }
-}
-
-    
-    function showFavorites() {
-  const slider = document.getElementById('favorites-slider');
-  slider.innerHTML = '';
-
-  favorites.forEach((channel, index) => {
-    const div = document.createElement('div');
-    div.className = 'favorite-item';
-
-    const video = document.createElement('video');
-    video.src = channel.url;
-    video.crossOrigin = "anonymous";
-    video.muted = true;
-    video.playsInline = true;
-    video.autoplay = true;
-    video.style.display = 'none';
-
-    const canvas = document.createElement('canvas');
-    canvas.width = 320;
-    canvas.height = 180;
-    canvas.style.borderRadius = '10px';
-
-    const nameDiv = document.createElement('div');
-    nameDiv.className = 'channel-name';
-    nameDiv.textContent = channel.title;
-
-    const hoverDiv = document.createElement('div');
-    hoverDiv.className = 'hover-content';
-    hoverDiv.innerHTML = `
-  <button onclick="playChannel('${channel.url}')">▶ Play</button>
-`;
-
-    // Fallback por si falla cargar video
-    const fallback = document.createElement('div');
-fallback.style.width = '320px';
-fallback.style.height = '180px';
-fallback.style.borderRadius = '10px';
-fallback.style.overflow = 'hidden';
-fallback.style.display = 'flex';
-fallback.style.justifyContent = 'center';
-fallback.style.alignItems = 'center';
-fallback.style.background = '#000';
-
-if (channel.thumbnail) {
-    const thumbnailUrl = channel.thumbnail || `https://via.placeholder.com/320x180?text=${encodeURIComponent(channel.title)}`;
-
-const img = document.createElement('img');
-img.src = thumbnailUrl;
-img.alt = channel.title;
-img.style.maxWidth = '100%';
-img.style.maxHeight = '100%';
-img.style.objectFit = 'contain';
-img.style.borderRadius = '10px';
-fallback.appendChild(img);
-
-} else {
-  fallback.style.background = 'linear-gradient(135deg, #00ffd5, #0f0f0f)';
-  fallback.style.display = 'flex';
-  fallback.style.justifyContent = 'center';
-  fallback.style.alignItems = 'center';
-  fallback.style.color = '#000';
-  fallback.style.fontWeight = 'bold';
-  fallback.style.fontSize = '18px';
-  fallback.style.animation = 'pulse 2s infinite';
-  fallback.style.fontSize = '18px';
-  fallback.textContent = channel.title;
-}
-
-
-    let canvasShown = false;
-
-   
-
-    // Si después de 2 segundos no se pudo capturar imagen, mostrar fallback
-    setTimeout(() => {
-      if (!canvasShown) {
-        div.insertBefore(fallback, nameDiv);
+      if (window.hls) {
+        window.hls.destroy();
+        window.hls = null;
       }
-      video.pause();
-    }, 2000);
 
-    div.appendChild(video); // Oculto
-    div.appendChild(nameDiv);
-    div.appendChild(hoverDiv);
-    slider.appendChild(div);
-  });
-}
-    
-function playChannel(url) {
-  const video = document.getElementById('videoPlayer');
+      // Reproducción básica directa para Smart TV
+      video.src = url;
+      video.load();
+      video.play();
+    }
 
-  // Limpia cualquier instancia previa de Hls.js si la hubiera
-  if (window.hls) {
-    window.hls.destroy();
-    window.hls = null;
-  }
-
-  // Reproducción directa para Smart TV
-  video.src = url;
-  video.load();
-  video.play();
-}
-
-
-    
     function playSelectedChannel() {
-  const selectedIndex = document.getElementById('channel-select').value;
-  const selectedChannel = channelsData[selectedIndex];
-  const logo = document.getElementById('channel-logo');
-
-  if (selectedChannel && selectedChannel.url) {
-    playChannel(selectedChannel.url);
-
-    if (selectedChannel.thumbnail) {
-      logo.src = selectedChannel.thumbnail;
-      logo.style.display = 'block';
-    } else {
-      logo.style.display = 'none';
-    }
-  }
-}
-
-    
-    function toggleMenu() {
-    const menuSlider = document.getElementById('menuSlider');
-    menuSlider.classList.toggle('open');
+      const select = document.getElementById('channel-select');
+      const url = select.value;
+      playChannel(url);
     }
 
-     // Cuando el video carga, capturamos imagen
-     document.getElementById('fileInput').addEventListener('change', function (e) {
-  const file = e.target.files[0];
-  if (!file) return;
-
-  const reader = new FileReader();
-
-  reader.onload = function (event) {
-    const content = event.target.result.trim();
-
-    if (file.name.endsWith('.json,.m3u')) {
-      try {
-        const parsed = JSON.parse(content);
-
-        if (Array.isArray(parsed)) {
-          channelsData = parsed;
-        } else if (parsed.channels && Array.isArray(parsed.channels)) {
-          channelsData = parsed.channels;
-        } else if (parsed.lista && Array.isArray(parsed.lista)) {
-          channelsData = parsed.lista;
-        } else {
-          alert("Formato de JSON no reconocido.");
-          return;
-        }
-
-        console.log("✅ JSON cargado:", channelsData);
-        loadChannels();
-      } catch (err) {
-        alert("❌ Error al leer el archivo JSON");
-      }
-    } else if (file.name.endsWith('.m3u')) {
-      try {
-        channelsData = parseM3U(content);
-        console.log("✅ M3U cargado:", channelsData);
-        loadChannels();
-      } catch (err) {
-        alert("❌ Error al procesar el archivo M3U");
-      }
-    } else {
-      alert("❌ Tipo de archivo no soportado.");
-    }
-  };
-
-  reader.readAsText(file);
-});
-
-let internalDatabase = [];
-
-function regenerarCanalesInternos() {
-  const confirmacion = confirm('¿Estás seguro que deseas borrar y regenerar los 1000 canales internos?');
-  if (!confirmacion) return;
-
-  const generatedChannels = [...Array(1000)].map((_, i) => ({
-    name: `Canal ${i + 1}`,
-    title: `VOD Canal ${i + 1}`,
-    url: `https://vod.mycamtv.net/${i + 1}.m3u8`,
-    category: `VOD Categoria ${(i % 10) + 1}`,
-    thumbnail: `https://via.placeholder.com/320x180?text=VOD+${i + 1}` // AQUI LO IMPORTANTE
-  }));
-
-  localStorage.setItem('internalDatabase', JSON.stringify(generatedChannels));
-  internalDatabase = generatedChannels;
-  channelsData = [...internalDatabase]; // IMPORTANTE: Asignarlo como canal activo
-
-  loadChannels(); // MUY IMPORTANTE: Recargar para que se rendericen con logos
-  alert('✅ Canales VOD regenerados.');
- 
-}
-
- 
-
-function filtrarCanales() {
-  const input = document.getElementById('buscador').value.toLowerCase();
-  const channelSelect = document.getElementById('channel-select');
-  channelSelect.innerHTML = '';
-
-  channelsData.forEach((channel, index) => {
-    if (channel.title.toLowerCase().includes(input)) {
-      const option = document.createElement('option');
-      option.value = index;
-      option.innerText = channel.title;
-      channelSelect.appendChild(option);
-    }
-  });
-}
-
-
-    
-
-    fetch("update3.m3u")
-      .then(res => res.text())
-      .then(data => {
-        const canales = parseM3U(data);
-        mostrarCanales(canales, true);
-        console.log("✅ Lista M3U cargada automáticamente");
-      })
-      .catch(err => console.error("❌ Error al cargar la lista M3U:", err));
-
-function renderAutoCargados() {
-  const contenedor = document.getElementById('contenedor-autocanales');
-  contenedor.innerHTML = '';
-
-  channelsData.forEach((channel, index) => {
-    const card = document.createElement('div');
-    card.style.width = '180px';
-    card.style.background = '#2a2a2a';
-    card.style.borderRadius = '12px';
-    card.style.padding = '10px';
-    card.style.textAlign = 'center';
-    card.style.boxShadow = '0 4px 10px rgba(0,255,213,0.2)';
-
-    const thumb = document.createElement('img');
-    thumb.src = channel.thumbnail || `https://via.placeholder.com/320x180?text=${encodeURIComponent(channel.title)}`;
-    thumb.style.width = '100%';
-    thumb.style.borderRadius = '8px';
-    thumb.style.marginBottom = '8px';
-
-    const name = document.createElement('div');
-    name.textContent = channel.title;
-    name.style.color = '#fff';
-    name.style.fontSize = '14px';
-    name.style.marginBottom = '5px';
-
-    const btn = document.createElement('button');
-    btn.textContent = '▶️ Play';
-    btn.style.background = '#00ffd5';
-    btn.style.color = '#000';
-    btn.style.border = 'none';
-    btn.style.padding = '5px 10px';
-    btn.style.borderRadius = '6px';
-    btn.style.cursor = 'pointer';
-    btn.onclick = () => playChannel(channel.url);
-
-    card.appendChild(thumb);
-    card.appendChild(name);
-    card.appendChild(btn);
-    contenedor.appendChild(card);
-  });
-}
-// ✅ Cargar automáticamente el archivo update.m3u al abrir la app
-window.addEventListener('DOMContentLoaded', () => {
-  fetch('update3.m3u') // O usa 'update%20.m3u' si tu archivo tiene espacio
-    .then(res => res.text())
-    .then(text => {
-      if (text.includes("#EXTM3U")) {
-        channelsData = parseM3U(text);
-        console.log("🔍 Canales detectados:", channelsData);
-        console.log("✅ update2.m3u cargado correctamente");
-        loadChannels();
-        renderAutoCargados(); // 👉 Esto muestra los canales en el contenedor visual
-      } else {
-        console.warn("⚠ El archivo no parece ser un M3U válido");
-      }
-    })
-    .catch(err => {
-      console.warn("❌ No se pudo cargar update2.m3u:", err);
+    // Autoplay canal por defecto al cargar
+    window.addEventListener('DOMContentLoaded', () => {
+      playSelectedChannel();
     });
-});
-    </script>
-
+  </script>
 </body>
 </html>
