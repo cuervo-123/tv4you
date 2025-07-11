@@ -343,7 +343,16 @@
     
     
     <div>
-    <video id="videoPlayer" controls autoplay></video>
+    <video id="videoPlayer"
+       controls
+       autoplay
+       muted
+       playsinline
+       style="width:100%; max-width:700px; background:#000; border-radius:12px; border:2px solid #00ffd5;"
+       poster="https://via.placeholder.com/640x360?text=Cargando+video">
+       Tu navegador no soporta la reproducción de video en vivo.
+</video>
+
     <h3>📡 Canales precargados desde update.m3u:</h3>
 <div id="contenedor-autocanales" style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;"></div>
 <div id="favorites-slider"></div>
@@ -606,25 +615,24 @@ fallback.appendChild(img);
   });
 }
     
-   function playChannel(url) {
+  function playChannel(url) {
   const video = document.getElementById('videoPlayer');
+
+  if (window.hls) {
+    window.hls.destroy();
+    window.hls = null;
+  }
+
   if (Hls.isSupported()) {
-    if (window.hls) {
-      window.hls.destroy();
-    }
-    window.hls = new Hls();
-    window.hls.loadSource(url);
-    window.hls.attachMedia(video);
-    window.hls.on(Hls.Events.MANIFEST_PARSED, function () {
-      video.play();
-    });
+    const hls = new Hls();
+    hls.loadSource(url);
+    hls.attachMedia(video);
+    window.hls = hls;
   } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
     video.src = url;
-    video.addEventListener('loadedmetadata', function () {
-      video.play();
-    });
+    video.play();
   } else {
-    alert("Tu dispositivo no soporta HLS");
+    alert("Este navegador no soporta HLS");
   }
 }
 
