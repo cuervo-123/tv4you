@@ -248,18 +248,17 @@
 
     window.addEventListener('DOMContentLoaded', () => {
       fetch("https://cuervo-123.github.io/mi-tv-station/update3.m3u")
-  .then(res => res.text())
-  .then(data => {
-    console.log("✅ Archivo cargado:", data.slice(0, 200));
-    const canales = parseM3U(data);
-    if (canales.length === 0) {
-      alert("⚠️ No se encontraron canales en update3.m3u");
-    }
-    channelsData = canales;
-    cargarCanales(channelsData);
-  })
-
-
+        .then(res => res.text())
+        .then(data => {
+          console.log("✅ Contenido m3u:", data.slice(0, 300));
+          const canales = parseM3U(data);
+          console.log("✅ Canales parseados:", canales);
+          if (canales.length === 0) {
+            alert("⚠️ No se encontraron canales en update3.m3u");
+          }
+          channelsData = canales;
+          cargarCanales(channelsData);
+        })
         .catch(err => {
           console.error("❌ Error al cargar update3.m3u:", err);
         });
@@ -267,4 +266,3 @@
   </script>
 </body>
 </html>
-
