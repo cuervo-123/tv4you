@@ -1,14 +1,241 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="UTF-8">
-    <title>TV Test</title>
-  </head>
-  <body style="background:#000; color:#fff; text-align:center; font-family:sans-serif;">
-    <h2>Test directo en Smart TV</h2>
-    <video id="tvtest" controls autoplay muted playsinline style="width:90%;max-width:720px;background:#000;">
-      <source src="https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8" type="application/vnd.apple.mpegurl">
-      Tu navegador no soporta video.
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mi TV Station</title>
+  <style>
+    body {
+      background: linear-gradient(135deg, #0f0f0f, #1a1a1a);
+      color: #e0e0e0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      padding: 20px;
+    }
+    h1 {
+      color: #00ffd5;
+      text-align: center;
+      margin-top: 20px;
+    }
+    #videoPlayer {
+      width: 100%;
+      max-width: 700px;
+      margin: 20px auto;
+      display: block;
+      border-radius: 12px;
+      border: 2px solid #00ffd5;
+      background-color: #000;
+      box-shadow: 0 0 15px rgba(0, 255, 213, 0.3);
+    }
+    select, button, input[type="text"] {
+      display: block;
+      margin: 10px auto;
+      padding: 10px;
+      border-radius: 6px;
+      border: none;
+      background: #333;
+      color: #fff;
+      width: 90%;
+      max-width: 500px;
+    }
+    button:hover {
+      background: #00ffd5;
+      color: #000;
+    }
+    .menu {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 220px;
+      height: 100%;
+      background: #111;
+      padding: 20px;
+      box-shadow: 2px 0 10px rgba(0,255,213,0.2);
+      overflow-y: auto;
+    }
+    .menu h2 {
+      color: #00ffd5;
+      margin-bottom: 10px;
+    }
+    .menu button {
+      display: block;
+      width: 100%;
+      margin: 5px 0;
+      text-align: left;
+      background: #222;
+    }
+    .category-item {
+      margin-top: 10px;
+    }
+    #favorites-slider {
+      display: flex;
+      overflow-x: auto;
+      gap: 10px;
+      padding: 10px;
+      background: #1f1f1f;
+      border-radius: 12px;
+      margin-top: 20px;
+    }
+    .favorite-item {
+      background: #2a2a2a;
+      border-radius: 10px;
+      padding: 10px;
+      min-width: 160px;
+      text-align: center;
+    }
+    .favorite-item img {
+      width: 100%;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="menu">
+    <h2>📺 Menú</h2>
+    <button onclick="loadAllChannels()">Ver Todos</button>
+    <button onclick="showFavorites()">Favoritos</button>
+    <div id="category-list"></div>
+  </div>
+
+  <div class="container" style="margin-left: 240px;">
+    <h1>Mi TV Station</h1>
+    <input type="text" id="buscador" placeholder="🔍 Buscar canal..." oninput="filtrarCanales()">
+    <select id="channel-select" onchange="playSelectedChannel()"></select>
+    <button onclick="addToFavorites()">Agregar a Favoritos</button>
+    <video id="videoPlayer" controls autoplay muted playsinline poster="https://via.placeholder.com/640x360?text=Cargando+video">
+      Tu navegador no soporta la reproducción de video en vivo.
     </video>
-  </body>
+    <div id="favorites-slider"></div>
+    <div id="category-list-main"></div>
+  </div>
+
+  <script>
+    let channelsData = [];
+    let favorites = [];
+    let categories = {};
+
+    function parseM3U(content) {
+      const lines = content.split('\n');
+      const channels = [];
+      let title = '', logo = '';
+      lines.forEach((line, i) => {
+        line = line.trim();
+        if (line.startsWith('#EXTINF')) {
+          const titleMatch = line.match(/,(.*)$/);
+          const logoMatch = line.match(/tvg-logo="(.*?)"/);
+          title = titleMatch ? titleMatch[1].trim() : `Canal ${i}`;
+          logo = logoMatch ? logoMatch[1] : '';
+        } else if (line && !line.startsWith('#')) {
+          channels.push({ title, url: line, thumbnail: logo });
+          title = '';
+          logo = '';
+        }
+      });
+      return channels;
+    }
+
+    function normalizeCategory(title) {
+      if (!title) return "sin_categoria";
+      return title.trim().toLowerCase().split(" ")[0];
+    }
+
+    function loadChannels() {
+      categories = {};
+      const select = document.getElementById('channel-select');
+      select.innerHTML = '';
+      channelsData.forEach((channel, i) => {
+        const option = document.createElement('option');
+        option.value = i;
+        option.textContent = channel.title;
+        select.appendChild(option);
+        const cat = normalizeCategory(channel.title);
+        if (!categories[cat]) categories[cat] = [];
+        categories[cat].push(channel);
+      });
+      renderCategories();
+    }
+
+    function renderCategories() {
+      const container = document.getElementById('category-list');
+      const main = document.getElementById('category-list-main');
+      container.innerHTML = '';
+      main.innerHTML = '';
+      for (const cat in categories) {
+        const btn = document.createElement('button');
+        btn.textContent = `${cat} (${categories[cat].length})`;
+        btn.onclick = () => mostrarCategoria(cat);
+        container.appendChild(btn);
+        const div = document.createElement('div');
+        div.className = 'category-item';
+        div.innerHTML = `<strong>${cat}</strong><br>${categories[cat].map(c => c.title).join(', ')}`;
+        main.appendChild(div);
+      }
+    }
+
+    function mostrarCategoria(cat) {
+      const filtered = categories[cat];
+      if (filtered) {
+        channelsData = filtered;
+        loadChannels();
+      }
+    }
+
+    function loadAllChannels() {
+      fetch("update3.m3u")
+        .then(res => res.text())
+        .then(data => {
+          channelsData = parseM3U(data);
+          loadChannels();
+        });
+    }
+
+    function playChannel(url) {
+      const video = document.getElementById('videoPlayer');
+      video.src = url;
+      video.load();
+      video.play();
+    }
+
+    function playSelectedChannel() {
+      const index = document.getElementById('channel-select').value;
+      const channel = channelsData[index];
+      if (channel) playChannel(channel.url);
+    }
+
+    function filtrarCanales() {
+      const input = document.getElementById('buscador').value.toLowerCase();
+      const select = document.getElementById('channel-select');
+      select.innerHTML = '';
+      channelsData.forEach((channel, i) => {
+        if (channel.title.toLowerCase().includes(input)) {
+          const option = document.createElement('option');
+          option.value = i;
+          option.textContent = channel.title;
+          select.appendChild(option);
+        }
+      });
+    }
+
+    function addToFavorites() {
+      const index = document.getElementById('channel-select').value;
+      if (index && channelsData[index]) favorites.push(channelsData[index]);
+    }
+
+    function showFavorites() {
+      const div = document.getElementById('favorites-slider');
+      div.innerHTML = favorites.map(f => `
+        <div class="favorite-item">
+          <img src="${f.thumbnail || 'https://via.placeholder.com/320x180?text=' + encodeURIComponent(f.title)}" alt="${f.title}" />
+          <p>${f.title}</p>
+        </div>`).join('');
+    }
+
+    window.addEventListener('DOMContentLoaded', loadAllChannels);
+  </script>
+</body>
 </html>
