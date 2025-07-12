@@ -357,10 +357,16 @@ function verCanalesInternos() {
   if (!internalDatabase || internalDatabase.length === 0) {
     alert("⚠ No hay canales internos cargados. Primero regénéralos.");
     return;
-  }    
-    let channelsData = [];
+  }  
+  channelsData = [...internalDatabase];
+  loadChannels();
+  alert("✅ Mostrando canales internos VOD.");
+}    let channelsData = [];
     let favoritos = JSON.parse(localStorage.getItem('favoritos') || '[]');
+    let favorites = [];
+    let categories = {};
 
+    
     function playChannel(url) {
       const video = document.getElementById('videoPlayer');
       if (window.hls) {
