@@ -30,6 +30,45 @@
       background: #222;
       color: #00ffd5;
     }
+    #favorites-slider {
+      display: flex;
+      overflow-x: auto;
+      gap: 15px;
+      padding: 10px;
+      background: #1f1f1f;
+      border-radius: 12px;
+      max-width: 100%;
+      box-shadow: inset 0 0 20px rgba(0, 255, 213, 0.05);
+      justify-content: center;
+    }
+    .favorite-item {
+      position: relative;
+      min-width: 180px;
+      background: #2a2a2a;
+      padding: 10px;
+      border-radius: 12px;
+      text-align: center;
+      transition: transform 0.3s ease-in-out;
+      box-shadow: 0 4px 10px rgba(0, 255, 213, 0.2);
+    }
+    .favorite-item:hover {
+      transform: scale(1.1);
+    }
+    .favorite-item .channel-name {
+      font-size: 16px;
+      font-weight: bold;
+      color: #fff;
+      margin-top: 10px;
+    }
+    .favorite-star {
+      font-size: 30px;
+      color: gold;
+      cursor: pointer;
+      margin-top: 15px;
+      text-align: center;
+      display: block;
+      text-shadow: 0 0 10px gold;
+    }
   </style>
 </head>
 <body>
@@ -40,11 +79,15 @@
   <br />
   <select id="channelSelect"></select>
   <button onclick="playSelectedChannel()">▶ Reproducir</button>
+  <button onclick="addToFavorites()">★ Favorito</button>
+  <div id="favorites-slider"></div>
 
   <script>
     const video = document.getElementById("videoPlayer");
     const channelSelect = document.getElementById("channelSelect");
+    const favoritesSlider = document.getElementById("favorites-slider");
     let channelsData = [];
+    let favorites = [];
 
     function parseM3U(content) {
       const lines = content.split("\n");
@@ -89,6 +132,36 @@
         video.src = channelsData[selected].url;
         video.play();
       }
+    }
+
+    function addToFavorites() {
+      const selected = channelSelect.value;
+      if (channelsData[selected]) {
+        favorites.push(channelsData[selected]);
+        showFavorites();
+      }
+    }
+
+    function showFavorites() {
+      favoritesSlider.innerHTML = "";
+      favorites.forEach(channel => {
+        const div = document.createElement("div");
+        div.className = "favorite-item";
+        const nameDiv = document.createElement("div");
+        nameDiv.className = "channel-name";
+        nameDiv.textContent = channel.title;
+
+        const btn = document.createElement("button");
+        btn.textContent = "▶ Play";
+        btn.onclick = () => {
+          video.src = channel.url;
+          video.play();
+        };
+
+        div.appendChild(nameDiv);
+        div.appendChild(btn);
+        favoritesSlider.appendChild(div);
+      });
     }
 
     fetch("https://cuervo-123.github.io/mi-tv-station/update3.m3u")
