@@ -261,20 +261,7 @@
     }
   </style>
 
-<script>
-    let channelsData = [];
-    let favoritos = JSON.parse(localStorage.getItem('favoritos') || '[]');
 
-    function playChannel(url) {
-      const video = document.getElementById('videoPlayer');
-      if (window.hls) {
-        window.hls.destroy();
-        window.hls = null;
-      }
-      video.src = url;
-      video.load();
-      video.play();
-     </script>
 </head>
   <body>
     <h1 class="titulo-app">Mi TV Station
@@ -373,6 +360,19 @@
     </div>
     
     <script>
+    let channelsData = [];
+    let favoritos = JSON.parse(localStorage.getItem('favoritos') || '[]');
+
+    function playChannel(url) {
+      const video = document.getElementById('videoPlayer');
+      if (window.hls) {
+        window.hls.destroy();
+        window.hls = null;
+      }
+      video.src = url;
+      video.load();
+      video.play();
+    }
 
 function verCanalesInternos() {
   if (!internalDatabase || internalDatabase.length === 0) {
