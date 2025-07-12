@@ -4,11 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mi TV Station (YouTube Integrado)</title>
-  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
   <style>
     body {
       background-color: #111;
-      color: #fff;
+      color: #000000;
       font-family: sans-serif;
       margin: 0;
       padding: 0;
@@ -30,6 +29,7 @@
       gap: 0.5rem;
       padding: 1rem;
       background: #222;
+      scroll-behavior: smooth;
     }
     .canal {
       background: #333;
@@ -110,6 +110,45 @@
       gap: 1rem;
       padding: 1rem;
     }
+    .modal h3 {
+      color: white;
+      text-align: center;
+    }
+    .modal-content button {
+      background: #444;
+      border: none;
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .modal-content button:hover {
+      background: #666;
+    }
+
+    .flecha-carrusel {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 2rem;
+      color: white;
+      background: rgba(0, 0, 0, 0.5);
+      border: none;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      cursor: pointer;
+      z-index: 10;
+    }
+    .flecha-izquierda {
+      left: 5px;
+    }
+    .flecha-derecha {
+      right: 5px;
+    }
+    #carrusel-wrapper {
+      position: relative;
+    }
   </style>
 </head>
 <body>
@@ -120,7 +159,7 @@
     <button onclick="cargarCanalesInternos()">🎞️ Cargar Canales Internos</button>
     <button onclick="mostrarFavoritos()">📁 Ver Favoritos</button>
     <button onclick="exportarFavoritos()">💾 Exportar Favoritos</button>
-    <button onclick="desbloquearAdulto()">🔞 Desbloquear Adultos</button>
+    <button onclick="desbloquearAdulto()">🔐🔑 Desbloquear Adultos</button>
   </header>
   <main>
     <div class="player-grid">
@@ -169,7 +208,12 @@
         </div>
       </div>
     </div>
-    <div id="canales-inferiores"></div>
+
+    <div id="carrusel-wrapper">
+      <button class="flecha-carrusel flecha-izquierda" onclick="scrollCarrusel(-1)">⬅️</button>
+      <div id="canales-inferiores"></div>
+      <button class="flecha-carrusel flecha-derecha" onclick="scrollCarrusel(1)">➡️</button>
+    </div>
   </main>
 
   <div class="modal" id="modalFavoritos">
@@ -180,449 +224,123 @@
     </div>
   </div>
 
+  <div class="modal" id="modalPantalla">
+    <div class="modal-content">
+      <h3>🖥️ ¿En qué pantalla quieres ver este canal?</h3>
+      <div style="display: flex; gap: 1rem; justify-content: center; margin: 1rem 0;">
+        <button onclick="reproducirEnPantallaSeleccionada(0)">Pantalla 1</button>
+        <button onclick="reproducirEnPantallaSeleccionada(1)">Pantalla 2</button>
+        <button onclick="reproducirEnPantallaSeleccionada(2)">Pantalla 3</button>
+        <button onclick="reproducirEnPantallaSeleccionada(3)">Pantalla 4</button>
+      </div>
+      <button onclick="cerrarModalPantalla()">Cancelar</button>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+  <script src="main.js"></script>
   <script>
-    // Variables globales
-
-    let accesoAdulto = localStorage.getItem("accesoAdulto") === "true";
-
-    
-    function getVideoID(url) {
-      const match = url.match(/vod\.mycamtv\.net\/(\d+)\.m3u8/);
-      return match ? parseInt(match[1]) : 0;
+    function scrollCarrusel(direccion) {
+      const carrusel = document.getElementById("canales-inferiores");
+      const cantidad = 300 * direccion;
+      carrusel.scrollBy({ left: cantidad, behavior: "smooth" });
     }
 
-
-    function desbloquearAdulto() {
-      const pin = prompt("🔞 Ingresa el PIN para ver contenido adulto:");
-      if (pin === "6969") {
-        localStorage.setItem("accesoAdulto", "true");
-        accesoAdulto = true;
-        alert("✅ Acceso concedido a contenido adulto.");
-      } else {
-        alert("❌ PIN incorrecto.");
+    function parseM3U(texto) {
+      const lineas = texto.split('\n');
+      const canales = [];
+      for (let i = 0; i < lineas.length; i++) {
+        const linea = lineas[i].trim();
+        if (linea.startsWith('#EXTINF')) {
+          const titulo = linea.split(',')[1]?.trim() || 'Canal sin nombre';
+          const url = lineas[i + 1]?.trim();
+          if (url && url.startsWith('http')) {
+            canales.push({ nombre: titulo, url });
+          }
+        }
       }
+      return canales;
     }
 
-    let playlist = JSON.parse(localStorage.getItem("playlist")) || [...Array(14000)].map((_, i) => ({
-      name: `Canal ${i + 1}`,
-      url: `https://vod.mycamtv.net/${i + 1}.m3u8`
-    }));
-    localStorage.setItem("playlist", JSON.stringify(playlist));
+    let canalSeleccionado = null;
+    let listaOriginalCanales = [];
 
-    let favoritos = JSON.parse(localStorage.getItem("favoritos")) || [];
-    let aleatoriosPorPantalla = [[], [], [], []];
-    let intervalosAleatorios = [null, null, null, null];
-    let currentPage = 0;
-    const channelsPerPage = 50;
-
-    // Configuración de reproductores
-    const players = [
-      document.getElementById("player1"),
-      document.getElementById("player2"),
-      document.getElementById("player3"),
-      document.getElementById("player4")
-    ];
-
-    // API Key de YouTube (en producción debería estar en el backend)
-    const YOUTUBE_API_KEY = "AIzaSyA4NpwgJmEzBGGTzFFjShyrtWICgSSml-I";
-
-    // Funciones principales
-    function reproducirCanal(index, playerNum = 0) {
-  const canal = playlist[index];
-
-  if (
-    !accesoAdulto &&
-    canal.url.includes("vod.mycamtv.net") &&
-    getVideoID(canal.url) >= 1 &&
-    getVideoID(canal.url) <= 14000
-  ) {
-    alert("🔒 Este canal está bloqueado. Ingresa el PIN para desbloquear contenido adulto.");
-    return;
-  }
-
-  const container = document.querySelector(`.player-container[data-index="${playerNum}"]`);
-  container.innerHTML = '';
-
-  const video = document.createElement('video');
-  video.id = `player${playerNum + 1}`;
-  video.controls = true;
-
-  if (Hls.isSupported()) {
-    const hls = new Hls();
-    hls.loadSource(canal.url);
-    hls.attachMedia(video);
-    hls.on(Hls.Events.MANIFEST_PARSED, function () {
-      video.play().catch(e => console.error("Error al reproducir con HLS:", e));
-    });
-  } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-    video.src = canal.url;
-    video.addEventListener('loadedmetadata', () => {
-      video.play().catch(e => console.error("Error al reproducir nativo:", e));
-    });
-  } else {
-    alert("Este navegador no soporta reproducción HLS.");
-  }
-
-  container.appendChild(video);
-  players[playerNum] = video;
-}
-
-    function cargarListaInferior() {
+    function mostrarCanales(canales, guardarOriginal = false) {
+      if (guardarOriginal) listaOriginalCanales = canales;
       const contenedor = document.getElementById("canales-inferiores");
       contenedor.innerHTML = "";
-      
-      const inicio = currentPage * channelsPerPage;
-      const fin = inicio + channelsPerPage;
-      const canalesPagina = playlist.slice(inicio, fin);
-      
-      canalesPagina.forEach((canal, index) => {
+      canales.forEach((canal) => {
         const div = document.createElement("div");
         div.className = "canal";
-        div.textContent = canal.name || `Canal ${inicio + index + 1}`;
-        div.onclick = () => {
-          const target = prompt("¿En qué pantalla deseas reproducir este canal? (1-4)");
-          const playerIndex = parseInt(target) - 1;
-          if (playerIndex >= 0 && playerIndex < 4) {
-            reproducirCanal(inicio + index, playerIndex);
-          } else {
-            alert("Número de pantalla inválido.");
-          }
-        };
+        div.textContent = canal.nombre;
+        div.onclick = () => mostrarModalPantalla(canal.url);
         contenedor.appendChild(div);
       });
-      
-      // Agregar controles de paginación
-      const paginacion = document.createElement("div");
-      paginacion.className = "paginacion";
-      
-      if (currentPage > 0) {
-        const prevBtn = document.createElement("button");
-        prevBtn.textContent = "Anterior";
-        prevBtn.onclick = () => {
-          currentPage--;
-          cargarListaInferior();
-        };
-        paginacion.appendChild(prevBtn);
+    }
+
+    function mostrarModalPantalla(url) {
+      canalSeleccionado = url;
+      document.getElementById("modalPantalla").style.display = "flex";
+    }
+
+    function cerrarModalPantalla() {
+      document.getElementById("modalPantalla").style.display = "none";
+      canalSeleccionado = null;
+    }
+
+    function reproducirEnPantallaSeleccionada(pantallaIndex) {
+      if (canalSeleccionado) {
+        reproducirCanal(canalSeleccionado, pantallaIndex);
       }
-      
-      if (fin < playlist.length) {
-        const nextBtn = document.createElement("button");
-        nextBtn.textContent = "Siguiente";
-        nextBtn.onclick = () => {
-          currentPage++;
-          cargarListaInferior();
-        };
-        paginacion.appendChild(nextBtn);
+      cerrarModalPantalla();
+    }
+
+    function reproducirCanal(url, playerIndex) {
+      const player = document.getElementById(`player${playerIndex + 1}`);
+      if (player.hlsInstance) {
+        player.hlsInstance.destroy();
       }
-      
-      contenedor.appendChild(paginacion);
+      if (Hls.isSupported()) {
+        const hls = new Hls();
+        hls.loadSource(url);
+        hls.attachMedia(player);
+        player.hlsInstance = hls;
+        hls.on(Hls.Events.MANIFEST_PARSED, function () {
+          player.play();
+        });
+      } else if (player.canPlayType('application/vnd.apple.mpegurl')) {
+        player.src = url;
+        player.addEventListener('loadedmetadata', function () {
+          player.play();
+        });
+      } else {
+        alert("Tu navegador no soporta la reproducción de este canal.");
+      }
     }
 
     function filtrarCanales() {
       const texto = document.getElementById("buscador").value.toLowerCase();
-      const contenedor = document.getElementById("canales-inferiores");
-      contenedor.innerHTML = "";
-      
-      const resultados = playlist.filter(canal => 
-        (canal.name || "").toLowerCase().includes(texto)
-      ).slice(0, 100); // Limitar a 100 resultados para rendimiento
-      
-      resultados.forEach((canal, index) => {
-        const div = document.createElement("div");
-        div.className = "canal";
-        div.textContent = canal.name || `Canal ${index + 1}`;
-        div.onclick = () => {
-          const target = prompt("¿En qué pantalla deseas reproducir este canal? (1-4)");
-          const playerIndex = parseInt(target) - 1;
-          if (playerIndex >= 0 && playerIndex < 4) {
-            reproducirCanal(playlist.indexOf(canal), playerIndex);
-          } else {
-            alert("Número de pantalla inválido.");
-          }
-        };
-        contenedor.appendChild(div);
-      });
-      
-      if (resultados.length === 0) {
-        contenedor.textContent = "No se encontraron canales";
+      const filtrados = listaOriginalCanales.filter(canal =>
+        canal.nombre.toLowerCase().includes(texto)
+      );
+      mostrarCanales(filtrados);
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const buscador = document.getElementById("buscador");
+      if (buscador) {
+        buscador.addEventListener("input", filtrarCanales);
       }
-    }
-
-    // Funciones para YouTube
-    function convertirAEmbed(url) {
-      const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-      const match = url.match(regExp);
-      
-      if (match && match[2].length === 11) {
-        return `https://www.youtube.com/embed/${match[2]}?autoplay=1`;
-      }
-      return null;
-    }
-
-    function reproducirYouTube(playerIndex, url) {
-      const embedUrl = convertirAEmbed(url);
-      if (!embedUrl) {
-        alert("URL de YouTube no válida");
-        return;
-      }
-
-      const container = document.querySelector(`.player-container[data-index="${playerIndex}"]`);
-      container.innerHTML = '';
-      
-      const iframe = document.createElement('iframe');
-      iframe.src = embedUrl;
-      iframe.width = "100%";
-      iframe.height = "100%";
-      iframe.style.minHeight = "200px";
-      iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
-      iframe.allowFullscreen = true;
-      iframe.frameBorder = "0";
-      
-      container.appendChild(iframe);
-      players[playerIndex].iframe = iframe;
-      players[playerIndex].src = url; // Guardar URL original
-    }
-
-    async function buscarVideosEnYouTube(query) {
-      try {
-        const url = `https://www.googleapis.com/youtube/v3/search?key=${YOUTUBE_API_KEY}&type=video&part=snippet&q=${encodeURIComponent(query)}&maxResults=40`;
-        const respuesta = await fetch(url);
-        
-        if (!respuesta.ok) throw new Error("Error en la búsqueda");
-        
-        const data = await respuesta.json();
-        return data.items || [];
-      } catch (error) {
-        console.error("Error buscando videos:", error);
-        return [];
-      }
-    }
-
-    async function reproducirDesdeBusqueda(playerIndex) {
-      const query = prompt("¿Qué video deseas buscar en YouTube?");
-      if (!query) return;
-
-      try {
-        const videos = await buscarVideosEnYouTube(query);
-        if (videos.length === 0) {
-          alert("No se encontraron videos");
-          return;
-        }
-
-        // Mostrar lista de resultados para seleccionar
-        const opciones = videos.map((v, i) => 
-          `${i + 1}. ${v.snippet.title}`).join('\n');
-        
-        const seleccion = parseInt(prompt(
-          `Selecciona un video:\n${opciones}\n\nIngresa el número (1-${videos.length})`));
-        
-        if (isNaN(seleccion) || seleccion < 1 || seleccion > videos.length) {
-          return;
-        }
-
-        const videoSeleccionado = videos[seleccion - 1];
-        const videoUrl = `https://www.youtube.com/watch?v=${videoSeleccionado.id.videoId}`;
-        
-        reproducirYouTube(playerIndex, videoUrl);
-        
-        if (confirm("¿Agregar a favoritos?")) {
-          favoritos.push({
-            name: videoSeleccionado.snippet.title,
-            url: videoUrl
-          });
-          localStorage.setItem("favoritos", JSON.stringify(favoritos));
-          alert("✅ Video agregado a favoritos");
-        }
-      } catch (error) {
-        console.error("Error:", error);
-        alert("Error al buscar videos");
-      }
-    }
-
-    // Funciones para favoritos
-    function agregarAFavoritos(playerIndex) {
-      const player = players[playerIndex];
-      let url, nombre;
-      
-      // Verificar si es un iframe de YouTube
-      if (player.iframe && player.iframe.src.includes('youtube.com/embed')) {
-        const videoId = player.iframe.src.split('/embed/')[1].split('?')[0];
-        url = `https://www.youtube.com/watch?v=${videoId}`;
-        nombre = prompt("Ingrese nombre para este video:", "Video de YouTube");
-      } 
-      // Verificar si es un video normal
-      else if (player.src && player.src.startsWith('http')) {
-        url = player.src;
-        const canal = playlist.find(c => c.url === url);
-        nombre = canal ? canal.name : `Canal ${playlist.length + 1}`;
-      } 
-      else {
-        alert("No hay contenido para guardar");
-        return;
-      }
-
-      if (!nombre) return;
-
-      // Evitar duplicados
-      if (!favoritos.some(f => f.url === url)) {
-        favoritos.push({ name: nombre, url });
-        localStorage.setItem("favoritos", JSON.stringify(favoritos));
-        alert("✅ Agregado a favoritos");
-      } else {
-        alert("⚠️ Ya existe en favoritos");
-      }
-    }
-
-    function mostrarFavoritos() {
-      const modal = document.getElementById("modalFavoritos");
-      const lista = document.getElementById("listaFavoritos");
-      lista.innerHTML = "";
-      
-      favoritos.forEach((canal, i) => {
-        const li = document.createElement("li");
-        li.textContent = canal.name;
-
-        const reproducirBtn = document.createElement("button");
-        reproducirBtn.textContent = "▶️";
-        reproducirBtn.onclick = () => {
-          const target = prompt("¿En qué pantalla deseas reproducir? (1-4)");
-          const playerIndex = parseInt(target) - 1;
-          if (playerIndex >= 0 && playerIndex < 4) {
-            if (canal.url.includes('youtube.com/watch')) {
-              reproducirYouTube(playerIndex, canal.url);
-            } else {
-              reproducirCanal(playlist.findIndex(c => c.url === canal.url), playerIndex);
-            }
-          }
-        };
-
-        const delBtn = document.createElement("button");
-        delBtn.textContent = "❌";
-        delBtn.onclick = () => {
-          favoritos.splice(i, 1);
-          localStorage.setItem("favoritos", JSON.stringify(favoritos));
-          mostrarFavoritos();
-        };
-
-        li.appendChild(reproducirBtn);
-        li.appendChild(delBtn);
-        lista.appendChild(li);
-      });
-      
-      modal.style.display = "flex";
-    }
-
-    function cerrarModal() {
-      document.getElementById("modalFavoritos").style.display = "none";
-    }
-
-    function exportarFavoritos() {
-      const blob = new Blob([JSON.stringify(favoritos, null, 2)], { type: "application/json" });
-      const link = document.createElement("a");
-      link.href = URL.createObjectURL(blob);
-      link.download = "favoritos.json";
-      link.click();
-    }
-
-    // Funciones para modo aleatorio
-    function iniciarAleatorio(playerIndex) {
-      const input = prompt("¿Cuántos canales aleatorios deseas cargar?");
-      const cantidad = parseInt(input);
-      
-      if (cantidad > 0 && cantidad <= playlist.length) {
-        aleatoriosPorPantalla[playerIndex] = [...playlist]
-          .sort(() => 0.5 - Math.random())
-          .slice(0, cantidad);
-        
-        let i = 0;
-        clearInterval(intervalosAleatorios[playerIndex]);
-        
-        // Reproducir primero inmediatamente
-        reproducirCanal(playlist.indexOf(aleatoriosPorPantalla[playerIndex][0]), playerIndex);
-        
-        intervalosAleatorios[playerIndex] = setInterval(() => {
-          i = (i + 1) % cantidad;
-          reproducirCanal(playlist.indexOf(aleatoriosPorPantalla[playerIndex][i]), playerIndex);
-        }, 60000);
-        
-        alert(`Modo aleatorio activado en pantalla ${playerIndex + 1} con ${cantidad} canales`);
-      } else {
-        alert("Cantidad inválida");
-      }
-    }
-
-    function detenerAleatorio(playerIndex) {
-      clearInterval(intervalosAleatorios[playerIndex]);
-      intervalosAleatorios[playerIndex] = null;
-      alert(`Aleatorio detenido en pantalla ${playerIndex + 1}`);
-    }
-
-    // Funciones para carga de archivos
-    document.getElementById("cargarArchivo").addEventListener("change", function(e) {
-      const file = e.target.files[0];
-      if (!file) return;
-
-      const reader = new FileReader();
-      reader.onload = function(event) {
-        try {
-          if (file.name.endsWith(".json")) {
-            const nuevaLista = JSON.parse(event.target.result);
-            if (Array.isArray(nuevaLista)) {
-              playlist = nuevaLista;
-              localStorage.setItem("playlist", JSON.stringify(playlist));
-              currentPage = 0;
-              cargarListaInferior();
-              alert(`✅ Se cargaron ${playlist.length} canales`);
-            } else {
-              alert("El archivo JSON no tiene el formato correcto.");
-            }
-          } else if (file.name.endsWith(".m3u")) {
-            const lineas = event.target.result.split(/\r?\n/);
-            const nuevaLista = [];
-            for (let i = 0; i < lineas.length; i++) {
-              if (lineas[i].startsWith("#EXTINF")) {
-                const name = lineas[i].split(",").pop().trim();
-                const url = lineas[i + 1];
-                if (url && url.startsWith("http")) {
-                  nuevaLista.push({ name, url });
-                }
-              }
-            }
-            playlist = nuevaLista;
-            localStorage.setItem("playlist", JSON.stringify(playlist));
-            currentPage = 0;
-            cargarListaInferior();
-            alert(`✅ Se cargaron ${playlist.length} canales desde M3U`);
-          } else {
-            alert("Formato de archivo no soportado. Usa .json o .m3u");
-          }
-        } catch (err) {
-          alert("Error al procesar el archivo: " + err.message);
-        }
-      };
-      reader.readAsText(file);
     });
 
-    function cargarCanalesInternos() {
-      playlist = [...Array(14000)].map((_, i) => ({
-        name: `Canal ${i + 1}`,
-        url: `https://vod.mycamtv.net/${i + 1}.m3u8`
-      }));
-      localStorage.setItem("playlist", JSON.stringify(playlist));
-      currentPage = 0;
-      cargarListaInferior();
-      alert("✅ Se cargaron los 14000 canales internos.");
-    }
-
-    // Inicialización
-    window.onload = function() {
-      cargarListaInferior();
-      
-      // Asignar iframe a los players
-      players.forEach((player, index) => {
-        player.iframe = null;
-      });
-    };
+    fetch("Country  Colombia .m3u")
+      .then(res => res.text())
+      .then(data => {
+        const canales = parseM3U(data);
+        mostrarCanales(canales, true);
+        console.log("✅ Lista M3U cargada automáticamente");
+      })
+      .catch(err => console.error("❌ Error al cargar la lista M3U:", err));
   </script>
 </body>
 </html>
