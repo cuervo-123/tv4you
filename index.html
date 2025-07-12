@@ -1,24 +1,26 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mi TV Station - Listados y Favoritos</title>
+         <meta charset="UTF-8" />
+         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+                   <title>Mi TV Station - Listados y Favoritos</title>
   <style>
-     @keyframes pulse {
+    @keyframes pulse {
   0% { transform: scale(1); opacity: 0.9; }
   50% { transform: scale(1.05); opacity: 1; }
   100% { transform: scale(1); opacity: 0.9; }
-}    body {
+}
+     body {
       background: linear-gradient(135deg, #0f0f0f, #1a1a1a);
       color: #e0e0e0;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       margin: 0;
       display: flex;
-justify-content: center;
+      justify-content: center;
       padding-top: 60px;
     }
-     .container {
+
+    .container {
       max-width: 1200px;
       width: 100%;
       padding: 20px;
@@ -259,7 +261,7 @@ justify-content: center;
     }
   </style>
 
-
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 
 </head>
   <body>
@@ -336,49 +338,306 @@ justify-content: center;
     <h3>Categorías Detectadas:</h3>
     <div id="category-list"></div>
     </div>
+    
+
+    
+    
+    <div>
     <video id="videoPlayer"
-           controls
-           autoplay
-           muted
-           playsinline
-           style="width:100%; max-width:700px; background:#000; border-radius:12px; border:2px solid #00ffd5;"
-           poster="https://via.placeholder.com/640x360?text=Cargando+video">
-      Tu navegador no soporta la reproducción de video en vivo.
-    </video>
-       <h3>📡 Canales precargados desde update.m3u:</h3>
+       controls
+       autoplay
+       muted
+       playsinline
+       style="width:100%; max-width:700px; background:#000; border-radius:12px; border:2px solid #00ffd5;"
+       poster="https://via.placeholder.com/640x360?text=Cargando+video">
+       Tu navegador no soporta la reproducción de video en vivo.
+</video>
+
+    <h3>📡 Canales precargados desde update.m3u:</h3>
 <div id="contenedor-autocanales" style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;"></div>
 <div id="favorites-slider"></div>
     <div class="favorite-star" onclick="addToFavorites()">★</div> <!-- Estrella para agregar a favoritos -->
     </div>
-    </div>  
+    </div>
+    
+    <script>
 
-  <script>
 function verCanalesInternos() {
   if (!internalDatabase || internalDatabase.length === 0) {
     alert("⚠ No hay canales internos cargados. Primero regénéralos.");
     return;
-  }  
+  }
+
   channelsData = [...internalDatabase];
   loadChannels();
   alert("✅ Mostrando canales internos VOD.");
-}    let channelsData = [];
-    let favoritos = JSON.parse(localStorage.getItem('favoritos') || '[]');
+}
+
+
+
+ // Paso 1: Leer la base de datos interna desde localStorage (si existe)
+
+
     let favorites = [];
     let categories = {};
+    
+   
+    
+    function normalizeCategory(title) {
+    if (!title) return "sin_categoria";
+    return title.trim().toLowerCase().split(" ")[0];
+    }
+    function parseM3U(content) {
+  const lines = content.split('\n');
+  const channels = [];
+
+  let currentTitle = '';
+  let currentLogo = '';
+
+  lines.forEach((line, i) => {
+    line = line.trim();
+
+    if (line.startsWith('#EXTINF')) {
+      const titleMatch = line.match(/,(.*)$/);
+      currentTitle = titleMatch ? titleMatch[1].trim() : `Canal ${i}`;
+
+      const logoMatch = line.match(/tvg-logo="(.*?)"/i);
+      currentLogo = logoMatch ? logoMatch[1] : '';
+    } else if (line && !line.startsWith('#')) {
+      channels.push({
+        title: currentTitle || `Canal ${channels.length + 1}`,
+        url: line,
+        thumbnail: currentLogo
+      });
+      currentTitle = '';
+      currentLogo = '';
+    }
+  });
+
+  return channels;
+}
+
+    function loadChannels() {
+    categories = {};
+    
+    channelsData.forEach((channel, index) => {
+    const title = channel.title || channel.name || channel.nombre || `Canal ${index + 1}`;
+    channel.title = title.trim();
+      // Generar thumbnail si no tiene
+  if (!channel.thumbnail) {
+    channel.thumbnail = `https://via.placeholder.com/320x180?text=${encodeURIComponent(channel.title)}`;
+  }
 
     
-    function playChannel(url) {
-      const video = document.getElementById('videoPlayer');
-      if (window.hls) {
-        window.hls.destroy();
-        window.hls = null;
-      }
-      video.src = url;
-      video.load();
-      video.play();
+    const category = normalizeCategory(channel.title);
+    channel.category = category;
+    
+    if (!categories[category]) categories[category] = [];
+    categories[category].push(channel);
+    });
+    
+    renderCategories();
+    loadChannelDropdown();
+    }
+    
+    function loadChannelDropdown() {
+  const channelSelect = document.getElementById('channel-select');
+  const channelLogo = document.getElementById('channel-logo');
+  channelSelect.innerHTML = '';
+
+  channelsData.forEach((channel, index) => {
+    const option = document.createElement('option');
+    option.value = index;
+    option.innerText = channel.title;
+    channelSelect.appendChild(option);
+  });
+
+  // Mostrar logo del primer canal al cargar
+  if (channelsData[0]?.thumbnail) {
+    channelLogo.src = channelsData[0].thumbnail;
+    channelLogo.style.display = 'block';
+  } else {
+    channelLogo.style.display = 'none';
+  }
+}
+
+    
+    function renderCategories() {
+    const categoryList = document.getElementById('category-list');
+    categoryList.innerHTML = '';
+    
+    for (const category in categories) {
+    if (categories[category].length > 0) { // Solo mostrar categorías con más de dos canales
+    const categoryItem = document.createElement('div');
+    categoryItem.className = 'category-item';
+    categoryItem.innerHTML = `
+    <button class="submenu-button" onclick="toggleSubMenu('${category}')">${category} (${categories[category].length} canal(es))</button>
+    <div id="submenu-${category}" class="submenu">
+${categories[category].map(channel => {
+  const thumbnail = channel.thumbnail || `https://via.placeholder.com/100x60?text=${encodeURIComponent(channel.title)}`;
+  return `
+    <div style="display: flex; align-items: center; margin-bottom: 10px;">
+      <img src="${thumbnail}" alt="${channel.title}" style="width: 60px; height: 40px; object-fit: contain; margin-right: 8px; border-radius: 4px;">
+
+      <div style="flex-grow: 1;">
+        <button onclick="playChannel('${channel.url}')" style="margin-bottom: 5px; font-size: 14px;">▶ ${channel.title}</button><br/>
+        <button onclick="addToFavoritesFromSubMenu('${channel.title}', '${channel.url}')" style="font-size: 12px;">+ Favorito</button>
+      </div>
+    </div>
+  `;
+}).join('')}
+
+
+    </div>
+    `;
+    categoryList.appendChild(categoryItem);
+    }
+    }
+    }
+    
+    function toggleSubMenu(menuId) {
+    const submenu = document.getElementById(`submenu-${menuId}`);
+    submenu.style.display = submenu.style.display === 'block' ? 'none' : 'block';
+    }
+    function addToFavorites() {
+  const selectedIndex = document.getElementById('channel-select').value;
+  if (selectedIndex !== "") {
+    const selectedChannel = channelsData[selectedIndex];
+
+    // Generar thumbnail si no existe
+    if (!selectedChannel.thumbnail) {
+      selectedChannel.thumbnail = `https://via.placeholder.com/320x180?text=${encodeURIComponent(selectedChannel.title)}`;
     }
 
-   function playSelectedChannel() {
+    favorites.push(selectedChannel);
+    alert(`Agregado a favoritos: ${selectedChannel.title}`);
+  }
+}
+
+    
+function addToFavoritesFromSubMenu(title, url) {
+  const selectedChannel = channelsData.find(channel => channel.title === title && channel.url === url);
+  if (selectedChannel) {
+    if (!selectedChannel.thumbnail) {
+      selectedChannel.thumbnail = `https://via.placeholder.com/320x180?text=${encodeURIComponent(selectedChannel.title)}`;
+    }
+
+    favorites.push(selectedChannel);
+    alert(`Agregado a favoritos: ${selectedChannel.title}`);
+  }
+}
+
+    
+    function showFavorites() {
+  const slider = document.getElementById('favorites-slider');
+  slider.innerHTML = '';
+
+  favorites.forEach((channel, index) => {
+    const div = document.createElement('div');
+    div.className = 'favorite-item';
+
+    const video = document.createElement('video');
+    video.src = channel.url;
+    video.crossOrigin = "anonymous";
+    video.muted = true;
+    video.playsInline = true;
+    video.autoplay = true;
+    video.style.display = 'none';
+
+    const canvas = document.createElement('canvas');
+    canvas.width = 320;
+    canvas.height = 180;
+    canvas.style.borderRadius = '10px';
+
+    const nameDiv = document.createElement('div');
+    nameDiv.className = 'channel-name';
+    nameDiv.textContent = channel.title;
+
+    const hoverDiv = document.createElement('div');
+    hoverDiv.className = 'hover-content';
+    hoverDiv.innerHTML = `
+  <button onclick="playChannel('${channel.url}')">▶ Play</button>
+`;
+
+    // Fallback por si falla cargar video
+    const fallback = document.createElement('div');
+fallback.style.width = '320px';
+fallback.style.height = '180px';
+fallback.style.borderRadius = '10px';
+fallback.style.overflow = 'hidden';
+fallback.style.display = 'flex';
+fallback.style.justifyContent = 'center';
+fallback.style.alignItems = 'center';
+fallback.style.background = '#000';
+
+if (channel.thumbnail) {
+    const thumbnailUrl = channel.thumbnail || `https://via.placeholder.com/320x180?text=${encodeURIComponent(channel.title)}`;
+
+const img = document.createElement('img');
+img.src = thumbnailUrl;
+img.alt = channel.title;
+img.style.maxWidth = '100%';
+img.style.maxHeight = '100%';
+img.style.objectFit = 'contain';
+img.style.borderRadius = '10px';
+fallback.appendChild(img);
+
+} else {
+  fallback.style.background = 'linear-gradient(135deg, #00ffd5, #0f0f0f)';
+  fallback.style.display = 'flex';
+  fallback.style.justifyContent = 'center';
+  fallback.style.alignItems = 'center';
+  fallback.style.color = '#000';
+  fallback.style.fontWeight = 'bold';
+  fallback.style.fontSize = '18px';
+  fallback.style.animation = 'pulse 2s infinite';
+  fallback.style.fontSize = '18px';
+  fallback.textContent = channel.title;
+}
+
+
+    let canvasShown = false;
+
+   
+
+    // Si después de 2 segundos no se pudo capturar imagen, mostrar fallback
+    setTimeout(() => {
+      if (!canvasShown) {
+        div.insertBefore(fallback, nameDiv);
+      }
+      video.pause();
+    }, 2000);
+
+    div.appendChild(video); // Oculto
+    div.appendChild(nameDiv);
+    div.appendChild(hoverDiv);
+    slider.appendChild(div);
+  });
+}
+    
+  function playChannel(url) {
+  const video = document.getElementById('videoPlayer');
+
+  if (window.hls) {
+    window.hls.destroy();
+    window.hls = null;
+  }
+
+  if (Hls.isSupported()) {
+    const hls = new Hls();
+    hls.loadSource(url);
+    hls.attachMedia(video);
+    window.hls = hls;
+  } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+    video.src = url;
+    video.play();
+  } else {
+    alert("Este navegador no soporta HLS");
+  }
+}
+
+    
+    function playSelectedChannel() {
   const selectedIndex = document.getElementById('channel-select').value;
   const selectedChannel = channelsData[selectedIndex];
   const logo = document.getElementById('channel-logo');
@@ -393,7 +652,10 @@ function verCanalesInternos() {
       logo.style.display = 'none';
     }
   }
- function toggleMenu() {
+}
+
+    
+    function toggleMenu() {
     const menuSlider = document.getElementById('menuSlider');
     menuSlider.classList.toggle('open');
     }
@@ -444,7 +706,8 @@ function verCanalesInternos() {
   reader.readAsText(file);
 });
 
-let internalDatabase = []; 
+let internalDatabase = [];
+
 function regenerarCanalesInternos() {
   const confirmacion = confirm('¿Estás seguro que deseas borrar y regenerar los 1000 canales internos?');
   if (!confirmacion) return;
@@ -465,200 +728,8 @@ function regenerarCanalesInternos() {
   alert('✅ Canales VOD regenerados.');
  
 }
-     
-function parseM3U(content) {
-      const lines = content.split('\n');
-      const channels = [];
-      let currentTitle = '';
-      lines.forEach((line, index) => {
-        line = line.trim();
-        if (line.startsWith('#EXTINF')) {
-          const titleMatch = line.match(/,(.*)$/);
-          currentTitle = titleMatch ? titleMatch[1].trim() : `Canal ${index}`;
-        } else if (line && !line.startsWith('#')) {
-          channels.push({ title: currentTitle, url: line });
-          currentTitle = '';
-        }
-      });
-      return channels;
-    }
 
-    function parseJSON(content) {
-      try {
-        const data = JSON.parse(content);
-        return Array.isArray(data) ? data : [];
-      } catch (e) {
-        alert('❌ Archivo JSON inválido');
-        return [];
-      }
-    }
-
-    function cargarCanales(channels) {
-      const select = document.getElementById('channel-select');
-      select.innerHTML = '';
-      channels.forEach((channel, index) => {
-        const option = document.createElement('option');
-        option.value = channel.url;
-        option.textContent = channel.title;
-        select.appendChild(option);
-      });
-      if (channels.length > 0) {
-        select.selectedIndex = 0;
-        playChannel(channels[0].url);
-      }
-    }
-
-    function filtrarCanales() {
-      const input = document.getElementById('buscador').value.toLowerCase();
-      const select = document.getElementById('channel-select');
-      select.innerHTML = '';
-      channelsData.forEach(channel => {
-        if (channel.title.toLowerCase().includes(input)) {
-          const option = document.createElement('option');
-          option.value = channel.url;
-          option.textContent = channel.title;
-          select.appendChild(option);
-        }
-      });
-    }
-fetch("update3.m3u")
-      .then(res => res.text())
-      .then(data => {
-        const canales = parseM3U(data);
-        mostrarCanales(canales, true);
-        console.log("✅ Lista M3U cargada automáticamente");
-      })
-      .catch(err => console.error("❌ Error al cargar la lista M3U:", err));
-
-function renderAutoCargados() {
-  const contenedor = document.getElementById('contenedor-autocanales');
-  contenedor.innerHTML = '';
-
-  channelsData.forEach((channel, index) => {
-    const card = document.createElement('div');
-    card.style.width = '180px';
-    card.style.background = '#2a2a2a';
-    card.style.borderRadius = '12px';
-    card.style.padding = '10px';
-    card.style.textAlign = 'center';
-    card.style.boxShadow = '0 4px 10px rgba(0,255,213,0.2)';
-
-    const thumb = document.createElement('img');
-    thumb.src = channel.thumbnail || `https://via.placeholder.com/320x180?text=${encodeURIComponent(channel.title)}`;
-    thumb.style.width = '100%';
-    thumb.style.borderRadius = '8px';
-    thumb.style.marginBottom = '8px';
-
-    const name = document.createElement('div');
-    name.textContent = channel.title;
-    name.style.color = '#fff';
-    name.style.fontSize = '14px';
-    name.style.marginBottom = '5px';
-
-    const btn = document.createElement('button');
-    btn.textContent = '▶️ Play';
-    btn.style.background = '#00ffd5';
-    btn.style.color = '#000';
-    btn.style.border = 'none';
-    btn.style.padding = '5px 10px';
-    btn.style.borderRadius = '6px';
-    btn.style.cursor = 'pointer';
-    btn.onclick = () => playChannel(channel.url);
-
-    card.appendChild(thumb);
-    card.appendChild(name);
-    card.appendChild(btn);
-    contenedor.appendChild(card);
-  });
-}
-// ✅ Cargar automáticamente el archivo update.m3u al abrir la app
-window.addEventListener('DOMContentLoaded', () => {
-  fetch('update3.m3u') // O usa 'update%20.m3u' si tu archivo tiene espacio
-    .then(res => res.text())
-    .then(text => {
-      if (text.includes("#EXTM3U")) {
-        channelsData = parseM3U(text);
-        console.log("🔍 Canales detectados:", channelsData);
-        console.log("✅ update2.m3u cargado correctamente");
-        loadChannels();
-        renderAutoCargados(); // 👉 Esto muestra los canales en el contenedor visual
-      } else {
-        console.warn("⚠ El archivo no parece ser un M3U válido");
-      }
-    })
-    .catch(err => {
-      console.warn("❌ No se pudo cargar update2.m3u:", err);
-    });
-});    function agregarAFavoritos() {
-      const select = document.getElementById('channel-select');
-      const index = select.selectedIndex;
-      if (index >= 0) {
-        const canal = channelsData[index];
-        if (!favoritos.find(f => f.url === canal.url)) {
-          favoritos.push(canal);
-          localStorage.setItem('favoritos', JSON.stringify(favoritos));
-          alert('✅ Canal agregado a favoritos');
-        } else {
-          alert('⚠️ Ya está en favoritos');
-        }
-      }
-    }
-
-    function mostrarFavoritos() {
-      const contenedor = document.getElementById('favoritos-list');
-      contenedor.innerHTML = '<h3>⭐ Favoritos:</h3>';
-      favoritos.forEach(fav => {
-        const div = document.createElement('div');
-        div.className = 'favorito-item';
-        div.textContent = fav.title;
-        div.onclick = () => playChannel(fav.url);
-        contenedor.appendChild(div);
-      });
-      contenedor.style.display = 'block';
-    }
-
-    function mostrarSeccion(seccion) {
-      const favoritosList = document.getElementById('favoritos-list');
-      if (seccion === 'favoritos') {
-        mostrarFavoritos();
-      } else {
-        favoritosList.style.display = 'none';
-      }
-    }
-
-    function handleFileUpload(event) {
-      const file = event.target.files[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = e => {
-        const content = e.target.result;
-        if (file.name.endsWith('.m3u')) {
-          channelsData = parseM3U(content);
-        } else if (file.name.endsWith('.json')) {
-          channelsData = parseJSON(content);
-        }
-        cargarCanales(channelsData);
-      };
-      reader.readAsText(file);
-    }
-
-    window.addEventListener('DOMContentLoaded', () => {
-      fetch("https://cuervo-123.github.io/mi-tv-station/update3.m3u")
-        .then(res => res.text())
-        .then(data => {
-          console.log("✅ Contenido m3u:", data.slice(0, 300));
-          const canales = parseM3U(data);
-          console.log("✅ Canales parseados:", canales);
-          if (canales.length === 0) {
-            alert("⚠️ No se encontraron canales en update3.m3u");
-          }
-          channelsData = canales;
-          cargarCanales(channelsData);
-        })
-        .catch(err => {
-          console.error("❌ Error al cargar update3.m3u:", err);
-        });
-    });
+ 
 
 function filtrarCanales() {
   const input = document.getElementById('buscador').value.toLowerCase();
@@ -747,7 +818,7 @@ window.addEventListener('DOMContentLoaded', () => {
       console.warn("❌ No se pudo cargar update2.m3u:", err);
     });
 });
-    
-  </script>
+    </script>
+
 </body>
 </html>
