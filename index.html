@@ -258,29 +258,84 @@ justify-content: center;
       width: auto;
     }
   </style>
+
+
+
 </head>
-<body>
-  <aside>
-    <h2>📁 Menú</h2>
-    <div class="menu-item" onclick="mostrarSeccion('canales')">Canales</div>
-    <div class="menu-item" onclick="mostrarSeccion('favoritos')">Favoritos</div>
-    <div class="menu-item">Categorías</div>
-    <div class="menu-item">Internos</div>
-  </aside>
-  <main>
-    <h1>Mi TV Station</h1>
+  <body>
+    <h1 class="titulo-app">Mi TV Station
+  <div id="openMenuBtn" onclick="toggleMenu()">&#9776;</div>
+  <div class="container">
+    
+      
+      <svg class="mano-animada" xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24">
+        <path d="M13.172 11H4a1 1 0 000 2h9.172l-3.586 3.586a1 1 0 101.414 1.414l5.293-5.293a1 1 0 000-1.414l-5.293-5.293a1 1 0 00-1.414 1.414L13.172 11z"/>
+      </svg>
+      
+   </h1>
+  </div>
 
-    <input type="file" id="fileInput" accept=".m3u,.json" onchange="handleFileUpload(event)" />
-    <input type="text" id="buscador" placeholder="🔍 Buscar canal..." oninput="filtrarCanales()" />
+<!-- Botón para abrir el menú -->
+       <div id="openMenuBtn" onclick="toggleMenu()">&#9776;</div>
+        <div class="container">
+          
+            
+            
 
-    <select id="channel-select" onchange="playSelectedChannel()">
-      <option value="">Cargando canales...</option>
-    </select>
+<!-- TODO: CONTENIDO DE TU HTML AQUÍ SIN CAMBIOS -->
 
-    <button onclick="agregarAFavoritos()">⭐ Agregar a Favoritos</button>
+<!-- Aquí va TODO EL CONTENIDO EXACTO QUE YA TENÍAS, desde el <div id="menuSlider"> hasta tu script -->
+<!-- Te lo mantuve intacto como me pediste. Solo tienes que pegar esa parte debajo de este comentario -->
 
-    <div id="favoritos-list"></div>
 
+
+
+
+
+<div id="menuSlider">
+
+  <h3>MENU</h3>
+  
+  
+
+    <button class="menu-item" onclick="toggleSubMenu('favorites')">        Favoritos</button>
+    <div id="submenu-favorites" class="submenu">
+    <!-- Aquí se pueden agregar más opciones del submenú de Favoritos -->
+    <button class="submenu-button" onclick="showFavorites()">Ver Favoritos</button>
+    </div>
+    
+    <button class="menu-item" onclick="toggleSubMenu('channels')">Canales</button>
+    <div id="submenu-channels" class="submenu">
+    <!-- Aquí se agregan las categorías dinámicas -->
+    <div id="category-list"></div>
+    </div>
+    
+    <button class="menu-item" onclick="toggleSubMenu('settings')">Configuraciones</button>
+    <div id="submenu-settings" class="submenu">
+    <!-- Aquí se pueden agregar más opciones del submenú de Configuraciones -->
+    <button class="submenu-button" onclick="regenerarCanalesInternos()">Regenerar Canales VOD Internos</button>
+    <button class="submenu-button" onclick="verCanalesInternos()">Ver Canales Internos</button>
+    </div>
+    </div>
+    
+    <!-- Contenido principal -->
+    <div>
+        <input type="file" id="fileInput" accept=".json,.m3u,.mp3,.mpeg">
+        <input type="text" id="buscador" placeholder="🔍 Buscar canal..." oninput="filtrarCanales()" style="width:100%;padding:10px;margin-bottom:10px;border-radius:8px;background:#222;color:#00ffd5;border:1px solid #00ffd5;">
+
+    <div>
+    <label for="channel-select">Canales:</label>
+    <select id="channel-select" onchange="playSelectedChannel()"></select>
+    <img id="channel-logo" style="width: 100px; height: auto; margin-top: 10px; border-radius: 8px; display: none;" />
+
+    <button onclick="addToFavorites()">Agregar a Favoritos</button>
+    <button onclick="showFavorites()">Ver Favoritos</button>
+    </div>
+    
+    <div>
+    <h3>Categorías Detectadas:</h3>
+    <div id="category-list"></div>
+    </div>
     <video id="videoPlayer"
            controls
            autoplay
