@@ -22,7 +22,7 @@
       border-radius: 12px;
       background: #000;
     }
-    select, button {
+    select, button, input {
       margin: 10px;
       padding: 10px;
       border-radius: 8px;
@@ -60,15 +60,6 @@
       color: #fff;
       margin-top: 10px;
     }
-    .favorite-star {
-      font-size: 30px;
-      color: gold;
-      cursor: pointer;
-      margin-top: 15px;
-      text-align: center;
-      display: block;
-      text-shadow: 0 0 10px gold;
-    }
   </style>
 </head>
 <body>
@@ -77,6 +68,7 @@
     Tu navegador no soporta la etiqueta de video HTML5.
   </video>
   <br />
+  <input type="text" id="buscador" placeholder="🔍 Buscar canal..." oninput="filtrarCanales()">
   <select id="channelSelect"></select>
   <button onclick="playSelectedChannel()">▶ Reproducir</button>
   <button onclick="addToFavorites()">★ Favorito</button>
@@ -164,6 +156,19 @@
       });
     }
 
+    function filtrarCanales() {
+      const input = document.getElementById('buscador').value.toLowerCase();
+      channelSelect.innerHTML = '';
+      channelsData.forEach((channel, index) => {
+        if (channel.title.toLowerCase().includes(input)) {
+          const option = document.createElement('option');
+          option.value = index;
+          option.textContent = channel.title;
+          channelSelect.appendChild(option);
+        }
+      });
+    }
+
     fetch("https://cuervo-123.github.io/mi-tv-station/update3.m3u")
       .then(res => res.text())
       .then(data => {
@@ -175,3 +180,4 @@
   </script>
 </body>
 </html>
+
