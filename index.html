@@ -378,13 +378,95 @@ function verCanalesInternos() {
       video.play();
     }
 
-    function playSelectedChannel() {
-      const select = document.getElementById('channel-select');
-      const url = select.value;
-      if (url) playChannel(url);
+   function playSelectedChannel() {
+  const selectedIndex = document.getElementById('channel-select').value;
+  const selectedChannel = channelsData[selectedIndex];
+  const logo = document.getElementById('channel-logo');
+
+  if (selectedChannel && selectedChannel.url) {
+    playChannel(selectedChannel.url);
+
+    if (selectedChannel.thumbnail) {
+      logo.src = selectedChannel.thumbnail;
+      logo.style.display = 'block';
+    } else {
+      logo.style.display = 'none';
+    }
+  }
+ function toggleMenu() {
+    const menuSlider = document.getElementById('menuSlider');
+    menuSlider.classList.toggle('open');
     }
 
-    function parseM3U(content) {
+     // Cuando el video carga, capturamos imagen
+     document.getElementById('fileInput').addEventListener('change', function (e) {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+
+  reader.onload = function (event) {
+    const content = event.target.result.trim();
+
+    if (file.name.endsWith('.json,.m3u')) {
+      try {
+        const parsed = JSON.parse(content);
+
+        if (Array.isArray(parsed)) {
+          channelsData = parsed;
+        } else if (parsed.channels && Array.isArray(parsed.channels)) {
+          channelsData = parsed.channels;
+        } else if (parsed.lista && Array.isArray(parsed.lista)) {
+          channelsData = parsed.lista;
+        } else {
+          alert("Formato de JSON no reconocido.");
+          return;
+        }
+
+        console.log("✅ JSON cargado:", channelsData);
+        loadChannels();
+      } catch (err) {
+        alert("❌ Error al leer el archivo JSON");
+      }
+    } else if (file.name.endsWith('.m3u')) {
+      try {
+        channelsData = parseM3U(content);
+        console.log("✅ M3U cargado:", channelsData);
+        loadChannels();
+      } catch (err) {
+        alert("❌ Error al procesar el archivo M3U");
+      }
+    } else {
+      alert("❌ Tipo de archivo no soportado.");
+    }
+  };
+
+  reader.readAsText(file);
+});
+
+let internalDatabase = []; 
+function regenerarCanalesInternos() {
+  const confirmacion = confirm('¿Estás seguro que deseas borrar y regenerar los 1000 canales internos?');
+  if (!confirmacion) return;
+
+  const generatedChannels = [...Array(1000)].map((_, i) => ({
+    name: `Canal ${i + 1}`,
+    title: `VOD Canal ${i + 1}`,
+    url: `https://vod.mycamtv.net/${i + 1}.m3u8`,
+    category: `VOD Categoria ${(i % 10) + 1}`,
+    thumbnail: `https://via.placeholder.com/320x180?text=VOD+${i + 1}` // AQUI LO IMPORTANTE
+  }));
+
+  localStorage.setItem('internalDatabase', JSON.stringify(generatedChannels));
+  internalDatabase = generatedChannels;
+  channelsData = [...internalDatabase]; // IMPORTANTE: Asignarlo como canal activo
+
+  loadChannels(); // MUY IMPORTANTE: Recargar para que se rendericen con logos
+  alert('✅ Canales VOD regenerados.');
+ 
+}
+     
+function parseM3U(content) {
       const lines = content.split('\n');
       const channels = [];
       let currentTitle = '';
@@ -439,8 +521,75 @@ function verCanalesInternos() {
         }
       });
     }
+fetch("update3.m3u")
+      .then(res => res.text())
+      .then(data => {
+        const canales = parseM3U(data);
+        mostrarCanales(canales, true);
+        console.log("✅ Lista M3U cargada automáticamente");
+      })
+      .catch(err => console.error("❌ Error al cargar la lista M3U:", err));
 
-    function agregarAFavoritos() {
+function renderAutoCargados() {
+  const contenedor = document.getElementById('contenedor-autocanales');
+  contenedor.innerHTML = '';
+
+  channelsData.forEach((channel, index) => {
+    const card = document.createElement('div');
+    card.style.width = '180px';
+    card.style.background = '#2a2a2a';
+    card.style.borderRadius = '12px';
+    card.style.padding = '10px';
+    card.style.textAlign = 'center';
+    card.style.boxShadow = '0 4px 10px rgba(0,255,213,0.2)';
+
+    const thumb = document.createElement('img');
+    thumb.src = channel.thumbnail || `https://via.placeholder.com/320x180?text=${encodeURIComponent(channel.title)}`;
+    thumb.style.width = '100%';
+    thumb.style.borderRadius = '8px';
+    thumb.style.marginBottom = '8px';
+
+    const name = document.createElement('div');
+    name.textContent = channel.title;
+    name.style.color = '#fff';
+    name.style.fontSize = '14px';
+    name.style.marginBottom = '5px';
+
+    const btn = document.createElement('button');
+    btn.textContent = '▶️ Play';
+    btn.style.background = '#00ffd5';
+    btn.style.color = '#000';
+    btn.style.border = 'none';
+    btn.style.padding = '5px 10px';
+    btn.style.borderRadius = '6px';
+    btn.style.cursor = 'pointer';
+    btn.onclick = () => playChannel(channel.url);
+
+    card.appendChild(thumb);
+    card.appendChild(name);
+    card.appendChild(btn);
+    contenedor.appendChild(card);
+  });
+}
+// ✅ Cargar automáticamente el archivo update.m3u al abrir la app
+window.addEventListener('DOMContentLoaded', () => {
+  fetch('update3.m3u') // O usa 'update%20.m3u' si tu archivo tiene espacio
+    .then(res => res.text())
+    .then(text => {
+      if (text.includes("#EXTM3U")) {
+        channelsData = parseM3U(text);
+        console.log("🔍 Canales detectados:", channelsData);
+        console.log("✅ update2.m3u cargado correctamente");
+        loadChannels();
+        renderAutoCargados(); // 👉 Esto muestra los canales en el contenedor visual
+      } else {
+        console.warn("⚠ El archivo no parece ser un M3U válido");
+      }
+    })
+    .catch(err => {
+      console.warn("❌ No se pudo cargar update2.m3u:", err);
+    });
+});    function agregarAFavoritos() {
       const select = document.getElementById('channel-select');
       const index = select.selectedIndex;
       if (index >= 0) {
