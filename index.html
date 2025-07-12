@@ -350,9 +350,14 @@ justify-content: center;
 <div id="favorites-slider"></div>
     <div class="favorite-star" onclick="addToFavorites()">★</div> <!-- Estrella para agregar a favoritos -->
     </div>
-    </div>  </main>
+    </div>  
 
   <script>
+function verCanalesInternos() {
+  if (!internalDatabase || internalDatabase.length === 0) {
+    alert("⚠ No hay canales internos cargados. Primero regénéralos.");
+    return;
+  }    
     let channelsData = [];
     let favoritos = JSON.parse(localStorage.getItem('favoritos') || '[]');
 
