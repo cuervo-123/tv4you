@@ -161,49 +161,20 @@
 </head>
 <body>
   <header>
-    <h1>Mi TV Station (YouTube Integrado)</h1>
-    <div id="youtube-controls" style="display: flex; gap: 0.5rem; margin-top: 1rem;">
-      <input id="youtubeSearch" type="text" placeholder="Buscar en YouTube..." style="flex: 1; padding: 0.5rem;" />
-      <button onclick="buscarYT()">🔍 Buscar</button>
-      <button onclick="toggleRotacion()">⏸️ Pausar</button>
-      <button onclick="siguienteVideo()">⏭️ Siguiente</button>
-    </div>
-    <input type="text" id="buscador" placeholder="Buscar canal..." oninput="filtrarCanales()" />
-    <input type="file" id="cargarArchivo" accept=".json,.m3u" />
+    <select id="selectorPais">
+      <option value="update3.m3u">🌎 Global</option>
+      <option value="https://tuusuario.github.io/mi-tv/paises/brazil.m3u">🇲🇽 Brazil</option>
+      <option value="https://tuusuario.github.io/mi-tv/paises/colombia.m3u">🇨🇴 Colombia</option>
+      <option value="https://tuusuario.github.io/mi-tv/paises/bolivia.m3u">🇺🇸 Bolivia</option>
+      <option value="https://tuusuario.github.io/mi-tv/paises/espana.m3u">🇪🇸 España</option>
+    </select>
   </header>
-
   <main>
-    <div class="player-grid">
-      <div>
-        <div class="player-container" data-index="0"><video id="player1" controls></video></div>
-        <div class="botones-panel">
-          <button onclick="agregarAFavoritos(0)">⭐ Guardar</button>
-          <button onclick="iniciarAleatorio(0)">🎲 Aleatorio</button>
-          <button onclick="detenerAleatorio(0)">⏹️ Detener</button>
-          <button onclick="reproducirDesdeBusqueda(0)">▶️ YouTube</button>
-        </div>
-      </div>
-    </div>
-
-    <div id="carrusel-wrapper">
-      <button class="flecha-carrusel flecha-izquierda" onclick="scrollCarrusel(-1)">⬅️</button>
-      <div id="canales-inferiores"></div>
-      <button class="flecha-carrusel flecha-derecha" onclick="scrollCarrusel(1)">➡️</button>
-    </div>
+    <div id="canales-inferiores"></div>
   </main>
-
-  <div class="modal" id="modalPantalla">
-    <div class="modal-content">
-      <h3>🖥️ ¿En qué pantalla quieres ver este canal?</h3>
-      <div style="display: flex; gap: 1rem; justify-content: center; margin: 1rem 0;">
-        <button onclick="reproducirEnPantallaSeleccionada(0)">Pantalla 1</button>
-      </div>
-      <button onclick="cerrarModalPantalla()">Cancelar</button>
-    </div>
-  </div>
-
-  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
   <script>
+    let listaOriginalCanales = [];
+
     function parseM3U(texto) {
       const lineas = texto.split('\n');
       const canales = [];
@@ -222,58 +193,46 @@
       return canales;
     }
 
-    function mostrarCanales(canales) {
+    function mostrarCanales(canales, guardarOriginal = false) {
+      if (guardarOriginal) listaOriginalCanales = canales;
       const contenedor = document.getElementById("canales-inferiores");
       contenedor.innerHTML = "";
       canales.forEach((canal) => {
         const div = document.createElement("div");
         div.className = "canal";
+
         if (canal.logo) {
           const img = document.createElement("img");
           img.src = canal.logo;
           img.alt = canal.nombre;
           div.appendChild(img);
         }
+
         const span = document.createElement("span");
         span.textContent = canal.nombre;
         div.appendChild(span);
-        div.onclick = () => mostrarModalPantalla(canal.url);
+
+        div.onclick = () => alert("Aquí se reproduciría: " + canal.url);
         contenedor.appendChild(div);
       });
     }
 
-    function mostrarModalPantalla(url) {
-      canalSeleccionado = url;
-      document.getElementById("modalPantalla").style.display = "flex";
+    function cargarLista(url) {
+      fetch(url)
+        .then(res => res.text())
+        .then(data => {
+          const canales = parseM3U(data);
+          mostrarCanales(canales, true);
+        })
+        .catch(err => console.error("Error al cargar la lista:", err));
     }
 
-    function cerrarModalPantalla() {
-      document.getElementById("modalPantalla").style.display = "none";
-    }
+    document.getElementById("selectorPais").addEventListener("change", function() {
+      cargarLista(this.value);
+    });
 
-    function reproducirEnPantallaSeleccionada(index) {
-      const player = document.getElementById(`player${index + 1}`);
-      if (Hls.isSupported()) {
-        const hls = new Hls();
-        hls.loadSource(canalSeleccionado);
-        hls.attachMedia(player);
-      } else {
-        player.src = canalSeleccionado;
-      }
-    }
-
-    function scrollCarrusel(dir) {
-      const cont = document.getElementById("canales-inferiores");
-      cont.scrollBy({ left: dir * 300, behavior: "smooth" });
-    }
-
-    fetch("update3.m3u")
-      .then(res => res.text())
-      .then(data => {
-        const canales = parseM3U(data);
-        mostrarCanales(canales);
-      });
+    // Cargar por defecto la lista global
+    cargarLista("update3.m3u");
   </script>
 </body>
 </html>
-
