@@ -6,7 +6,6 @@
   <title>Mi TV Station (YouTube Integrado)</title>
   
   <style>
-
 .flecha-carrusel {
   position: absolute;
   top: 50%;
@@ -103,13 +102,13 @@
   </header>
 
   <main>
-    <video id="videoPlayer" controls playsinline></video>
-  <div id="carrusel-wrapper" style="position: relative;">
+    <div id="carrusel-wrapper" style="position: relative;">
   <button class="flecha-carrusel flecha-izquierda" onclick="scrollCarrusel(-1)">⬅️</button>
   <div id="canales-inferiores"></div>
   <button class="flecha-carrusel flecha-derecha" onclick="scrollCarrusel(1)">➡️</button>
 </div>
 
+    <div id="canales-inferiores"></div>
   </main>
 
   <script>
@@ -153,20 +152,15 @@
         span.textContent = canal.nombre;
         div.appendChild(span);
 
-       div.onclick = () => {
+        div.onclick = () => {
   if (Hls.isSupported() && canal.url.endsWith(".m3u8")) {
-  const hls = new Hls();
-  hls.loadSource(canal.url);
-  hls.attachMedia(video);
-  hls.on(Hls.Events.MANIFEST_PARSED, function () {
-    video.play();
-  });
-}
- else {
-  video.src = canal.url;
-  video.play();
-}
- else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+    const hls = new Hls();
+    hls.loadSource(canal.url);
+    hls.attachMedia(video);
+    hls.on(Hls.Events.MANIFEST_PARSED, function () {
+      video.play();
+    });
+  } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
     video.src = canal.url;
     video.addEventListener('loadedmetadata', function () {
       video.play();
@@ -200,11 +194,12 @@
     cargarLista("update3.m3u");
 
 
-    function scrollCarrusel(direccion) {
+function scrollCarrusel(direccion) {
   const carrusel = document.getElementById("canales-inferiores");
   const cantidad = 300 * direccion; // puedes ajustar la distancia
   carrusel.scrollBy({ left: cantidad, behavior: "smooth" });
 }
+
   </script>
  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 </html>
