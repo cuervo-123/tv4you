@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mi TV Station (YouTube Integrado)</title>
-  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script> 
+  
   <style>
     body {
       background-color: #111;
@@ -124,10 +124,25 @@
         span.textContent = canal.nombre;
         div.appendChild(span);
 
-        div.onclick = () => {
-          video.src = canal.url;
-          video.play();
-        };
+       div.onclick = () => {
+  if (Hls.isSupported() && canal.url.endsWith(".m3u8")) {
+    const hls = new Hls();
+    hls.loadSource(canal.url);
+    hls.attachMedia(video);
+    hls.on(Hls.Events.MANIFEST_PARSED, function () {
+      video.play();
+    });
+  } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+    video.src = canal.url;
+    video.addEventListener('loadedmetadata', function () {
+      video.play();
+    });
+  } else {
+    video.src = canal.url;
+    video.play();
+  }
+};
+
 
         contenedor.appendChild(div);
       });
@@ -150,26 +165,8 @@
     // Cargar por defecto la lista global
     cargarLista("update3.m3u");
 
-function reproducirCanal(index, playerNum = 0) {
-  const canal = playlist[index];
-  if (canal && players[playerNum]) {
-    const video = players[playerNum];
 
-    // Soporte HLS
-    if (canal.url.endsWith(".m3u8") && Hls.isSupported()) {
-      const hls = new Hls();
-      hls.loadSource(canal.url);
-      hls.attachMedia(video);
-      hls.on(Hls.Events.MANIFEST_PARSED, () => {
-        video.play().catch(() => {});
-      });
-    } else {
-      video.src = canal.url;
-      video.play().catch(() => {});
-    }
-  }
-}
     
   </script>
-  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script></body>
+ <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 </html>
