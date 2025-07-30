@@ -104,7 +104,7 @@
       <option value="https://cuervo-123.github.io/tv4you/paises/Cameroon .m3u">Dominican Republic</option>  
     </select>
 
-<select id="selectorPais">
+<select id="selectorPais2">
       <option value="https://cuervo-123.github.io/tv4you/paises/global.m3u">Global</option>
       <option value="https://cuervo-123.github.io/tv4you/paises/colombia.m3u">🇨🇴 Colombia</option>
       <option value="https://cuervo-123.github.io/tv4you/paises/brazil.m3u">Brazil</option> 
@@ -204,9 +204,15 @@
         .catch(err => console.error("Error al cargar la lista:", err));
     }
 
-    document.getElementById("selectorPais").addEventListener("change", function() {
-      cargarLista(this.value);
-    });
+    // Primer selector
+document.getElementById("selectorPais").addEventListener("change", function () {
+  cargarLista(this.value);
+});
+
+// Segundo selector
+document.getElementById("selectorPais2").addEventListener("change", function () {
+  cargarLista(this.value);
+});
 
     // Cargar por defecto la lista global
     cargarLista("update3.m3u");
