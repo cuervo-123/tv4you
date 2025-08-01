@@ -1,0 +1,141 @@
+#EXTM3U
+#EXTINF:-1 tvg-logo="https://babaktv.com/wp-content/uploads/2023/09/30A-Classi-Movies.jpeg" group-title="Cine",30A TV Classic Movies
+https://30a-tv.com/feeds/pzaz/30atvmovies.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/NCqZdaL.png" group-title="Cine",ABN Bible Movies (720p)
+https://mediaserver.abnvideos.com/streams/abnbiblemovies.m3u8
+#EXTINF:-1 group-title="Cine",Amasia (720p)
+https://splendid-film-amasia-1-eu.rakuten.wurl.tv/playlist.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/CKLn0ft.png" group-title="Cine",B4U Kadak (576p) [Not 24/7]
+http://103.199.160.85/Content/moviehouse/Live/Channel(MovieHouse)/index.m3u8
+#EXTINF:-1 tvg-logo="https://images-3.rakuten.tv/storage/global-live-channel/translation/artwork/1fe37ff8-c6b7-4123-8c68-653d657b4c5f-width200-quality90.jpeg" group-title="Cine",Bigtime (720p)
+https://103f01c3ff79408e83c9212f8a374ecc.mediatailor.us-east-1.amazonaws.com/v1/master/0fb304b2320b25f067414d481a779b77db81760d/RakutenTV-eu_BjgtjmeDarmoweFilmy/playlist.m3u8
+#EXTINF:-1 group-title="Cine",Bref Cinéma 100% Court Métrage
+https://lagenceducourtmetrage-brefcinema-01-eu.rakuten.wurl.tv/playlist.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/b5e9qUA.png" group-title="Cine",Cinema
+http://catchup.videoline.ru/cinema/tracks-v1a1/mono.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/uV5cHDW.png" group-title="Cine",Cinema Hausa (720p)
+https://origin3.afxp.telemedia.co.za/PremiumFree/cinemahausa/playlist.m3u8
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/en/thumb/6/6d/Cinema_One_2013_logo.svg/512px-Cinema_One_2013_logo.svg.png" group-title="Cine",Cinema One (1080p)
+https://cinemaone-abscbn-ono.amagi.tv/index.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/FJoPnTb.png" group-title="Cine",Classic Cinema (240p) [Not 24/7]
+https://bozztv.com/gusa/gusa-classiccinema/index.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/VB8gtCy.jpeg" group-title="Cine",CTB Perth Movies (720p)
+https://movies.ctbperth.net.au/hls/stream.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/oMnpsQ5.png" group-title="Cine",DiscoverFilm
+https://discoverfilm-discoverfilm-1-nl.samsung.wurl.tv/playlist.m3u8
+#EXTINF:-1 group-title="Cine",Dr. G Medical Examiner (720p)
+https://apollo.production-public.tubi.io/live/ac-dr-g-filmrise.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/fewPTFE.png" group-title="Cine",EBS Cinema (720p)
+https://rpn.bozztv.com/ebstv/ebscinema/index.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/Hiz2OyC.png" group-title="Cine",Filmex (Xumo) (1080p) [Geo-blocked]
+https://filmex-filmex-xumo.amagi.tv/playlist.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/D3dj4mv.png" group-title="Cine",Filmex Clásico (1080p) [Geo-blocked]
+https://filmex-filmexclasico-xumo.amagi.tv/playlist.m3u8
+#EXTINF:-1 group-title="Cine",FilmGold (1080p)
+https://mainstreamfilmgold-rakuten.amagi.tv/playlist.m3u8
+#EXTINF:-1 group-title="Cine",Filmrise Black TV (720p)
+https://apollo.production-public.tubi.io/live/ac-filmrise-blacktv.m3u8
+#EXTINF:-1 group-title="Cine",FilmRise Black TV Canada (720p)
+https://apollo.production-public.tubi.io/live/ac-filmrise-blacktv-canada.m3u8
+#EXTINF:-1 group-title="Cine",Filmrise Horror (720p)
+https://apollo.production-public.tubi.io/live/ac-filmrise-horror.m3u8
+#EXTINF:-1 group-title="Cine",FilmRise Horror Canada (720p)
+https://apollo.production-public.tubi.io/live/ac-filmrise-horror-canada.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/8j2npVc.png" group-title="Cine",Filmrise True Crime (720p)
+https://apollo.production-public.tubi.io/live/ac-filmrise-true-crime.m3u8
+#EXTINF:-1 group-title="Cine",FilmRise True Crime Canada (720p)
+https://apollo.production-public.tubi.io/live/ac-filmrise-true-crime-canada.m3u8
+#EXTINF:-1 group-title="Cine",Filmzie (720p)
+https://filmzie-filmzie-1-eu.rakuten.wurl.tv/playlist.m3u8
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/FXM_Logo.svg/512px-FXM_Logo.svg.png" group-title="Cine",FX Movie Channel (720p)
+https://tvpass.org/live/FXMovieChannel/hd
+#EXTINF:-1 tvg-logo="https://comteco.com.bo/img/upload/canales/svCJXa.png" group-title="Cine",FXM East
+http://fl3.moveonjoy.com/FX_MOVIE/index.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/nrFz3LU.png" group-title="Cine",GEM Film
+https://ca-rt.onetv.app/gemfilm/index-0.m3u8
+#EXTINF:-1 tvg-logo="https://www.lyngsat.com/logo/tv/gg/grand-cinema.png" group-title="Cine",Grand Cinema
+https://gcinemahls.wns.live/hls/stream.m3u8
+#EXTINF:-1 tvg-logo="https://d2n0069hmnqmmx.cloudfront.net/epgdata/1.0/newchanlogos/512/512/skychb3709.png" group-title="Cine",GREAT! movies (1080p)
+https://amg01753-narrativeuk-amg01753c3-lg-gb-1833.playouts.now.amagi.tv/playlist/amg01753-narrativeuk-greatmovies-lggb/playlist.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/GPRGA9C.png" group-title="Cine",Hallmark Movies Mysteries East
+http://fl3.moveonjoy.com/HALLMARK_MOVIES_MYSTERIES/index.m3u8
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/fa/c/ce/Ifilm2logo.png" group-title="Cine",iFilm 2
+https://live.presstv.ir/hls/ifilm2.m3u8
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/commons/b/b9/IFILM.png" group-title="Cine",iFilm Arabic
+https://live.presstv.ir/hls/ifilmar.m3u8
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/commons/b/b9/IFILM.png" group-title="Cine",iFilm English
+https://live.presstv.ir/hls/ifilmen.m3u8
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/commons/b/b9/IFILM.png" group-title="Cine",iFilm Persian
+https://live.presstv.ir/hls/ifilmfa.m3u8
+#EXTINF:-1 group-title="Cine",Legend Films (720p)
+https://a-cdn.klowdtv.com/live3/legendfilms_720p/playlist.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/BWmqYTO.png" group-title="Cine",Lifetime Movies East
+http://fl3.moveonjoy.com/LIFETIME_MOVIE_NETWORK/index.m3u8
+#EXTINF:-1 tvg-logo="https://images.fubo.tv/station_logos/maverick_black_cinema_c.png" group-title="Cine",Maverick Black Cinema (1080p)
+https://maverick-maverick-black-cinema-3-us.roku.wurl.tv/playlist.m3u8
+#EXTINF:-1 tvg-logo="https://www.lyngsat.com/logo/tv/mm/meta-film-tv.png" group-title="Cine",Meta Film TV (1080p)
+https://metafilmhls.wns.live/hls/stream.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/xeO1Zb4.png" group-title="Cine",MovieBox (1080p)
+https://cdn3.skygo.mn/live/disk1/Moviebox/HLS-FTA/Moviebox.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/FqHLJmN.png" group-title="Cine",MovieFe (720p) [Not 24/7]
+https://vcp.myplaytv.com/moviefe/moviefe/playlist.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/h1ejU90.png" group-title="Cine",MovieSphere (1080p)
+https://moviesphereuk-samsunguk.amagi.tv/playlist.m3u8
+#EXTINF:-1 group-title="Cine",MovieSphere Canada (1080p)
+https://apollo.production-public.tubi.io/live/ac-moviesphere-canada2.m3u8
+#EXTINF:-1 group-title="Cine",MyTime Movie Network (1080p)
+https://mytimemoviefrance-rakuten.amagi.tv/playlist.m3u8
+#EXTINF:-1 group-title="Cine",MyTime Movie Network Germany (1080p)
+https://appletree-mytimemoviegerman-rakuten.amagi.tv/playlist.m3u8
+#EXTINF:-1 group-title="Cine",Noovo Cinéma (1080p)
+https://dk4ogs46bjxcw.cloudfront.net/v1/master/3722c60a815c199d9c0ef36c5b73da68a62b09d1/cc-xr1ct045l70mz/Noovo_Cinema.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/AB0BaaA.png" group-title="Cine",Persian Film (720p) [Not 24/7]
+https://pfilmhls.wns.live/hls/stream.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/0FjxXU9.png" group-title="Cine",Rai Movie (1080p)
+http://188.60.179.180:8000/play/xxRaiMOviexx
+#EXTINF:-1 tvg-logo="https://i.imgur.com/NJYEYE3.png" group-title="Cine",Rakuten TV Action Movies Austria (720p)
+https://0f846627524f4dd2995e93581379db82.mediatailor.us-east-1.amazonaws.com/v1/master/44f73ba4d03e9607dcd9bebdcb8494d86964f1d8/Samsung-at_RakutenActionMovies-1/playlist.m3u8
+#EXTINF:-1 group-title="Cine",Rakuten TV Asian Cinema Italy (1080p)
+https://asian-cinema-rakuten-tv-it.fast.rakuten.tv/v1/master/0547f18649bd788bec7b67b746e47670f558b6b2/production-LiveChannel-6431/master.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/NJYEYE3.png" group-title="Cine",Rakuten TV Comedy Movies Austria (720p)
+https://7ed752b220a441b7b22bdf697c6c4df8.mediatailor.us-east-1.amazonaws.com/v1/master/44f73ba4d03e9607dcd9bebdcb8494d86964f1d8/Samsung-at_RakutenComedyMovies-1/playlist.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/dGlKoLW.png" group-title="Cine",Rotana Cinema Egypt (1080p)
+https://rotana.hibridcdn.net/rotana/cinemamasr_net-7Y83PP5adWixDF93/playlist.m3u8
+#EXTINF:-1 group-title="Cine",Samuel Goldwyn Films (1080p)
+https://samuelgoldwyn-films-1-us.roku.wurl.tv/playlist.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/2oOVS42.png" group-title="Cine",SCTV6 (1080p) [Geo-blocked]
+https://live.fptplay53.net/epzhd2/film360_vhls.smil/chunklist.m3u8
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Sony_Channel_Logo.png/512px-Sony_Channel_Logo.png" group-title="Cine",Sony Channel
+https://fl3.moveonjoy.com/Sony_Movie_Channel/index.m3u8
+#EXTINF:-1 group-title="Cine",StashTV Black Stories (720p) [Geo-blocked]
+https://amg01720-amg01720c1-klowdtv-us-4664.playouts.now.amagi.tv/playlist/amg01720-filmhub-stashtvblackstories-klowdtvus/playlist.m3u8
+#EXTINF:-1 group-title="Cine",StashTV Crime Time (720p) [Geo-blocked]
+https://amg01720-amg01720c3-klowdtv-us-4665.playouts.now.amagi.tv/playlist/amg01720-filmhub-stashtvcrimetime-klowdtvus/playlist.m3u8
+#EXTINF:-1 group-title="Cine",StashTV The Classics (720p) [Geo-blocked]
+https://amg01720-amg01720c2-klowdtv-us-4689.playouts.now.amagi.tv/playlist/amg01720-filmhub-stashtvtheclassics-klowdtvus/playlist.m3u8
+#EXTINF:-1 group-title="Cine",Stormcast Westerns (720p)
+https://stormcast-cinema-llc-westernmaniafast-1-eu.rakuten.wurl.tv/playlist.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/yfOwmsP.png" group-title="Cine",The Film Detective
+https://cdn-uw2-prod.tsv2.amagi.tv/linear/amg01201-cinedigmenterta-filmdetective-cineverse/playlist.m3u8
+#EXTINF:-1 group-title="Cine",Toonami Aftermath Movies (540p)
+http://api.toonamiaftermath.com:3000/movies/playlist.m3u8
+#EXTINF:-1 tvg-logo="https://images-3.rakuten.tv/storage/global-live-channel/translation/artwork/39a979b9-49df-48c1-8c1c-5763828b60aa-width200-quality90.png" group-title="Cine",Top Movies Polska (1080i)
+https://top-movies-rakuten-tv-pl.fast.rakuten.tv/v1/master/0547f18649bd788bec7b67b746e47670f558b6b2/production-LiveChannel-6059/master.m3u8
+#EXTINF:-1 group-title="Cine",Travel & Food TV (720p)
+https://nrpus.bozztv.com/36bay2/gusa-moviemagictv/index.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/st1xMsw.png" group-title="Cine",TVS Classic Movies (288p)
+https://bozztv.com/gusa/gusa-tvsclassicmovies/index.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/OR9APjb.png" group-title="Cine",TVS Drive In Movie (360p)
+https://bozztv.com/gusa/gusa-tvsdriveinmovie/index.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/A4yWhQw.png" group-title="Cine",TVS Film Noir Network (720p)
+https://bozztv.com/trn01/gusa-TVSFilmNoir/index.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/w4fxiKi.png" group-title="Cine",TVS Nostalgia Movies (480p)
+https://bozztv.com/gusa/gusa-tvsNostalgiaMovies/index.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/dwr98qb.png" group-title="Cine",TVS Western Movie (270p)
+https://bozztv.com/gusa/gusa-tvswesternmovies/index.m3u8
+#EXTINF:-1 group-title="Cine",WBTV At the Movies [Geo-blocked]
+https://apollo.production-public.tubi.io/live/wbd-at-the-movies.m3u8
+#EXTINF:-1 group-title="Cine",WBTV Classic Cinema [Geo-blocked]
+https://apollo.production-public.tubi.io/live/wbd-classic-cinema.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/kUg6WSk.jpeg" group-title="Cine",ZB Cinema (720p)
+https://server.zillarbarta.com/ZBCINEMA/index.m3u8
