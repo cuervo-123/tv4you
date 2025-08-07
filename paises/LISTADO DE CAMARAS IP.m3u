@@ -1,0 +1,47 @@
+#EXTM3U
+#EXTINF:-1,Glen cove ny
+https://s52.nysdot.skyvdn.com/rtplive/R10_255/playlist.m3u8
+#EXTINF:-1,NY 25 at West Hills Road
+https://s53.nysdot.skyvdn.com:443/rtplive/R10_237/playlist.m3u8
+#EXTINF:-1,NY25A at Woodbury Road
+https://s52.nysdot.skyvdn.com:443/rtplive/R10_350/playlist.m3u8
+#EXTINF:-1,NY25A at Woodbury Road
+https://s52.nysdot.skyvdn.com:443/rtplive/R10_350/playlist.m3u8
+#EXTINF:-1,NY27 at Sandy Hollow Road (CR52)
+https://s7.nysdot.skyvdn.com:443/rtplive/R10_383/playlist.m3u8
+#EXTINF:-1,NY27 at Sandy Hollow Road (CR52)
+https://s53.nysdot.skyvdn.com/rtplive/R10_380/playlist.m3u8
+#EXTINF:-1,NY27 at Sandy Hollow Road (CR52)
+https://s53.nysdot.skyvdn.com/rtplive/R10_378/playlist.m3u8
+#EXTINF:-1,NY27 at Railroad Ave
+https://s53.nysdot.skyvdn.com/rtplive/R10_377/playlist.m3u8
+#EXTINF:-1,NY27 at William Floyd Pkwy (CR46)
+https://s53.nysdot.skyvdn.com/rtplive/R10_376/playlist.m3u8
+#EXTINF:-1,NY27 w/o Horse Block Rd (CR16)
+https://s53.nysdot.skyvdn.com/rtplive/R10_375/playlist.m3u8
+#EXTINF:-1,NY27 at Station Rd
+https://s53.nysdot.skyvdn.com/rtplive/R10_374/playlist.m3u8
+#EXTINF:-1,NY27 at Railroad Ave
+https://s53.nysdot.skyvdn.com:443/rtplive/R10_373/playlist.m3u8
+#EXTINF:-1,NY27 at Hospital Road
+https://s53.nysdot.skyvdn.com/rtplive/R10_372/playlist.m3u8
+#EXTINF:-1,NY27 at N. Ocean Ave (CR83)
+https://s53.nysdot.skyvdn.com/rtplive/R10_370/playlist.m3u8
+#EXTINF:-1,NY27 at Waverly Ave (CR19)
+https://s53.nysdot.skyvdn.com/rtplive/R10_369/playlist.m3u8
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
