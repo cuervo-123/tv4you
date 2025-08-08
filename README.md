@@ -16,21 +16,4 @@ Visualiza listas de canales `.m3u` organizadas por secciones temáticas o region
 
 ---
 
-## 🧩 Estructura esperada
 
-Este proyecto espera que subas los siguientes archivos `.m3u` junto al `index.html`:
-
-- `update.m3u` → Lista principal
-- `colombia.m3u` → Canales de Colombia 🇨🇴
-- `usa.m3u` → Canales de USA 🇺🇸
-- `deportes.m3u` → Canales deportivos ⚽
-
-Puedes cambiar los nombres de los archivos o agregar más secciones editando el bloque en `index.html`:
-
-```js
-document.addEventListener("DOMContentLoaded", () => {
-  cargarSeccion("update.m3u", "📦 Lista Principal");
-  cargarSeccion("colombia.m3u", "🇨🇴 Colombia");
-  cargarSeccion("usa.m3u", "🇺🇸 USA");
-  cargarSeccion("deportes.m3u", "⚽ Deportes");
-});
