@@ -1,0 +1,141 @@
+#EXTM3U
+#EXTINF:-1 tvg-id="" tvg-name="Avivamiento TV (1080p) [Not 24/7]" tvg-logo="" group-title="General",Avivamiento TV (1080p) [Not 24/7]
+https://s1.abntelevision.com/avivamientoabr/stream/avivamientohd/avivamientohd/playlist.m3u8
+#EXTINF:-1 tvg-id="" tvg-name="Bum Televisión (720p) [Not 24/7]" tvg-logo="" group-title="General",Bum Televisión (720p) [Not 24/7]
+https://movil.ejeserver.com/live/visiondorada.m3u8
+#EXTINF:-1 tvg-id="" tvg-name="Cali TV (540p) [Not 24/7]" tvg-logo="" group-title="General",Cali TV (540p) [Not 24/7]
+https://5ab772334c39c.streamlock.net/live-calitv/calitv1/playlist.m3u8
+#EXTINF:-1 tvg-id="" tvg-name="Canal 1 (1080p) [Geo-blocked]" tvg-logo="" group-title="General",Canal 1 (1080p) [Geo-blocked]
+https://mdstrm.com/live-stream-playlist/5a5e1c2568b1910913db5fe2.m3u8
+#EXTINF:-1 tvg-id="" tvg-name="Canal 2 Alpavisión Neiva (720p) [Not 24/7]" tvg-logo="" group-title="General",Canal 2 Alpavisión Neiva (720p) [Not 24/7]
+https://stmv1.voxtvhd.com.br/alpavision/alpavision/playlist.m3u8
+#EXTINF:-1 tvg-id="" tvg-name="Canal 8 TV+ (720p)" tvg-logo="" group-title="General",Canal 8 TV+ (720p)
+https://movil.ejeserver.com/live/canal8tv.m3u8
+#EXTINF:-1 tvg-id="" tvg-name="Canal 9 Cosespu (720p)" tvg-logo="" group-title="General",Canal 9 Cosespu (720p)
+https://video2.lhdserver.es/canal9cosespu/live.m3u8
+#EXTINF:-1 tvg-id="" tvg-name="Canal 10 SOL TV (1080p)" tvg-logo="" group-title="General",Canal 10 SOL TV (1080p)
+http://190.211.140.89:8081/SVTranscoder/SOLTVabr.stream/playlist.m3u8
+#EXTINF:-1 tvg-id="" tvg-name="Canal 14 Codazzi (720p) [Not 24/7]" tvg-logo="" group-title="General",Canal 14 Codazzi (720p) [Not 24/7]
+https://eu1.servers10.com:8081/8056/index.m3u8
+#EXTINF:-1 tvg-id="" tvg-name="Canal 55 Telemorisco TV (720p)" tvg-logo="" group-title="General",Canal 55 Telemorisco TV (720p)
+http://canal.mediaserver.com.co/live/telemorisco.m3u8
+#EXTINF:-1 tvg-id="" tvg-name="Canal Dos Yopal (720p)" tvg-logo="" group-title="General",Canal Dos Yopal (720p)
+http://131.221.41.94/hls/canal2.m3u8
+#EXTINF:-1 tvg-id="" tvg-name="Canal Más Televisión (720p)" tvg-logo="" group-title="General",Canal Más Televisión (720p)
+https://movil.ejeserver.com/live/teledoradahd.m3u8
+#EXTINF:-1 tvg-id="" tvg-name="Canal Mundo Visión (720p)" tvg-logo="" group-title="General",Canal Mundo Visión (720p)
+https://movil.ejeserver.com/live/mundovisiontv.m3u8
+#EXTINF:-1 tvg-id="" tvg-name="Canal Nets (720p) [Not 24/7]" tvg-logo="" group-title="General",Canal Nets (720p) [Not 24/7]
+https://movil.ejeserver.com/live/nets.m3u8
+#EXTINF:-1 tvg-id="" tvg-name="Canal Oración Con Son (1080p)" tvg-logo="" group-title="General",Canal Oración Con Son (1080p)
+https://canal.mediaserver.com.co/live/oracionconson.m3u8
+#EXTINF:-1 tvg-id="" tvg-name="Canal Telefamilia (360p) [Not 24/7]" tvg-logo="" group-title="General",Canal Telefamilia (360p) [Not 24/7]
+https://stmv2.voxtvhd.com.br/telefamilia/telefamilia/playlist.m3u8
+#EXTINF:-1 tvg-id="" tvg-name="Caribbean Advantage TV (1080p) [Not 24/7]" tvg-logo="" group-title="General",Caribbean Advantage TV (1080p) [Not 24/7]
+https://video2.getstreamhosting.com:19360/8216/8216.m3u8
+#EXTINF:-1 tvg-id="" tvg-name="CGTN Español (1080p)" tvg-logo="" group-title="General",CGTN Español (1080p)
+https://espanol-livews.cgtn.com/hls/LSveOGBaBw41Ea7ukkVAUdKQ220802LSTexu6xAuFH8VZNBLE1ZNEa220802cd/playlist.m3u8
+#EXTINF:-1 tvg-id="" tvg-name="Champion TV (1080p)" tvg-logo="" group-title="General",Champion TV (1080p)
+https://canal.mediaserver.com.co/live/ChampionTv.m3u8
+#EXTINF:-1 tvg-id="" tvg-name="CNC Santander de Quilichao (480p)" tvg-logo="" group-title="General",CNC Santander de Quilichao (480p)
+https://movil.ejeserver.com/live/cncsantander.m3u8
+#EXTINF:-1 tvg-id="" tvg-name="Cosmovision (720p)" tvg-logo="" group-title="General",Cosmovision (720p)
+https://videohls2.cosmovision.tv/hls/sd.m3u8
+#EXTINF:-1 tvg-id="" tvg-name="CTV Barranquilla (1080p) [Not 24/7]" tvg-logo="" group-title="General",CTV Barranquilla (1080p) [Not 24/7]
+https://59a564764e2b6.streamlock.net/ctvbarranquilla/ctv/playlist.m3u8
+#EXTINF:-1 tvg-id="" tvg-name="DW Español (1080p)" tvg-logo="" group-title="General",DW Español (1080p)
+https://dwamdstream104.akamaized.net/hls/live/2015530/dwstream104/index.m3u8
+#EXTINF:-1 tvg-id="" tvg-name="Eduvision (1080p)" tvg-logo="" group-title="General",Eduvision (1080p)
+https://stmv3.voxtvhd.com.br/conex2/conex2/playlist.m3u8
+#EXTINF:-1 tvg-id="" tvg-name="EnerGeek (720p) [Not 24/7]" tvg-logo="" group-title="General",EnerGeek (720p) [Not 24/7]
+https://streaming-cl.sh1ny.space/memfs/e8a8e789-170b-4de4-a33b-90a9a475ce65.m3u8
+#EXTINF:-1 tvg-id="" tvg-name="EnerGeek FAN (1080p)" tvg-logo="" group-title="General",EnerGeek FAN (1080p)
+https://xui-backend.energeek.cl/live/10/playlist.m3u8?username=ZZDemoIPTVGH&password=mdo96EuqMkTR
+#EXTINF:-1 tvg-id="" tvg-name="EnerGeek Radio (1080p)" tvg-logo="" group-title="radio",EnerGeek Radio (1080p)
+https://streaming-cl.sh1ny.space/memfs/75b105a4-2fd3-4538-a55c-480f3903a262.m3u8
+#EXTINF:-1 tvg-id="" tvg-name="Enlace (720p)" tvg-logo="" group-title="General",Enlace (720p)
+https://livecdn.enlace.plus/enlace/smil:enlace-hd.smil/playlist.m3u8
+#EXTINF:-1 tvg-id="" tvg-name="Eureka" tvg-logo="" group-title="General",Eureka
+https://cdns.livewave.co:19360/eurekatv/eurekatv.m3u8
+#EXTINF:-1 tvg-id="" tvg-name="EWTN el Canal Católico (720p) [Not 24/7]" tvg-logo="" group-title="General",EWTN el Canal Católico (720p) [Not 24/7]
+https://cdn3.wowza.com/1/SmVrQmZCUXZhVDgz/b3J3MFJv/hls/live/playlist.m3u8
+#EXTINF:-1 tvg-id="" tvg-name="France 24 Español (1080p)" tvg-logo="" group-title="General",France 24 Español (1080p)
+https://live.france24.com/hls/live/2037220-b/F24_ES_HI_HLS/master_5000.m3u8
+#EXTINF:-1 tvg-id="" tvg-name="Frecuencia F TV (1080p)" tvg-logo="" group-title="General",Frecuencia F TV (1080p)
+https://tv.frecuenciaf.com/live/envivo.m3u8
+#EXTINF:-1 tvg-id="" tvg-name="Frecuencia Musical TV [Not 24/7]" tvg-logo="" group-title="music",Frecuencia Musical TV [Not 24/7]
+https://s2.tvdatta.com:3307/hybrid/play.m3u8
+#EXTINF:-1 tvg-id="" tvg-name="Garage TV Latin America" tvg-logo="" group-title="General",Garage TV Latin America
+https://stream1.sersat.com/hls/garagetv.m3u8
+#EXTINF:-1 tvg-id="" tvg-name="Golden TV (240p) [Not 24/7]" tvg-logo="" group-title="General",Golden TV (240p) [Not 24/7]
+https://bozztv.com/gusa/gusa-goldentv/index.m3u8
+#EXTINF:-1 tvg-id="" tvg-name="Hiperconectados TV" tvg-logo="" group-title="General",Hiperconectados TV
+https://stmv5.voxtvhd.com.br/hiperconectados/hiperconectados/playlist.m3u8
+#EXTINF:-1 tvg-id="" tvg-name="Huila TV" tvg-logo="" group-title="General",Huila TV
+https://server.asilivehd.com:3333/live/huilatvlive.m3u8
+#EXTINF:-1 tvg-id="" tvg-name="Kanade (1080p)" tvg-logo="" group-title="General",Kanade (1080p)
+https://streaming-cl.sh1ny.space/memfs/0e41fc31-9f44-46d4-8712-0446e2f3dcaa.m3u8
+#EXTINF:-1 tvg-id="" tvg-name="La Hermandad Salsera (1080p) [Not 24/7]" tvg-logo="" group-title="General",La Hermandad Salsera (1080p) [Not 24/7]
+https://streamlov.alsolnet.com/hermandadsalsera/live/playlist.m3u8
+#EXTINF:-1 tvg-id="" tvg-name="Locomotion TV (480p) [Not 24/7]" tvg-logo="" group-title="General",Locomotion TV (480p) [Not 24/7]
+http://51.222.85.85:81/hls/loco/index.m3u8
+#EXTINF:-1 tvg-id="" tvg-name="MasMusica FM (720p)" tvg-logo="" group-title="music",MasMusica FM (720p)
+https://movil.ejeserver.com/live/masmusica.m3u8
+#EXTINF:-1 tvg-id="" tvg-name="MCI Television" tvg-logo="" group-title="General",MCI Television
+https://video.ejeserver.com/live/mcitelevision.m3u8
+#EXTINF:-1 tvg-id="" tvg-name="MTV Hits Europe" tvg-logo="" group-title="hits",MTV Hits Europe
+http://45.88.92.3/tr3_MTVHits_SD/index.m3u8?token=test
+#EXTINF:-1 tvg-id="" tvg-name="Noticiero 90 Minutos (720p) [Not 24/7]" tvg-logo="" group-title="General",Noticiero 90 Minutos (720p) [Not 24/7]
+https://cdns.livewave.co:8081/90minutoslive/index.m3u8
+#EXTINF:-1 tvg-id="" tvg-name="Nuevo Tiempo (720p) [Not 24/7]" tvg-logo="" group-title="General",Nuevo Tiempo (720p) [Not 24/7]
+https://stream.live.novotempo.com/tv/smil:tvnuevotiempo.smil/playlist.m3u8
+#EXTINF:-1 tvg-id="" tvg-name="Oasis TV (720p) [Not 24/7]" tvg-logo="" group-title="General",Oasis TV (720p) [Not 24/7]
+https://5e85d90130e77.streamlock.net/6020/6020/playlist.m3u8
+#EXTINF:-1 tvg-id="" tvg-name="Ondambiental TV (360p)" tvg-logo="" group-title="General",Ondambiental TV (360p)
+https://stmv4.voxtvhd.com.br/ondastereo/ondastereo/playlist.m3u8
+#EXTINF:-1 tvg-id="" tvg-name="Platzi TV (1080p)" tvg-logo="" group-title="General",Platzi TV (1080p)
+https://mdstrm.com/live-stream-playlist/629a63ae8df27c082901f78b.m3u8
+#EXTINF:-1 tvg-id="" tvg-name="Plous TV (1080p)" tvg-logo="" group-title="General",Plous TV (1080p)
+https://vcp.myplaytv.com/glowtv/glowtv/playlist.m3u8
+#EXTINF:-1 tvg-id="" tvg-name="Rai Italia Americas" tvg-logo="" group-title="General",Rai Italia Americas
+https://ilglobotv-live.akamaized.net/channels/RAIItaliaSudAmerica/Live.m3u8
+#EXTINF:-1 tvg-id="" tvg-name="RCN Más (1080p)" tvg-logo="" group-title="General",RCN Más (1080p)
+https://rcntv-rcnmas-1-us.plex.wurl.tv/playlist.m3u8
+#EXTINF:-1 tvg-id="" tvg-name="Salsa Gorda Television (480p) [Not 24/7]" tvg-logo="" group-title="General",Salsa Gorda Television (480p) [Not 24/7]
+https://ssh101.bozztv.com/ssh101/qMUAZEy/playlist.m3u8
+#EXTINF:-1 tvg-id="" tvg-name="Satel Canal 4 (1080p)" tvg-logo="" group-title="General",Satel Canal 4 (1080p)
+https://server.asilivehd.com:3802/live/canal4live.m3u8
+#EXTINF:-1 tvg-id="" tvg-name="Suram TV (1080p)" tvg-logo="" group-title="General",Suram TV (1080p)
+https://livetv.305streamhd.com:3111/live/suramtvlive.m3u8
+#EXTINF:-1 tvg-id="" tvg-name="Tastemade en Espanol [Geo-blocked]" tvg-logo="" group-title="General",Tastemade en Espanol [Geo-blocked]
+https://tastemadees16us-xumo.amagi.tv/playlist.m3u8
+#EXTINF:-1 tvg-id="" tvg-name="Teleislas (486p) [Not 24/7]" tvg-logo="" group-title="General",Teleislas (486p) [Not 24/7]
+https://5ab772334c39c.streamlock.net/live-teleislas/teleislas/playlist.m3u8
+#EXTINF:-1 tvg-id="" tvg-name="Tevex (720p) [Not 24/7]" tvg-logo="" group-title="General",Tevex (720p) [Not 24/7]
+https://v4.tustreaming.cl/tevexinter/index.m3u8
+#EXTINF:-1 tvg-id="" tvg-name="Tu Universo TV (720p)" tvg-logo="" group-title="General",Tu Universo TV (720p)
+https://5bf8041cb3fed.streamlock.net/TUUNIVERSOTV/TUUNIVERSOTV/playlist.m3u8
+#EXTINF:-1 tvg-id="" tvg-name="TV Peñol (720p)" tvg-logo="" group-title="General",TV Peñol (720p)
+https://stmv1.voxtvhd.com.br/tvpenol/tvpenol/playlist.m3u8
+#EXTINF:-1 tvg-id="" tvg-name="TV San Jorge (1080p) [Not 24/7]" tvg-logo="" group-title="General",TV San Jorge (1080p) [Not 24/7]
+https://asucap.com/livestream/asucap_envivo.m3u8
+#EXTINF:-1 tvg-id="" tvg-name="Venevisión Internacional (720p)" tvg-logo="" group-title="General",Venevisión Internacional (720p)
+https://vod2live.univtec.com/manifest/4c41c0d8-e2e4-43cc-bd43-79afe715e1b3.m3u8
+#EXTINF:-1 tvg-id="" tvg-name="Vive Kanal D Drama (1080p)" tvg-logo="" group-title="General",Vive Kanal D Drama (1080p)
+https://thema-vivekanald-rakuten.amagi.tv/playlist.m3u8
+#EXTINF:-1 tvg-id="" tvg-name="VPItv (1080p)" tvg-logo="" group-title="General",VPItv (1080p)
+https://ott3.streann.com/loadbalancer/services/public/channels/5d23d5882cdce61dae029fd8/playlist.m3u8
+#EXTINF:-1 tvg-id="" tvg-name="Oxygen Music (1080p)" tvg-logo="" group-title="music",Oxygen Music (1080p)
+https://oxygenmusic.hu:2443/hls/oxygenmusic.m3u8
+#EXTINF:-1 tvg-id="" tvg-name="Telemundo Noticias Noreste" tvg-logo="" group-title="General",Telemundo Noticias Noreste
+http://cfd-v4-service-channel-stitcher-use1-1.prd.pluto.tv/stitch/hls/channel/65791199dfed030008d031d3/master.m3u8?appName=web&appVersion=unknown&clientTime=0&deviceDNT=0&deviceId=6c2bfeb4-30d3-11ef-9cf5-e9ddff8ff496&deviceMake=Chrome&deviceModel=web&deviceType=web&deviceVersion=unknown&includeExtendedEvents=false&serverSideAds=false&sid=8b9d8440-9f8c-48af-b204-866c8629d07f
+#EXTINF:-1 tvg-id="" tvg-name="Algo MUY RARO estÃ¡ pasando en mi CASA ðŸ˜°â˜ ï¸ " tvg-logo="" group-title="General",Algo MUY RARO estÃ¡ pasando en mi CASA ðŸ˜°â˜ ï¸ 
+https://www.youtube.com/watch?v=kqiPD0X-vig
+#EXTINF:-1 tvg-id="" tvg-name="Trading for their trick or treat candy!" tvg-logo="" group-title="General",Trading for their trick or treat candy!
+https://www.youtube.com/watch?v=dXmtgdBArIs
+#EXTINF:-1 tvg-id="" tvg-name="Pluto TV Spike Aventura (720p)" tvg-logo="" group-title="pluto",Pluto TV Spike Aventura (720p)
+https://service-stitcher.clusters.pluto.tv/stitch/hls/channel/5d8d11baeb31c5a43b77bf59/master.m3u8?advertisingId=&appName=web&appStoreUrl=&appVersion=DNT&app_name=&architecture=&buildVersion=&deviceDNT=0&deviceId=5d8d11baeb31c5a43b77bf59&deviceLat=&deviceLon=&deviceMake=web&deviceModel=web&deviceType=web&deviceVersion=DNT&includeExtendedEvents=false&marketingRegion=US&serverSideAds=false&sid=950&terminate=false&userId=
+#EXTINF:-1 tvg-id="" tvg-name="RÃ©giÃ³Plusz TV (1080p) [Geo-blocked]" tvg-logo="" group-title="General",RÃ©giÃ³Plusz TV (1080p) [Geo-blocked]
+https://stream.streaming4u.hu/RegioPluszTV/index.m3u8
+#EXTINF:-1 tvg-id="" tvg-name="Telemundo Noticias Texas" tvg-logo="" group-title="General",Telemundo Noticias Texas
+https://amg00884-nbcuniversal-nbctelemundotexas-xumo-eeb56.amagi.tv/playlist.m3u8
