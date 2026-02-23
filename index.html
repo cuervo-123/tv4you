@@ -15,26 +15,8 @@
       --accent:#00ffd5;
       --star:#f6d04d;
       --muted:#c9c9c9;
+      --dark:#111;
     }
-
-    .flecha-carrusel {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 2rem;
-      color: white;
-      background: rgba(0, 0, 0, 0.5);
-      border: none;
-      border-radius: 50%;
-      width: 50px;
-      height: 50px;
-      cursor: pointer;
-      z-index: 10;
-      display:grid;
-      place-items:center;
-    }
-    .flecha-izquierda { left: 5px; }
-    .flecha-derecha { right: 5px; }
 
     body {
       background-color: var(--bg);
@@ -56,7 +38,7 @@
       border:1px solid #ddd;
     }
 
-    /* Barra de acciones */
+    /* Acciones */
     .actions{
       display:flex;
       gap:.5rem;
@@ -71,9 +53,10 @@
       border-radius:10px;
       padding:.55rem .85rem;
       cursor:pointer;
-      font-weight:700;
+      font-weight:800;
+      letter-spacing:.2px;
     }
-    .btn:hover{ opacity:.9; }
+    .btn:hover{ opacity:.92; }
     .btn.outline{
       background:transparent;
       color:#111;
@@ -89,14 +72,21 @@
       color:#111;
     }
 
-    /* Carruseles */
+    /* Títulos */
     .row-title{
       color:#111;
-      font-weight:800;
+      font-weight:900;
       margin:.25rem 0 .5rem;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
     }
+    .row-title small{ font-weight:700; color:#444; opacity:.9; }
 
-    #favoritos-wrapper, #carrusel-wrapper { position: relative; }
+    /* Carruseles */
+    #favoritos-wrapper, #recientes-wrapper, #carrusel-wrapper { position: relative; }
 
     .strip {
       display: flex;
@@ -109,6 +99,28 @@
       border-radius:12px;
     }
 
+    /* Flechas */
+    .flecha-carrusel {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 2rem;
+      color: white;
+      background: rgba(0, 0, 0, 0.5);
+      border: none;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      cursor: pointer;
+      z-index: 10;
+      display:grid;
+      place-items:center;
+    }
+    .flecha-izquierda { left: 5px; }
+    .flecha-derecha { right: 5px; }
+    .flecha-sm{ width:42px; height:42px; font-size:1.6rem; }
+
+    /* Card canal */
     .canal {
       background: var(--card);
       border-radius: 12px;
@@ -121,7 +133,7 @@
       gap: 0.55rem;
       user-select:none;
       border:2px solid transparent;
-      min-width: 220px;
+      min-width: 230px;
       position: relative;
     }
     .canal:hover { background: #555; }
@@ -130,7 +142,7 @@
       width: 42px;
       height: 42px;
       border-radius: 8px;
-      object-fit: contain;
+      object-fit: cover;
       background: #000;
     }
 
@@ -145,7 +157,7 @@
       overflow:hidden;
       text-overflow:ellipsis;
       white-space:nowrap;
-      max-width: 140px;
+      max-width: 150px;
     }
     .canal .name small{
       font-size:.75rem;
@@ -153,10 +165,10 @@
       overflow:hidden;
       text-overflow:ellipsis;
       white-space:nowrap;
-      max-width: 140px;
+      max-width: 150px;
     }
 
-    /* Estrella favoritos */
+    /* ⭐ Favoritos */
     .fav-btn{
       position:absolute;
       top:8px;
@@ -172,7 +184,6 @@
       z-index:2;
     }
     .fav-btn:hover{ background: rgba(0,0,0,.55); }
-
     .fav-btn span{
       font-size: 18px;
       line-height:1;
@@ -182,6 +193,7 @@
     .canal.fav{ border-color: rgba(246,208,77,.75); }
     .canal.fav .fav-btn span{ color: var(--star); text-shadow: 0 0 10px rgba(246,208,77,.35); }
 
+    /* 🎬 Video */
     #videoPlayer {
       width: 100%;
       max-width: 900px;
@@ -193,11 +205,6 @@
       display: block;
     }
 
-    /* Flechas para carrusel fav (más pequeñas) */
-    .flecha-sm{
-      width:42px;height:42px;font-size:1.6rem;
-    }
-
     /* Mensaje vacío */
     .empty{
       color:#ddd;
@@ -205,12 +212,83 @@
       padding:.75rem 1rem;
       border-radius:10px;
     }
+
+    /* 🔥 Modo Posters grandes (Netflix style) */
+    .poster-mode .canal{
+      min-width: 320px;
+      padding: .7rem;
+      align-items: flex-start;
+    }
+    .poster-mode .canal img{
+      width: 90px;
+      height: 120px;
+      border-radius: 10px;
+      object-fit: cover;
+    }
+    .poster-mode .canal .name strong{
+      max-width: 200px;
+      font-size: 1.05rem;
+    }
+    .poster-mode .canal .name small{
+      max-width: 200px;
+      font-size: .8rem;
+    }
+
+    /* 📱 iOS Install Banner */
+    .ios-banner{
+      display:none;
+      background: linear-gradient(90deg, rgba(0,0,0,.85), rgba(0,0,0,.55));
+      border: 1px solid rgba(0,0,0,.25);
+      color: #fff;
+      border-radius: 14px;
+      padding: 10px 12px;
+      margin: 10px 0 14px;
+      box-shadow: 0 10px 22px rgba(0,0,0,.15);
+    }
+    .ios-banner.show{ display:flex; }
+    .ios-banner .left{
+      display:flex; gap:10px; align-items:flex-start; flex:1;
+    }
+    .ios-badge{
+      width:38px;height:38px;border-radius:12px;
+      display:grid;place-items:center;
+      background: rgba(0,255,213,.12);
+      border:1px solid rgba(0,255,213,.25);
+      flex:0 0 38px;
+    }
+    .ios-banner h3{ margin:0; font-size: 14px; }
+    .ios-banner p{ margin:4px 0 0; font-size: 12px; opacity:.92; line-height:1.25; }
+    .ios-actions{ display:flex; gap:8px; align-items:center; }
+    .ios-actions button{
+      background: rgba(255,255,255,.1);
+      border:1px solid rgba(255,255,255,.18);
+      color:#fff;
+      border-radius: 12px;
+      padding: 8px 10px;
+      cursor:pointer;
+      font-weight: 800;
+    }
+    .ios-actions button:hover{ background: rgba(255,255,255,.16); }
   </style>
 </head>
 
 <body>
   <header>
     <h1>📺 THE APP TV GLOBAL STATION</h1>
+
+    <!-- 📱 iOS Banner (auto) -->
+    <div class="ios-banner" id="iosBanner">
+      <div class="left">
+        <div class="ios-badge">📲</div>
+        <div>
+          <h3>Instalar en iPhone</h3>
+          <p>En <b>Safari</b>: toca <b>Share</b> (⬆️) → <b>Add to Home Screen</b> para instalar como app.</p>
+        </div>
+      </div>
+      <div class="ios-actions">
+        <button id="iosHideBtn" type="button">Ocultar</button>
+      </div>
+    </div>
 
     <select id="selectorPais">
       <option value="https://cuervo-123.github.io/tv4you/paises/listado canales en espanol .m3u">listado canales en espanol</option>
@@ -250,10 +328,6 @@
       <option value="https://cuervo-123.github.io/tv4you/paises/Musica.m3u">Musica</option>
       <option value="https://cuervo-123.github.io/tv4you/paises/Noticias.m3u">Noticias</option>
       <option value="https://cuervo-123.github.io/tv4you/paises/Series.m3u">Series</option>
-      <option value="https://cuervo-123.github.io/tv4you/paises/Bulgaria .m3u">Bulgaria</option>
-      <option value="https://cuervo-123.github.io/tv4you/paises/Czech Republic .m3u">Czech Republic</option>
-      <option value="https://cuervo-123.github.io/tv4you/paises/Democratic Republic of the Congo .m3u">Democratic Republic of the Congo</option>
-      <option value="https://cuervo-123.github.io/tv4you/paises/Dominican Republic.m3u">Dominican Republic</option>
       <option value="https://cuervo-123.github.io/tv4you/paises/musica and favoritos.m3u">musica and favoritos</option>
       <option value="https://cuervo-123.github.io/tv4you/paises/karaoke gladys .m3u">Karaoke Gladys</option>
     </select>
@@ -264,21 +338,36 @@
       <button class="btn" id="btnSoloFav">⭐ Ver solo Favoritos</button>
       <button class="btn outline" id="btnVerTodos">📺 Ver Todos</button>
       <button class="btn outline" id="btnClearFav">🧹 Borrar Favoritos</button>
+      <button class="btn outline" id="btnPosterMode">🖼️ Posters Grandes</button>
     </div>
   </header>
 
   <main>
     <video id="videoPlayer" controls playsinline></video>
 
-    <!-- Carrusel Favoritos -->
-    <div class="row-title">⭐ Favoritos</div>
+    <!-- ⭐ Favoritos -->
+    <div class="row-title">
+      ⭐ Favoritos
+      <small id="favCount"></small>
+    </div>
     <div id="favoritos-wrapper" style="position:relative; margin-bottom: 12px;">
       <button class="flecha-carrusel flecha-izquierda flecha-sm" onclick="scrollStrip('favoritos-strip', -1)">⬅️</button>
       <div id="favoritos-strip" class="strip"></div>
       <button class="flecha-carrusel flecha-derecha flecha-sm" onclick="scrollStrip('favoritos-strip', 1)">➡️</button>
     </div>
 
-    <!-- Carrusel principal -->
+    <!-- 🕘 Recientes -->
+    <div class="row-title">
+      🕘 Recientes
+      <small id="recCount"></small>
+    </div>
+    <div id="recientes-wrapper" style="position:relative; margin-bottom: 12px;">
+      <button class="flecha-carrusel flecha-izquierda flecha-sm" onclick="scrollStrip('recientes-strip', -1)">⬅️</button>
+      <div id="recientes-strip" class="strip"></div>
+      <button class="flecha-carrusel flecha-derecha flecha-sm" onclick="scrollStrip('recientes-strip', 1)">➡️</button>
+    </div>
+
+    <!-- 📺 Canales -->
     <div class="row-title">📺 Canales</div>
     <div id="carrusel-wrapper" style="position: relative;">
       <button class="flecha-carrusel flecha-izquierda" onclick="scrollStrip('canales-inferiores', -1)">⬅️</button>
@@ -294,20 +383,29 @@
     let hlsInstance = null;
 
     const FAV_KEY = "APP_GLOBAL_FAVORITOS_V1";
+    const REC_KEY = "APP_GLOBAL_RECIENTES_V1";
+    const IOS_HIDE_KEY = "APP_GLOBAL_HIDE_IOS_BANNER_V1";
+    const POSTER_KEY = "APP_GLOBAL_POSTER_MODE_V1";
+    const MAX_REC = 20;
 
-    function normKey(c){
-      // clave estable por url (y nombre por si acaso)
-      return (c?.url || "").trim();
+    const favCountEl = document.getElementById('favCount');
+    const recCountEl = document.getElementById('recCount');
+
+    function normKey(c){ return (c?.url || "").trim(); }
+
+    function loadJson(key, fallback){
+      try { return JSON.parse(localStorage.getItem(key) || JSON.stringify(fallback)); }
+      catch { return fallback; }
+    }
+    function saveJson(key, value){
+      localStorage.setItem(key, JSON.stringify(value));
     }
 
-    function loadFavs(){
-      try { return JSON.parse(localStorage.getItem(FAV_KEY) || "[]"); }
-      catch { return []; }
-    }
+    function loadFavs(){ return loadJson(FAV_KEY, []); }
+    function saveFavs(arr){ saveJson(FAV_KEY, arr); }
 
-    function saveFavs(arr){
-      localStorage.setItem(FAV_KEY, JSON.stringify(arr));
-    }
+    function loadRec(){ return loadJson(REC_KEY, []); }
+    function saveRec(arr){ saveJson(REC_KEY, arr); }
 
     function isFav(canal){
       const favs = loadFavs();
@@ -318,15 +416,21 @@
       const favs = loadFavs();
       const key = normKey(canal);
       const idx = favs.findIndex(f => normKey(f) === key);
-      if(idx >= 0){
-        favs.splice(idx, 1);
-      }else{
-        favs.push({ nombre: canal.nombre, url: canal.url, logo: canal.logo || "" });
-      }
+      if(idx >= 0) favs.splice(idx, 1);
+      else favs.push({ nombre: canal.nombre, url: canal.url, logo: canal.logo || "" });
+
       saveFavs(favs);
       renderFavoritos();
-      // re-render lista para pintar estrellas
       mostrarCanales(listaOriginalCanales, false);
+    }
+
+    function addRecent(canal){
+      const rec = loadRec();
+      const key = normKey(canal);
+      const filtered = rec.filter(r => normKey(r) !== key);
+      filtered.unshift({ nombre: canal.nombre, url: canal.url, logo: canal.logo || "" });
+      saveRec(filtered.slice(0, MAX_REC));
+      renderRecientes();
     }
 
     function parseM3U(texto) {
@@ -350,7 +454,6 @@
     function playCanal(canal){
       if(!canal?.url) return;
 
-      // destruir HLS anterior si existe
       if(hlsInstance){
         try{ hlsInstance.destroy(); }catch(e){}
         hlsInstance = null;
@@ -370,15 +473,15 @@
         video.src = url;
         video.play().catch(()=>{});
       }
+
+      addRecent(canal);
     }
 
     function canalCard(canal){
       const div = document.createElement("div");
       div.className = "canal";
-
       if(isFav(canal)) div.classList.add("fav");
 
-      // estrella
       const favBtn = document.createElement("div");
       favBtn.className = "fav-btn";
       favBtn.innerHTML = `<span>${isFav(canal) ? "★" : "☆"}</span>`;
@@ -389,13 +492,11 @@
       };
       div.appendChild(favBtn);
 
-      if (canal.logo) {
-        const img = document.createElement("img");
-        img.src = canal.logo;
-        img.alt = canal.nombre;
-        img.onerror = () => { img.style.display = "none"; };
-        div.appendChild(img);
-      }
+      const img = document.createElement("img");
+      img.alt = canal.nombre || "logo";
+      img.src = canal.logo || "";
+      img.onerror = () => { img.style.display = "none"; };
+      if(canal.logo) div.appendChild(img);
 
       const meta = document.createElement("div");
       meta.className = "name";
@@ -411,7 +512,6 @@
       div.appendChild(meta);
 
       div.onclick = () => playCanal(canal);
-
       return div;
     }
 
@@ -430,22 +530,39 @@
       canales.forEach((canal) => frag.appendChild(canalCard(canal)));
       contenedor.appendChild(frag);
 
-      // refresca favoritos strip también
       renderFavoritos();
+      renderRecientes();
     }
 
     function renderFavoritos(){
       const strip = document.getElementById("favoritos-strip");
       const favs = loadFavs();
-
       strip.innerHTML = "";
+
+      favCountEl.textContent = favs.length ? `(${favs.length})` : `(0)`;
+
       if(!favs.length){
         strip.innerHTML = `<div class="empty">Todavía no tienes favoritos. Marca ⭐ en cualquier canal.</div>`;
         return;
       }
-
       const frag = document.createDocumentFragment();
       favs.forEach(c => frag.appendChild(canalCard(c)));
+      strip.appendChild(frag);
+    }
+
+    function renderRecientes(){
+      const strip = document.getElementById("recientes-strip");
+      const rec = loadRec();
+      strip.innerHTML = "";
+
+      recCountEl.textContent = rec.length ? `(${rec.length})` : `(0)`;
+
+      if(!rec.length){
+        strip.innerHTML = `<div class="empty">Aún no hay recientes. Reproduce un canal y saldrá aquí.</div>`;
+        return;
+      }
+      const frag = document.createDocumentFragment();
+      rec.forEach(c => frag.appendChild(canalCard(c)));
       strip.appendChild(frag);
     }
 
@@ -462,11 +579,10 @@
     function scrollStrip(id, direccion) {
       const el = document.getElementById(id);
       if(!el) return;
-      const cantidad = 320 * direccion;
-      el.scrollBy({ left: cantidad, behavior: "smooth" });
+      el.scrollBy({ left: 320 * direccion, behavior: "smooth" });
     }
 
-    // buscador
+    // Buscador
     document.getElementById("buscador").addEventListener("input", function(){
       const q = (this.value || "").toLowerCase().trim();
       if(!q){
@@ -477,7 +593,7 @@
       mostrarCanales(filtrados, false);
     });
 
-    // botones
+    // Botones
     document.getElementById("btnSoloFav").addEventListener("click", ()=>{
       const favs = loadFavs();
       if(!favs.length) return alert("No tienes favoritos todavía.");
@@ -495,7 +611,18 @@
       mostrarCanales(listaOriginalCanales, false);
     });
 
-    // selectors
+    // Posters Mode (Netflix)
+    function applyPosterMode(on){
+      document.body.classList.toggle('poster-mode', !!on);
+      localStorage.setItem(POSTER_KEY, on ? '1' : '0');
+      document.getElementById('btnPosterMode').textContent = on ? "🖼️ Posters: ON" : "🖼️ Posters Grandes";
+    }
+    document.getElementById("btnPosterMode").addEventListener("click", ()=>{
+      const isOn = document.body.classList.contains('poster-mode');
+      applyPosterMode(!isOn);
+    });
+
+    // Selectores
     document.getElementById("selectorPais").addEventListener("change", function () {
       cargarLista(this.value);
     });
@@ -503,13 +630,37 @@
       cargarLista(this.value);
     });
 
-    // init
-    renderFavoritos();
+    // iOS Banner smart
+    function isIOS(){
+      const ua = navigator.userAgent || '';
+      const iOS = /iPhone|iPad|iPod/i.test(ua);
+      const iPadOS13 = (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+      return iOS || iPadOS13;
+    }
+    function isStandalone(){
+      return (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || (navigator.standalone === true);
+    }
+    function showIosBannerIfNeeded(){
+      const hidden = localStorage.getItem(IOS_HIDE_KEY) === '1';
+      const banner = document.getElementById('iosBanner');
+      if(!banner) return;
 
-    // ⚠️ tu default original decía update3.m3u pero aquí estabas llamando local.
-    // Si quieres cargar una URL directa por defecto, pon la URL completa:
-    // cargarLista("https://cuervo-123.github.io/tv4you/paises/global.m3u");
-    // Por ahora dejo tu llamada tal cual:
+      if(isIOS() && !isStandalone() && !hidden){
+        banner.classList.add('show');
+      }
+    }
+    document.getElementById('iosHideBtn').addEventListener('click', ()=>{
+      localStorage.setItem(IOS_HIDE_KEY, '1');
+      document.getElementById('iosBanner').classList.remove('show');
+    });
+
+    // Init
+    renderFavoritos();
+    renderRecientes();
+    applyPosterMode(localStorage.getItem(POSTER_KEY) === '1');
+    showIosBannerIfNeeded();
+
+    // Default (deja tu original tal cual)
     cargarLista("update3.m3u");
   </script>
 </body>
