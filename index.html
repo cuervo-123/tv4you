@@ -3,463 +3,476 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>THE APP TV GLOBAL STATION</title>
+  <title>THE APP TV GLOBAL STATION · Tech Blue</title>
 
   <style>
     :root{
-      --bg:#eeeeee;
-      --panel:#222;
-      --card:#333;
-      --card2:#2b2b2b;
-      --text:#fff;
-      --accent:#00ffd5;
-      --star:#f6d04d;
-      --muted:#c9c9c9;
-      --dark:#111;
+      --bg0:#020512;
+      --bg1:#050a1f;
+      --panel:#070d24;
+      --panel2:#0b1430;
+      --line:rgba(79,155,255,.24);
+      --text:#eaf2ff;
+      --muted:#9fb1cb;
+      --accent:#1f8bff;
+      --accent2:#4ac3ff;
+      --ok:#21d07a;
+      --warn:#f6b73c;
+      --danger:#ff6b6b;
+      --radius:14px;
+      --shadow:0 0 18px rgba(31,139,255,.18);
     }
 
-    body {
-      background-color: var(--bg);
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: system-ui,-apple-system,Segoe UI,Roboto,Arial;
+      background: radial-gradient(circle at 20% -20%, #0b1a3d 0%, var(--bg0) 38%, #020312 100%);
       color: var(--text);
-      font-family: sans-serif;
-      margin: 0;
-      padding: 0;
-    }
-    header, main, footer { padding: 1rem; }
-
-    h1{ color:#111; margin:0 0 .75rem; }
-    header h1:first-child{ color:#111; }
-
-    select{
-      width:100%;
-      padding:.55rem;
-      border-radius:8px;
-      margin:.35rem 0 .75rem;
-      border:1px solid #ddd;
     }
 
-    /* Acciones */
-    .actions{
+    header, main { max-width: 1200px; margin: 0 auto; padding: 14px; }
+
+    .topbar{
+      background: linear-gradient(180deg, rgba(15,27,51,.92), rgba(7,12,24,.92));
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 14px;
+    }
+
+    h1{
+      margin:0 0 10px;
+      color: var(--accent2);
+      letter-spacing:.3px;
+      text-shadow:0 0 10px rgba(74,195,255,.35);
+      font-size: 18px;
       display:flex;
-      gap:.5rem;
+      gap:8px;
+      align-items:center;
       flex-wrap:wrap;
-      margin-top:.5rem;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:10px;
+    }
+    @media (min-width: 900px){
+      .grid{ grid-template-columns: 1fr 1fr; }
+    }
+
+    .row{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
       align-items:center;
     }
+
+    select, input[type="text"], input[type="file"]{
+      width:100%;
+      padding:.62rem .72rem;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: rgba(9,16,36,.75);
+      color: var(--text);
+      outline:none;
+      box-shadow: inset 0 0 0 1px rgba(0,0,0,.15);
+    }
+    input[type="text"]::placeholder{ color: rgba(159,177,203,.8); }
+
+    select:focus, input[type="text"]:focus{
+      border-color: rgba(74,195,255,.65);
+      box-shadow: 0 0 0 3px rgba(31,139,255,.18);
+    }
+
     .btn{
-      background:#111;
-      color:#fff;
-      border:none;
-      border-radius:10px;
-      padding:.55rem .85rem;
+      padding:.62rem .85rem;
+      border-radius: 12px;
+      border: 1px solid rgba(31,139,255,.35);
+      background: rgba(31,139,255,.18);
+      color: var(--text);
       cursor:pointer;
       font-weight:800;
       letter-spacing:.2px;
+      transition: transform .12s ease, background .2s ease, border-color .2s ease;
+      user-select:none;
     }
-    .btn:hover{ opacity:.92; }
-    .btn.outline{
-      background:transparent;
-      color:#111;
-      border:2px solid #111;
+    .btn:hover{
+      background: rgba(74,195,255,.22);
+      border-color: rgba(74,195,255,.55);
+      transform: translateY(-1px);
+    }
+    .btn.primary{
+      background: linear-gradient(90deg, rgba(31,139,255,.85), rgba(74,195,255,.55));
+      border-color: rgba(74,195,255,.65);
+    }
+    .btn.danger{
+      background: rgba(255,107,107,.12);
+      border-color: rgba(255,107,107,.35);
     }
 
-    #buscador {
-      width: 100%;
-      padding: 0.5rem;
-      margin: .5rem 0 1rem;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      color:#111;
+    /* Player */
+    .player-wrap{
+      margin-top: 12px;
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:12px;
+    }
+    #videoPlayer{
+      width:100%;
+      height: 52vh;
+      max-height: 560px;
+      background:#000;
+      border-radius: var(--radius);
+      border: 1px solid rgba(74,195,255,.35);
+      box-shadow: var(--shadow);
+      display:block;
     }
 
-    /* Títulos */
-    .row-title{
-      color:#111;
-      font-weight:900;
-      margin:.25rem 0 .5rem;
+    /* Sections */
+    .section{
+      margin-top: 14px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, rgba(15,27,51,.85), rgba(7,12,24,.85));
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .section-head{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      padding: 10px 12px;
+      border-bottom: 1px solid rgba(74,195,255,.18);
+    }
+    .section-title{
+      font-weight: 900;
+      color: var(--accent2);
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+    .section-title small{
+      color: var(--muted);
+      font-weight: 800;
+      opacity:.9;
+    }
+
+    /* Carousel strip */
+    .strip-wrap{ position:relative; }
+    .strip{
+      display:flex;
+      flex-wrap:nowrap;
+      overflow-x:auto;
+      gap:10px;
+      padding: 12px;
+      scroll-behavior:smooth;
+    }
+    .strip::-webkit-scrollbar{ height:8px; }
+    .strip::-webkit-scrollbar-track{ background: rgba(0,0,0,.2); }
+    .strip::-webkit-scrollbar-thumb{ background: rgba(31,139,255,.55); border-radius: 999px; }
+
+    .arrow{
+      position:absolute;
+      top:50%;
+      transform: translateY(-50%);
+      width: 46px;
+      height: 46px;
+      border-radius: 999px;
+      border:1px solid rgba(74,195,255,.35);
+      background: rgba(0,0,0,.45);
+      color:#fff;
+      display:grid;
+      place-items:center;
+      cursor:pointer;
+      z-index:5;
+      font-size: 1.4rem;
+    }
+    .arrow:hover{ background: rgba(31,139,255,.35); }
+    .arrow.left{ left:8px; }
+    .arrow.right{ right:8px; }
+
+    /* Channel card */
+    .card{
+      position:relative;
+      flex: 0 0 auto;
+      min-width: 240px;
+      display:flex;
+      gap:10px;
+      align-items:center;
+      padding: 10px;
+      border-radius: 14px;
+      border:1px solid rgba(74,195,255,.18);
+      background: rgba(9,16,36,.65);
+      cursor:pointer;
+      transition: transform .12s ease, border-color .2s ease, box-shadow .2s ease;
+      user-select:none;
+    }
+    .card:hover{
+      transform: translateY(-1px);
+      border-color: rgba(74,195,255,.55);
+      box-shadow: 0 8px 18px rgba(0,0,0,.28), 0 0 14px rgba(31,139,255,.14);
+    }
+    .logo{
+      width:44px; height:44px;
+      border-radius: 12px;
+      background: rgba(0,0,0,.35);
+      border:1px solid rgba(74,195,255,.18);
+      overflow:hidden;
+      display:grid;
+      place-items:center;
+      flex: 0 0 44px;
+    }
+    .logo img{ width:100%; height:100%; object-fit: cover; display:block; }
+    .meta{ min-width:0; display:flex; flex-direction:column; gap:2px; }
+    .name{
+      font-weight: 900;
+      color: var(--text);
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      max-width: 170px;
+    }
+    .host{
+      font-size: 12px;
+      color: var(--muted);
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      max-width: 170px;
+    }
+
+    /* Favorite star */
+    .fav{
+      position:absolute;
+      top:8px; right:8px;
+      width: 34px; height:34px;
+      border-radius: 999px;
+      border:1px solid rgba(255,255,255,.18);
+      background: rgba(0,0,0,.35);
+      display:grid;
+      place-items:center;
+      cursor:pointer;
+    }
+    .fav span{ font-size: 18px; color: rgba(255,255,255,.65); transform: translateY(-1px); }
+    .card.isFav{ border-color: rgba(246,208,77,.6); }
+    .card.isFav .fav span{ color: #f6d04d; text-shadow: 0 0 10px rgba(246,208,77,.25); }
+
+    /* Poster mode */
+    body.poster-mode .card{
+      min-width: 320px;
+      align-items:flex-start;
+    }
+    body.poster-mode .logo{
+      width:92px; height:124px; border-radius: 14px;
+      flex: 0 0 92px;
+    }
+    body.poster-mode .name{ max-width: 200px; font-size: 1.05rem; }
+    body.poster-mode .host{ max-width: 200px; font-size: .82rem; }
+
+    /* Drop zone */
+    .drop{
+      border: 1px dashed rgba(74,195,255,.35);
+      background: rgba(31,139,255,.08);
+      border-radius: 14px;
+      padding: 12px;
       display:flex;
       align-items:center;
       justify-content:space-between;
       gap:10px;
       flex-wrap:wrap;
     }
-    .row-title small{ font-weight:700; color:#444; opacity:.9; }
-
-    /* Carruseles */
-    #favoritos-wrapper, #recientes-wrapper, #carrusel-wrapper { position: relative; }
-
-    .strip {
-      display: flex;
-      flex-wrap: nowrap;
-      overflow-x: auto;
-      gap: 0.5rem;
-      padding: 1rem;
-      background: var(--panel);
-      scroll-behavior: smooth;
-      border-radius:12px;
+    .drop strong{ color: var(--accent2); }
+    .drop small{ color: var(--muted); }
+    .drop.dragover{
+      background: rgba(74,195,255,.14);
+      border-color: rgba(74,195,255,.7);
+      box-shadow: 0 0 0 3px rgba(31,139,255,.14);
     }
 
-    /* Flechas */
-    .flecha-carrusel {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 2rem;
-      color: white;
-      background: rgba(0, 0, 0, 0.5);
-      border: none;
-      border-radius: 50%;
-      width: 50px;
-      height: 50px;
-      cursor: pointer;
-      z-index: 10;
-      display:grid;
-      place-items:center;
-    }
-    .flecha-izquierda { left: 5px; }
-    .flecha-derecha { right: 5px; }
-    .flecha-sm{ width:42px; height:42px; font-size:1.6rem; }
-
-    /* Card canal */
-    .canal {
-      background: var(--card);
-      border-radius: 12px;
-      padding: 0.55rem 0.75rem;
-      cursor: pointer;
-      white-space: nowrap;
-      flex-shrink: 0;
-      display: flex;
-      align-items: center;
-      gap: 0.55rem;
-      user-select:none;
-      border:2px solid transparent;
-      min-width: 230px;
-      position: relative;
-    }
-    .canal:hover { background: #555; }
-
-    .canal img {
-      width: 42px;
-      height: 42px;
-      border-radius: 8px;
-      object-fit: cover;
-      background: #000;
-    }
-
-    .canal .name{
-      display:flex;
-      flex-direction:column;
-      gap:2px;
-      min-width:0;
-    }
-    .canal .name strong{
-      font-size:.95rem;
-      overflow:hidden;
-      text-overflow:ellipsis;
-      white-space:nowrap;
-      max-width: 150px;
-    }
-    .canal .name small{
-      font-size:.75rem;
+    .hint{
       color: var(--muted);
-      overflow:hidden;
-      text-overflow:ellipsis;
-      white-space:nowrap;
-      max-width: 150px;
+      font-size: 12px;
+      margin-top: 8px;
+      opacity: .9;
     }
-
-    /* ⭐ Favoritos */
-    .fav-btn{
-      position:absolute;
-      top:8px;
-      right:8px;
-      width:32px;
-      height:32px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,.25);
-      background: rgba(0,0,0,.35);
-      display:grid;
-      place-items:center;
-      cursor:pointer;
-      z-index:2;
-    }
-    .fav-btn:hover{ background: rgba(0,0,0,.55); }
-    .fav-btn span{
-      font-size: 18px;
-      line-height:1;
-      color:#bbb;
-      transform: translateY(-1px);
-    }
-    .canal.fav{ border-color: rgba(246,208,77,.75); }
-    .canal.fav .fav-btn span{ color: var(--star); text-shadow: 0 0 10px rgba(246,208,77,.35); }
-
-    /* 🎬 Video */
-    #videoPlayer {
-      width: 100%;
-      max-width: 900px;
-      height: 50vh;
-      background: #000;
-      border: 2px solid var(--accent);
-      border-radius: 12px;
-      margin: 0 auto 1rem;
-      display: block;
-    }
-
-    /* Mensaje vacío */
-    .empty{
-      color:#ddd;
-      background:#2b2b2b;
-      padding:.75rem 1rem;
-      border-radius:10px;
-    }
-
-    /* 🔥 Modo Posters grandes (Netflix style) */
-    .poster-mode .canal{
-      min-width: 320px;
-      padding: .7rem;
-      align-items: flex-start;
-    }
-    .poster-mode .canal img{
-      width: 90px;
-      height: 120px;
-      border-radius: 10px;
-      object-fit: cover;
-    }
-    .poster-mode .canal .name strong{
-      max-width: 200px;
-      font-size: 1.05rem;
-    }
-    .poster-mode .canal .name small{
-      max-width: 200px;
-      font-size: .8rem;
-    }
-
-    /* 📱 iOS Install Banner */
-    .ios-banner{
-      display:none;
-      background: linear-gradient(90deg, rgba(0,0,0,.85), rgba(0,0,0,.55));
-      border: 1px solid rgba(0,0,0,.25);
-      color: #fff;
-      border-radius: 14px;
-      padding: 10px 12px;
-      margin: 10px 0 14px;
-      box-shadow: 0 10px 22px rgba(0,0,0,.15);
-    }
-    .ios-banner.show{ display:flex; }
-    .ios-banner .left{
-      display:flex; gap:10px; align-items:flex-start; flex:1;
-    }
-    .ios-badge{
-      width:38px;height:38px;border-radius:12px;
-      display:grid;place-items:center;
-      background: rgba(0,255,213,.12);
-      border:1px solid rgba(0,255,213,.25);
-      flex:0 0 38px;
-    }
-    .ios-banner h3{ margin:0; font-size: 14px; }
-    .ios-banner p{ margin:4px 0 0; font-size: 12px; opacity:.92; line-height:1.25; }
-    .ios-actions{ display:flex; gap:8px; align-items:center; }
-    .ios-actions button{
-      background: rgba(255,255,255,.1);
-      border:1px solid rgba(255,255,255,.18);
-      color:#fff;
-      border-radius: 12px;
-      padding: 8px 10px;
-      cursor:pointer;
-      font-weight: 800;
-    }
-    .ios-actions button:hover{ background: rgba(255,255,255,.16); }
   </style>
 </head>
 
 <body>
   <header>
-    <h1>📺 THE APP TV GLOBAL STATION</h1>
+    <div class="topbar">
+      <h1>📺 THE APP TV GLOBAL STATION <span style="color:var(--muted);font-weight:800;">· Tech Blue</span></h1>
 
-    <!-- 📱 iOS Banner (auto) -->
-    <div class="ios-banner" id="iosBanner">
-      <div class="left">
-        <div class="ios-badge">📲</div>
+      <div class="grid">
         <div>
-          <h3>Instalar en iPhone</h3>
-          <p>En <b>Safari</b>: toca <b>Share</b> (⬆️) → <b>Add to Home Screen</b> para instalar como app.</p>
+          <div class="row">
+            <select id="selectorPais">
+              <option value="https://cuervo-123.github.io/tv4you/paises/listado canales en espanol .m3u">Listado canales en español</option>
+              <option value="https://cuervo-123.github.io/tv4you/paises/lg.m3u">LG</option>
+              <option value="https://cuervo-123.github.io/tv4you/paises/latam.m3u">Latam</option>
+              <option value="https://cuervo-123.github.io/tv4you/paises/ssungusa.m3u">Samsung USA</option>
+              <option value="https://cuervo-123.github.io/tv4you/paises/global.m3u">Global</option>
+              <option value="https://cuervo-123.github.io/tv4you/paises/colombia.m3u">🇨🇴 Colombia</option>
+              <option value="https://cuervo-123.github.io/tv4you/paises/brazil.m3u">Brazil</option>
+              <option value="https://cuervo-123.github.io/tv4you/paises/xumo.m3u">Xumo</option>
+              <option value="https://cuervo-123.github.io/tv4you/paises/xiaomi.m3u">Xiaomi</option>
+              <option value="https://cuervo-123.github.io/tv4you/paises/localnow.m3u">LocalNow</option>
+            </select>
+          </div>
+
+          <div class="row" style="margin-top:10px;">
+            <select id="selectorPais2">
+              <option value="https://cuervo-123.github.io/tv4you/paises/Deportes.m3u">Deportes</option>
+              <option value="https://cuervo-123.github.io/tv4you/paises/Noticias.m3u">Noticias</option>
+              <option value="https://cuervo-123.github.io/tv4you/paises/Cine.m3u">Cine</option>
+              <option value="https://cuervo-123.github.io/tv4you/paises/Musica.m3u">Música</option>
+              <option value="https://cuervo-123.github.io/tv4you/paises/Series.m3u">Series</option>
+              <option value="https://cuervo-123.github.io/tv4you/paises/Infantil.m3u">Infantil</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <input id="buscador" type="text" placeholder="Buscar canal..." />
+
+          <div class="row" style="margin-top:10px;">
+            <button class="btn primary" id="btnSoloFav">⭐ Solo Favoritos</button>
+            <button class="btn" id="btnVerTodos">📺 Ver Todos</button>
+            <button class="btn" id="btnPoster">🖼️ Posters</button>
+            <button class="btn danger" id="btnClearFav">🧹 Borrar Fav</button>
+          </div>
+
+          <div class="drop" id="dropZone" style="margin-top:10px;">
+            <div>
+              <strong>📤 Upload Listado</strong>
+              <div><small>Soporta: .m3u / .m3u8 / .w3u / .json · también puedes arrastrar aquí</small></div>
+            </div>
+            <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+              <input id="fileInput" type="file" accept=".m3u,.m3u8,.w3u,.json,application/json,text/plain" />
+              <button class="btn" id="btnLoadDemo">⚡ Cargar update3.m3u</button>
+            </div>
+          </div>
+
+          <div class="hint">Tip: si el archivo es gigante, mejor .m3u (texto) y evita logos muy pesados.</div>
         </div>
       </div>
-      <div class="ios-actions">
-        <button id="iosHideBtn" type="button">Ocultar</button>
-      </div>
-    </div>
-
-    <select id="selectorPais">
-      <option value="https://cuervo-123.github.io/tv4you/paises/listado canales en espanol .m3u">listado canales en espanol</option>
-      <option value="https://cuervo-123.github.io/tv4you/paises/lg.m3u">lg</option>
-      <option value="https://cuervo-123.github.io/tv4you/paises/lista de Colombia m3u.m3u">lista de Colombia</option>
-      <option value="https://cuervo-123.github.io/tv4you/paises/latam.m3u">latam</option>
-      <option value="https://cuervo-123.github.io/tv4you/paises/ssungusa.m3u">ssung usa</option>
-      <option value="https://cuervo-123.github.io/tv4you/paises/global.m3u">Global</option>
-      <option value="https://cuervo-123.github.io/tv4you/paises/colombia.m3u">🇨🇴 Colombia</option>
-      <option value="https://cuervo-123.github.io/tv4you/paises/brazil.m3u">Brazil</option>
-      <option value="https://cuervo-123.github.io/tv4you/paises/bolivia.m3u"> Bolivia</option>
-      <option value="https://cuervo-123.github.io/tv4you/paises/ecuador.m3u">Ecuador</option>
-      <option value="https://cuervo-123.github.io/tv4you/paises/bosnia.herzegovina.m3u">Bosnia.Herzegovina</option>
-      <option value="https://cuervo-123.github.io/tv4you/paises/Bulgaria.m3u">Bulgaria</option>
-      <option value="https://cuervo-123.github.io/tv4you/paises/Czech Republic.m3u">Czech Republic</option>
-      <option value="https://cuervo-123.github.io/tv4you/paises/Country  France.m3u">France</option>
-      <option value="https://cuervo-123.github.io/tv4you/paises/Democratic Republic of the Congo.m3u">Democratic Republic of the Congo</option>
-      <option value="https://cuervo-123.github.io/tv4you/paises/Dominican Republic.m3u">Dominican Republic</option>
-      <option value="https://cuervo-123.github.io/tv4you/paises/Country  Cameroon.m3u">Cameroon</option>
-      <option value="https://cuervo-123.github.io/tv4you/paises/Country  Finland.m3u">Finland</option>
-      <option value="https://cuervo-123.github.io/tv4you/paises/Country Ethiopia.m3u">Ethiopia</option>
-      <option value="https://cuervo-123.github.io/tv4you/paises/Country  Estonia.m3u">Estonia</option>
-      <option value="https://cuervo-123.github.io/tv4you/paises/Country  Egypt.m3u">Egypt</option>
-      <option value="https://cuervo-123.github.io/tv4you/paises/localnow.m3u">localnow</option>
-      <option value="https://cuervo-123.github.io/tv4you/paises/xiaomi.m3u">xiaomi</option>
-      <option value="https://cuervo-123.github.io/tv4you/paises/xumo.m3u">xumo</option>
-      <option value="https://cuervo-123.github.io/tv4you/paises/favoritos premium -2.json">premium</option>
-      <option value="https://cuervo-123.github.io/tv4you/paises/Country Curacao.m3u">Curacao</option>
-    </select>
-
-    <h1>📺 CATEGORIES</h1>
-    <select id="selectorPais2">
-      <option value="https://cuervo-123.github.io/tv4you/paises/LISTADO DE CAMARAS IP.m3u">Camaras Ip Generales</option>
-      <option value="https://cuervo-123.github.io/tv4you/paises/Cine.m3u">Cine</option>
-      <option value="https://cuervo-123.github.io/tv4you/paises/Deportes.m3u">Deportes</option>
-      <option value="https://cuervo-123.github.io/tv4you/paises/Infantil.m3u">Infantil</option>
-      <option value="https://cuervo-123.github.io/tv4you/paises/Musica.m3u">Musica</option>
-      <option value="https://cuervo-123.github.io/tv4you/paises/Noticias.m3u">Noticias</option>
-      <option value="https://cuervo-123.github.io/tv4you/paises/Series.m3u">Series</option>
-      <option value="https://cuervo-123.github.io/tv4you/paises/musica and favoritos.m3u">musica and favoritos</option>
-      <option value="https://cuervo-123.github.io/tv4you/paises/karaoke gladys .m3u">Karaoke Gladys</option>
-    </select>
-
-    <input type="text" id="buscador" placeholder="Buscar canal..." />
-
-    <div class="actions">
-      <button class="btn" id="btnSoloFav">⭐ Ver solo Favoritos</button>
-      <button class="btn outline" id="btnVerTodos">📺 Ver Todos</button>
-      <button class="btn outline" id="btnClearFav">🧹 Borrar Favoritos</button>
-      <button class="btn outline" id="btnPosterMode">🖼️ Posters Grandes</button>
     </div>
   </header>
 
   <main>
-    <video id="videoPlayer" controls playsinline></video>
+    <div class="player-wrap">
+      <video id="videoPlayer" controls playsinline></video>
 
-    <!-- ⭐ Favoritos -->
-    <div class="row-title">
-      ⭐ Favoritos
-      <small id="favCount"></small>
-    </div>
-    <div id="favoritos-wrapper" style="position:relative; margin-bottom: 12px;">
-      <button class="flecha-carrusel flecha-izquierda flecha-sm" onclick="scrollStrip('favoritos-strip', -1)">⬅️</button>
-      <div id="favoritos-strip" class="strip"></div>
-      <button class="flecha-carrusel flecha-derecha flecha-sm" onclick="scrollStrip('favoritos-strip', 1)">➡️</button>
-    </div>
+      <div class="section">
+        <div class="section-head">
+          <div class="section-title">⭐ Favoritos <small id="favCount">(0)</small></div>
+        </div>
+        <div class="strip-wrap">
+          <button class="arrow left" onclick="scrollStrip('favStrip', -1)">⬅️</button>
+          <div class="strip" id="favStrip"></div>
+          <button class="arrow right" onclick="scrollStrip('favStrip', 1)">➡️</button>
+        </div>
+      </div>
 
-    <!-- 🕘 Recientes -->
-    <div class="row-title">
-      🕘 Recientes
-      <small id="recCount"></small>
-    </div>
-    <div id="recientes-wrapper" style="position:relative; margin-bottom: 12px;">
-      <button class="flecha-carrusel flecha-izquierda flecha-sm" onclick="scrollStrip('recientes-strip', -1)">⬅️</button>
-      <div id="recientes-strip" class="strip"></div>
-      <button class="flecha-carrusel flecha-derecha flecha-sm" onclick="scrollStrip('recientes-strip', 1)">➡️</button>
-    </div>
+      <div class="section">
+        <div class="section-head">
+          <div class="section-title">🕘 Recientes <small id="recCount">(0)</small></div>
+        </div>
+        <div class="strip-wrap">
+          <button class="arrow left" onclick="scrollStrip('recStrip', -1)">⬅️</button>
+          <div class="strip" id="recStrip"></div>
+          <button class="arrow right" onclick="scrollStrip('recStrip', 1)">➡️</button>
+        </div>
+      </div>
 
-    <!-- 📺 Canales -->
-    <div class="row-title">📺 Canales</div>
-    <div id="carrusel-wrapper" style="position: relative;">
-      <button class="flecha-carrusel flecha-izquierda" onclick="scrollStrip('canales-inferiores', -1)">⬅️</button>
-      <div id="canales-inferiores" class="strip"></div>
-      <button class="flecha-carrusel flecha-derecha" onclick="scrollStrip('canales-inferiores', 1)">➡️</button>
+      <div class="section">
+        <div class="section-head">
+          <div class="section-title">📺 Canales <small id="chCount">(0)</small></div>
+        </div>
+        <div class="strip-wrap">
+          <button class="arrow left" onclick="scrollStrip('chStrip', -1)">⬅️</button>
+          <div class="strip" id="chStrip"></div>
+          <button class="arrow right" onclick="scrollStrip('chStrip', 1)">➡️</button>
+        </div>
+      </div>
+
     </div>
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
   <script>
     const video = document.getElementById("videoPlayer");
-    let listaOriginalCanales = [];
-    let hlsInstance = null;
 
-    const FAV_KEY = "APP_GLOBAL_FAVORITOS_V1";
-    const REC_KEY = "APP_GLOBAL_RECIENTES_V1";
-    const IOS_HIDE_KEY = "APP_GLOBAL_HIDE_IOS_BANNER_V1";
-    const POSTER_KEY = "APP_GLOBAL_POSTER_MODE_V1";
-    const MAX_REC = 20;
+    const favStrip = document.getElementById('favStrip');
+    const recStrip = document.getElementById('recStrip');
+    const chStrip  = document.getElementById('chStrip');
 
     const favCountEl = document.getElementById('favCount');
     const recCountEl = document.getElementById('recCount');
+    const chCountEl  = document.getElementById('chCount');
 
-    function normKey(c){ return (c?.url || "").trim(); }
+    const buscador = document.getElementById('buscador');
 
+    const FAV_KEY = "TB_GLOBAL_FAV_V1";
+    const REC_KEY = "TB_GLOBAL_REC_V1";
+    const POSTER_KEY = "TB_GLOBAL_POSTER_V1";
+    const MAX_REC = 24;
+
+    let listaOriginalCanales = [];
+    let hlsInstance = null;
+
+    function saveJson(key, val){ localStorage.setItem(key, JSON.stringify(val)); }
     function loadJson(key, fallback){
       try { return JSON.parse(localStorage.getItem(key) || JSON.stringify(fallback)); }
       catch { return fallback; }
     }
-    function saveJson(key, value){
-      localStorage.setItem(key, JSON.stringify(value));
-    }
+
+    function normKey(c){ return (c?.url || "").trim(); }
 
     function loadFavs(){ return loadJson(FAV_KEY, []); }
     function saveFavs(arr){ saveJson(FAV_KEY, arr); }
 
-    function loadRec(){ return loadJson(REC_KEY, []); }
-    function saveRec(arr){ saveJson(REC_KEY, arr); }
+    function loadRecs(){ return loadJson(REC_KEY, []); }
+    function saveRecs(arr){ saveJson(REC_KEY, arr); }
 
-    function isFav(canal){
+    function isFav(c){
       const favs = loadFavs();
-      return favs.some(f => normKey(f) === normKey(canal));
+      return favs.some(f => normKey(f) === normKey(c));
     }
 
-    function toggleFav(canal){
+    function toggleFav(c){
       const favs = loadFavs();
-      const key = normKey(canal);
+      const key = normKey(c);
       const idx = favs.findIndex(f => normKey(f) === key);
       if(idx >= 0) favs.splice(idx, 1);
-      else favs.push({ nombre: canal.nombre, url: canal.url, logo: canal.logo || "" });
-
+      else favs.push({ nombre: c.nombre || 'Canal', url: c.url, logo: c.logo || '' });
       saveFavs(favs);
       renderFavoritos();
-      mostrarCanales(listaOriginalCanales, false);
+      renderCanalesActual(); // refresca estrellas
     }
 
-    function addRecent(canal){
-      const rec = loadRec();
-      const key = normKey(canal);
+    function addRecent(c){
+      const rec = loadRecs();
+      const key = normKey(c);
       const filtered = rec.filter(r => normKey(r) !== key);
-      filtered.unshift({ nombre: canal.nombre, url: canal.url, logo: canal.logo || "" });
-      saveRec(filtered.slice(0, MAX_REC));
+      filtered.unshift({ nombre: c.nombre || 'Canal', url: c.url, logo: c.logo || '' });
+      saveRecs(filtered.slice(0, MAX_REC));
       renderRecientes();
     }
 
-    function parseM3U(texto) {
-      const lineas = (texto || "").split('\n');
-      const canales = [];
-      for (let i = 0; i < lineas.length; i++) {
-        const linea = (lineas[i] || "").trim();
-        if (linea.startsWith('#EXTINF')) {
-          const titulo = linea.split(',')[1]?.trim() || 'Canal sin nombre';
-          const logoMatch = linea.match(/tvg-logo="(.*?)"/);
-          const logo = logoMatch ? logoMatch[1] : "";
-          const url = (lineas[i + 1] || "").trim();
-          if (url && url.startsWith('http')) {
-            canales.push({ nombre: titulo, url, logo });
-          }
-        }
-      }
-      return canales;
-    }
-
-    function playCanal(canal){
-      if(!canal?.url) return;
+    function playCanal(c){
+      if(!c?.url) return;
 
       if(hlsInstance){
         try{ hlsInstance.destroy(); }catch(e){}
         hlsInstance = null;
       }
 
-      const url = canal.url;
+      const url = c.url;
 
       if (window.Hls && Hls.isSupported() && /\.m3u8(\?|$)/i.test(url)) {
         hlsInstance = new Hls();
@@ -474,194 +487,274 @@
         video.play().catch(()=>{});
       }
 
-      addRecent(canal);
+      addRecent(c);
     }
 
-    function canalCard(canal){
-      const div = document.createElement("div");
-      div.className = "canal";
-      if(isFav(canal)) div.classList.add("fav");
-
-      const favBtn = document.createElement("div");
-      favBtn.className = "fav-btn";
-      favBtn.innerHTML = `<span>${isFav(canal) ? "★" : "☆"}</span>`;
-      favBtn.title = isFav(canal) ? "Quitar de favoritos" : "Agregar a favoritos";
-      favBtn.onclick = (ev) => {
-        ev.stopPropagation();
-        toggleFav(canal);
-      };
-      div.appendChild(favBtn);
-
-      const img = document.createElement("img");
-      img.alt = canal.nombre || "logo";
-      img.src = canal.logo || "";
-      img.onerror = () => { img.style.display = "none"; };
-      if(canal.logo) div.appendChild(img);
-
-      const meta = document.createElement("div");
-      meta.className = "name";
-
-      const strong = document.createElement("strong");
-      strong.textContent = canal.nombre || "Canal";
-      meta.appendChild(strong);
-
-      const small = document.createElement("small");
-      try{ small.textContent = new URL(canal.url).hostname; }catch{ small.textContent = ""; }
-      meta.appendChild(small);
-
-      div.appendChild(meta);
-
-      div.onclick = () => playCanal(canal);
-      return div;
+    function hostFromUrl(url){
+      try { return new URL(url).hostname; } catch { return ''; }
     }
 
-    function mostrarCanales(canales, guardarOriginal = false) {
-      if (guardarOriginal) listaOriginalCanales = canales;
+    function createCard(c){
+      const card = document.createElement('div');
+      card.className = 'card';
+      if(isFav(c)) card.classList.add('isFav');
 
-      const contenedor = document.getElementById("canales-inferiores");
-      contenedor.innerHTML = "";
+      const fav = document.createElement('div');
+      fav.className = 'fav';
+      fav.innerHTML = `<span>${isFav(c) ? '★' : '☆'}</span>`;
+      fav.title = isFav(c) ? 'Quitar de favoritos' : 'Agregar a favoritos';
+      fav.onclick = (ev)=>{ ev.stopPropagation(); toggleFav(c); };
 
-      if(!canales?.length){
-        contenedor.innerHTML = `<div class="empty">No se cargaron canales.</div>`;
-        return;
+      const logo = document.createElement('div');
+      logo.className = 'logo';
+
+      if(c.logo){
+        const img = document.createElement('img');
+        img.src = c.logo;
+        img.alt = c.nombre || 'logo';
+        img.onerror = () => { logo.textContent = '📺'; };
+        logo.appendChild(img);
+      } else {
+        logo.textContent = '📺';
       }
 
-      const frag = document.createDocumentFragment();
-      canales.forEach((canal) => frag.appendChild(canalCard(canal)));
-      contenedor.appendChild(frag);
+      const meta = document.createElement('div');
+      meta.className = 'meta';
 
+      const name = document.createElement('div');
+      name.className = 'name';
+      name.textContent = c.nombre || 'Canal';
+
+      const host = document.createElement('div');
+      host.className = 'host';
+      host.textContent = hostFromUrl(c.url) || '';
+
+      meta.appendChild(name);
+      meta.appendChild(host);
+
+      card.appendChild(fav);
+      card.appendChild(logo);
+      card.appendChild(meta);
+
+      card.onclick = ()=> playCanal(c);
+
+      return card;
+    }
+
+    function renderStrip(el, arr){
+      el.innerHTML = '';
+      if(!arr || !arr.length){
+        const empty = document.createElement('div');
+        empty.style.padding = '10px 12px';
+        empty.style.color = 'var(--muted)';
+        empty.textContent = 'Vacío…';
+        el.appendChild(empty);
+        return;
+      }
+      const frag = document.createDocumentFragment();
+      arr.forEach(c => frag.appendChild(createCard(c)));
+      el.appendChild(frag);
+    }
+
+    function renderFavoritos(){
+      const favs = loadFavs();
+      favCountEl.textContent = `(${favs.length})`;
+      renderStrip(favStrip, favs);
+    }
+    function renderRecientes(){
+      const rec = loadRecs();
+      recCountEl.textContent = `(${rec.length})`;
+      renderStrip(recStrip, rec);
+    }
+    function renderCanales(canales, guardarOriginal=false){
+      if(guardarOriginal) listaOriginalCanales = canales || [];
+      chCountEl.textContent = `(${(canales||[]).length})`;
+      renderStrip(chStrip, canales || []);
       renderFavoritos();
       renderRecientes();
     }
 
-    function renderFavoritos(){
-      const strip = document.getElementById("favoritos-strip");
-      const favs = loadFavs();
-      strip.innerHTML = "";
-
-      favCountEl.textContent = favs.length ? `(${favs.length})` : `(0)`;
-
-      if(!favs.length){
-        strip.innerHTML = `<div class="empty">Todavía no tienes favoritos. Marca ⭐ en cualquier canal.</div>`;
-        return;
-      }
-      const frag = document.createDocumentFragment();
-      favs.forEach(c => frag.appendChild(canalCard(c)));
-      strip.appendChild(frag);
+    function renderCanalesActual(){
+      // respeta filtro del buscador
+      const q = (buscador.value || '').trim().toLowerCase();
+      if(!q){ renderCanales(listaOriginalCanales, false); return; }
+      const filtrados = listaOriginalCanales.filter(c => (c.nombre||'').toLowerCase().includes(q));
+      renderCanales(filtrados, false);
     }
 
-    function renderRecientes(){
-      const strip = document.getElementById("recientes-strip");
-      const rec = loadRec();
-      strip.innerHTML = "";
-
-      recCountEl.textContent = rec.length ? `(${rec.length})` : `(0)`;
-
-      if(!rec.length){
-        strip.innerHTML = `<div class="empty">Aún no hay recientes. Reproduce un canal y saldrá aquí.</div>`;
-        return;
-      }
-      const frag = document.createDocumentFragment();
-      rec.forEach(c => frag.appendChild(canalCard(c)));
-      strip.appendChild(frag);
-    }
-
-    function cargarLista(url) {
-      fetch(url)
-        .then(res => res.text())
-        .then(data => {
-          const canales = parseM3U(data);
-          mostrarCanales(canales, true);
-        })
-        .catch(err => console.error("Error al cargar la lista:", err));
-    }
-
-    function scrollStrip(id, direccion) {
+    window.scrollStrip = function(id, dir){
       const el = document.getElementById(id);
       if(!el) return;
-      el.scrollBy({ left: 320 * direccion, behavior: "smooth" });
+      el.scrollBy({ left: 340 * dir, behavior: 'smooth' });
     }
 
-    // Buscador
-    document.getElementById("buscador").addEventListener("input", function(){
-      const q = (this.value || "").toLowerCase().trim();
-      if(!q){
-        mostrarCanales(listaOriginalCanales, false);
-        return;
-      }
-      const filtrados = listaOriginalCanales.filter(c => (c.nombre||"").toLowerCase().includes(q));
-      mostrarCanales(filtrados, false);
-    });
+    buscador.addEventListener('input', renderCanalesActual);
 
-    // Botones
-    document.getElementById("btnSoloFav").addEventListener("click", ()=>{
+    document.getElementById('btnSoloFav').addEventListener('click', ()=>{
       const favs = loadFavs();
-      if(!favs.length) return alert("No tienes favoritos todavía.");
-      mostrarCanales(favs, false);
+      if(!favs.length) return alert('No tienes favoritos todavía.');
+      renderCanales(favs, false);
     });
 
-    document.getElementById("btnVerTodos").addEventListener("click", ()=>{
-      mostrarCanales(listaOriginalCanales, false);
+    document.getElementById('btnVerTodos').addEventListener('click', ()=>{
+      buscador.value = '';
+      renderCanales(listaOriginalCanales, false);
     });
 
-    document.getElementById("btnClearFav").addEventListener("click", ()=>{
-      if(!confirm("¿Borrar todos los favoritos?")) return;
+    document.getElementById('btnClearFav').addEventListener('click', ()=>{
+      if(!confirm('¿Borrar TODOS los favoritos?')) return;
       saveFavs([]);
       renderFavoritos();
-      mostrarCanales(listaOriginalCanales, false);
+      renderCanalesActual();
     });
 
-    // Posters Mode (Netflix)
     function applyPosterMode(on){
       document.body.classList.toggle('poster-mode', !!on);
       localStorage.setItem(POSTER_KEY, on ? '1' : '0');
-      document.getElementById('btnPosterMode').textContent = on ? "🖼️ Posters: ON" : "🖼️ Posters Grandes";
+      document.getElementById('btnPoster').textContent = on ? '🖼️ Posters: ON' : '🖼️ Posters';
     }
-    document.getElementById("btnPosterMode").addEventListener("click", ()=>{
-      const isOn = document.body.classList.contains('poster-mode');
-      applyPosterMode(!isOn);
+    document.getElementById('btnPoster').addEventListener('click', ()=>{
+      applyPosterMode(!document.body.classList.contains('poster-mode'));
     });
 
-    // Selectores
+    /* ===================== PARSERS (M3U/W3U/JSON) ===================== */
+    function parseM3U(text){
+      const clean = (text||'').replace(/^\uFEFF/, '').replace(/\r\n?/g, '\n');
+      const lines = clean.split('\n');
+      const out = [];
+
+      for(let i=0;i<lines.length;i++){
+        const line = (lines[i]||'').trim();
+        if(!line || line.startsWith('#EXTM3U')) continue;
+
+        if(line.startsWith('#EXTINF')){
+          const comma = line.indexOf(',');
+          const nombre = (comma !== -1) ? (line.slice(comma+1).trim() || 'Canal') : 'Canal';
+
+          const logoMatch = line.match(/tvg-logo="(.*?)"/i);
+          const logo = logoMatch ? logoMatch[1] : '';
+
+          const url = (lines[i+1]||'').trim();
+          if(url && /^https?:\/\//i.test(url)){
+            out.push({ nombre, url, logo });
+            i++;
+          }
+          continue;
+        }
+
+        // líneas URL sueltas
+        if(/^https?:\/\//i.test(line)){
+          out.push({ nombre: line.split('/').slice(-1)[0] || 'Canal', url: line, logo:'' });
+        }
+      }
+      return out;
+    }
+
+    function parseW3U(text){
+      // En la práctica suele ser igual que M3U (texto). Lo tratamos igual:
+      return parseM3U(text);
+    }
+
+    function parseJSONChannels(text){
+      const data = JSON.parse(text);
+      if(!Array.isArray(data)) throw new Error('JSON debe ser un array');
+      return data.map(x => ({
+        nombre: x.nombre || x.name || x.title || 'Canal',
+        url: x.url || x.stream || x.link || '',
+        logo: x.logo || x.tvgLogo || x.image || x.poster || ''
+      })).filter(c => c.url && /^https?:\/\//i.test(c.url));
+    }
+
+    async function loadFromTextByExt(text, ext){
+      let canales = [];
+      if(ext === 'json'){
+        canales = parseJSONChannels(text);
+      }else if(ext === 'w3u'){
+        canales = parseW3U(text);
+      }else{
+        canales = parseM3U(text); // m3u / m3u8 / txt
+      }
+      renderCanales(canales, true);
+    }
+
+    async function loadFromUrl(url){
+      const res = await fetch(url, { cache:'no-store' });
+      if(!res.ok) throw new Error(`${res.status} ${res.statusText}`);
+      const text = await res.text();
+      // inferir extensión
+      const ext = (url.split('?')[0].split('.').pop() || '').toLowerCase();
+      await loadFromTextByExt(text, ext === 'w3u' ? 'w3u' : ext === 'json' ? 'json' : 'm3u');
+    }
+
+    /* ===================== Upload + Drop ===================== */
+    const fileInput = document.getElementById('fileInput');
+    fileInput.addEventListener('change', async (e)=>{
+      const file = e.target.files?.[0];
+      if(!file) return;
+      const name = file.name || '';
+      const ext = (name.split('.').pop() || '').toLowerCase();
+      try{
+        const text = await file.text();
+        await loadFromTextByExt(text, ext === 'w3u' ? 'w3u' : ext === 'json' ? 'json' : 'm3u');
+      }catch(err){
+        alert('No pude leer ese archivo. Revisa que sea .m3u/.w3u/.json válido.');
+        console.error(err);
+      }finally{
+        e.target.value = '';
+      }
+    });
+
+    const dropZone = document.getElementById('dropZone');
+    ;['dragenter','dragover'].forEach(evt=>{
+      dropZone.addEventListener(evt, (e)=>{
+        e.preventDefault();
+        dropZone.classList.add('dragover');
+      });
+    });
+    ;['dragleave','drop'].forEach(evt=>{
+      dropZone.addEventListener(evt, (e)=>{
+        e.preventDefault();
+        dropZone.classList.remove('dragover');
+      });
+    });
+    dropZone.addEventListener('drop', async (e)=>{
+      const file = e.dataTransfer?.files?.[0];
+      if(!file) return;
+      const ext = (file.name.split('.').pop()||'').toLowerCase();
+      try{
+        const text = await file.text();
+        await loadFromTextByExt(text, ext === 'w3u' ? 'w3u' : ext === 'json' ? 'json' : 'm3u');
+      }catch(err){
+        alert('Drop: archivo inválido o dañado.');
+        console.error(err);
+      }
+    });
+
+    /* ===================== Selectores ===================== */
     document.getElementById("selectorPais").addEventListener("change", function () {
-      cargarLista(this.value);
+      loadFromUrl(this.value).catch(e=> alert('Error cargando lista: ' + e.message));
     });
     document.getElementById("selectorPais2").addEventListener("change", function () {
-      cargarLista(this.value);
+      loadFromUrl(this.value).catch(e=> alert('Error cargando lista: ' + e.message));
     });
 
-    // iOS Banner smart
-    function isIOS(){
-      const ua = navigator.userAgent || '';
-      const iOS = /iPhone|iPad|iPod/i.test(ua);
-      const iPadOS13 = (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-      return iOS || iPadOS13;
-    }
-    function isStandalone(){
-      return (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || (navigator.standalone === true);
-    }
-    function showIosBannerIfNeeded(){
-      const hidden = localStorage.getItem(IOS_HIDE_KEY) === '1';
-      const banner = document.getElementById('iosBanner');
-      if(!banner) return;
-
-      if(isIOS() && !isStandalone() && !hidden){
-        banner.classList.add('show');
-      }
-    }
-    document.getElementById('iosHideBtn').addEventListener('click', ()=>{
-      localStorage.setItem(IOS_HIDE_KEY, '1');
-      document.getElementById('iosBanner').classList.remove('show');
+    document.getElementById('btnLoadDemo').addEventListener('click', ()=>{
+      loadFromUrl("update3.m3u").catch(e=> alert('No pude cargar update3.m3u: ' + e.message));
     });
 
-    // Init
+    /* ===================== INIT ===================== */
     renderFavoritos();
     renderRecientes();
     applyPosterMode(localStorage.getItem(POSTER_KEY) === '1');
-    showIosBannerIfNeeded();
 
-    // Default (deja tu original tal cual)
-    cargarLista("update3.m3u");
+    // Carga default (igual que tu versión)
+    loadFromUrl("update3.m3u").catch(()=> {
+      // fallback demo
+      renderCanales([
+        { nombre:'DEMO HLS', url:'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8', logo:'' },
+        { nombre:'DEMO BBB', url:'https://test-streams.mux.dev/bbb-abr/bbb.m3u8', logo:'' }
+      ], true);
+    });
   </script>
 </body>
 </html>
