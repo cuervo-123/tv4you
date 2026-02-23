@@ -29,16 +29,50 @@ https://s53.nysdot.skyvdn.com/rtplive/R10_372/playlist.m3u8
 https://s53.nysdot.skyvdn.com/rtplive/R10_370/playlist.m3u8
 #EXTINF:-1,NY27 at Waverly Ave (CR19)
 https://s53.nysdot.skyvdn.com/rtplive/R10_369/playlist.m3u8
-
-
-
-
-
-
-
-
-
-
+#EXTINF:-1,NSY27 at Nicolls Road (CR97)
+https://s53.nysdot.skyvdn.com/rtplive/R10_368/playlist.m3u
+#EXTINF:-1,NY27 at Vets Hwy
+https://s7.nysdot.skyvdn.com/rtplive/R10_367/playlist.m3u8
+#EXTINF:-1,NY27(Sunrise Hwy.) at Johnson Ave
+https://s52.nysdot.skyvdn.com/rtplive/R10_139/playlist.m3u8
+#EXTINF:-1,NY27(Sunrise Hwy.) at Smithtown Ave.
+https://s52.nysdot.skyvdn.com/rtplive/R10_138/playlist.m3u8
+#EXTINF:-1,NY27(Sunrise Hwy.) at Oakdale-Bohemia Rd.
+https://s52.nysdot.skyvdn.com/rtplive/R10_137/playlist.m3u8
+#EXTINF:-1,NY27 at Oakdale Merge - Camera2
+https://s7.nysdot.skyvdn.com/rtplive/R10_307/playlist.m3u8
+#EXTINF:-1,NY27 at Oakdale Merge - Camera1
+https://s7.nysdot.skyvdn.com/rtplive/R10_306/playlist.m3u8
+#EXTINF:-1,NY27 at Connetquot Avenue
+https://s7.nysdot.skyvdn.com/rtplive/R10_308/playlist.m3u8
+#EXTINF:-1,NY 27 at Heckscher State Pkwy
+https://s9.nysdot.skyvdn.com/rtplive/R10_351/playlist.m3u8
+#EXTINF:-1,OVD - Westbound NY27 to Westbound Heckscher State Parkway
+https://s7.nysdot.skyvdn.com/rtplive/R10_309/playlist.m3u8
+#EXTINF:-1,NY27A at NY908M (Heckscher State Parkway)
+https://s7.nysdot.skyvdn.com/rtplive/R10_409/playlist.m3u8
+#EXTINF:-1,NY27A at Woodland Dr/Carlton Ave
+https://s7.nysdot.skyvdn.com/rtplive/R10_408/playlist.m3u8
+#EXTINF:-1,NY27A at NY111
+https://s7.nysdot.skyvdn.com/rtplive/R10_407/playlist.m3u8
+#EXTINF:-1,NY27A at Ocean Ave
+https://s7.nysdot.skyvdn.com/rtplive/R10_406/playlist.m3u8
+#EXTINF:-1, NY27A at Saxon Ave
+https://s7.nysdot.skyvdn.com/rtplive/R10_405/playlist.m3u8
+#EXTINF:-1, NY25A at Middle Neck Road
+https://s53.nysdot.skyvdn.com:443/rtplive/R10_292/playlist.m3u8
+#EXTINF:-1, NY25A at Searington Road
+https://s53.nysdot.skyvdn.com:443/rtplive/R10_293/playlist.m3u8
+#EXTINF:-1, NY25A at Plandome Road
+https://s53.nysdot.skyvdn.com:443/rtplive/R10_295/playlist.m3u8
+#EXTINF:-1, NY25A at Community Drive
+https://s53.nysdot.skyvdn.com:443/rtplive/R10_296/playlist.m3u8
+#EXTINF:-1, CIP at Northern Blvd
+https://s53.nysdot.skyvdn.com:443/rtplive/R10_174/playlist.m3u8
+#EXTINF:-1, I-295 at 48th Avenue
+https://s52.nysdot.skyvdn.com:443/rtplive/R11_110/playlist.m3u8
+#EXTINF:-1, I-495 at Cross Island Parkway
+https://s9.nysdot.skyvdn.com:443/rtplive/R11_254/playlist.m3u8
 
 
 
